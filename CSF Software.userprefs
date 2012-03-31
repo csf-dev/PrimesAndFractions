@@ -1,0 +1,13 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Test.CSF/Data/TestTabularDataList.cs">
+    <Files>
+      <File FileName="CSF/Data/TabularDataList.cs" Line="103" Column="51" />
+      <File FileName="Test.CSF/Data/TestTabularDataList.cs" Line="58" Column="81" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
