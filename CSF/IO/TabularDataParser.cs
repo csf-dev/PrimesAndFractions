@@ -104,8 +104,14 @@ namespace CSF.IO
     /// </param>
     public virtual IList<IList<string>> Read(string stringData)
     {
-      // TODO: Write this implementation
-      throw new NotImplementedException ();
+      IList<IList<string>> output;
+      
+      using(TextReader reader = new StringReader(stringData))
+      {
+        output = this.Read(reader);
+      }
+      
+      return output;
     }
     
     /// <summary>
@@ -116,8 +122,29 @@ namespace CSF.IO
     /// </param>
     public virtual IList<IList<string>> Read(TextReader stringDataReader)
     {
-      // TODO: Write this implementation
-      throw new NotImplementedException ();
+      ITabularDataStream readHelper = this.GetDataStream(stringDataReader);
+      int currentRow = 0;
+      IList<IList<string>> output = null;
+      
+      foreach(IList<string> row in readHelper)
+      {
+        try
+        {
+          if(output == null)
+          {
+            output = new TabularDataList(row.Count);
+          }
+          output.Add(row);
+        }
+        catch(ArgumentException ex)
+        {
+          string message = String.Format("An error was encountered whilst parsing row {0}.", currentRow);
+          throw new InvalidOperationException(message, ex);
+        }
+        currentRow++;
+      }
+      
+      return output;
     }
     
     /// <summary>
@@ -128,8 +155,14 @@ namespace CSF.IO
     /// </param>
     public virtual string Write(IList<IList<string>> data)
     {
-      // TODO: Write this implementation
-      throw new NotImplementedException ();
+      StringBuilder output = new StringBuilder();
+      
+      using(TextWriter writer = new StringWriter(output))
+      {
+        this.Write(data, writer);
+      }
+      
+      return output.ToString();
     }
     
     /// <summary>
@@ -143,9 +176,52 @@ namespace CSF.IO
     /// </param>
     public virtual void Write(IList<IList<string>> data, TextWriter stringDataWriter)
     {
-      // TODO: Write this implementation
-      throw new NotImplementedException ();
+      if(data == null)
+      {
+        throw new ArgumentNullException ("data");
+      }
+      
+      for(int rowNumber = 0; rowNumber < data.Count; rowNumber++)
+      {
+        IList<string> row = data[rowNumber];
+        this.Write(row, stringDataWriter);
+        if(rowNumber < data.Count - 1)
+        {
+          stringDataWriter.Write(this.RowDelimiter);
+        }
+      }
     }
+    
+    /// <summary>
+    /// Gets an instance of a helper type that assists in the parsing of data from a <paramref name="reader"/>.
+    /// </summary>
+    /// <returns>
+    /// The data stream helper type.
+    /// </returns>
+    /// <param name='reader'>
+    /// A <see cref="TextReader"/>.
+    /// </param>
+    protected abstract ITabularDataStream GetDataStream(TextReader reader);
+    
+    /// <summary>
+    /// Writes a single row of data to the <paramref name="writer"/>.
+    /// </summary>
+    /// <param name='row'>
+    /// The row to write
+    /// </param>
+    /// <param name='writer'>
+    /// The <see cref="TextWriter"/> to write to
+    /// </param>
+    protected abstract void Write(IList<string> row, TextWriter writer);
+    
+    #endregion
+    
+    #region contained types
+    
+    /// <summary>
+    /// Interface for a stream of tabular data
+    /// </summary>
+    public interface ITabularDataStream : IEnumerable<IList<string>> {}
     
     #endregion
   }

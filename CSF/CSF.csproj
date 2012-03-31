@@ -56,8 +56,4 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup>
-    <None Include="IO\CsvParser.cs" />
-    <None Include="IO\CsvStream.cs" />
-  </ItemGroup>
 </Project>

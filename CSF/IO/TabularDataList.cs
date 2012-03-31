@@ -151,7 +151,7 @@ namespace CSF.IO
     #region constructors
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="CSF.Data.TabularDataList"/> class.
+    /// Initializes a new instance of the <see cref="CSF.IO.TabularDataList"/> class.
     /// </summary>
     /// <param name='columnCount'>
     /// The desired column count.
