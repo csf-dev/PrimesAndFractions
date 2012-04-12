@@ -1,13 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Test.CSF/TestInt32Extensions.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CSF/IO/TabularDataStreamEnumerator.cs">
     <Files>
-      <File FileName="Test.CSF/IO/TestCsvDataParser.cs" Line="56" Column="42" />
-      <File FileName="CSF/IO/CsvDataParser.cs" Line="615" Column="30" />
-      <File FileName="CSF/IO/TabularDataParser.cs" Line="91" Column="31" />
-      <File FileName="CSF/IO/TabularDataList.cs" Line="31" Column="21" />
-      <File FileName="CSF/Int32Extensions.cs" Line="554" Column="28" />
-      <File FileName="Test.CSF/TestInt32Extensions.cs" Line="97" Column="25" />
+      <File FileName="CSF/IO/TabularDataStream.cs" Line="30" Column="16" />
+      <File FileName="CSF/IO/TabularDataStreamEnumerator.cs" Line="148" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

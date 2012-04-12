@@ -44,7 +44,6 @@
     <Compile Include="IO\TabularDataList.cs" />
     <Compile Include="Int32Extensions.cs" />
     <Compile Include="IO\TabularDataWriteOptions.cs" />
-    <Compile Include="IO\ITabularDataStream.cs" />
     <Compile Include="IO\TabularDataFormat.cs" />
     <Compile Include="IO\TabularDataStream.cs" />
     <Compile Include="IO\TabularDataStreamEnumerator.cs" />

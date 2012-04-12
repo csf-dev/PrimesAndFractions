@@ -71,20 +71,45 @@ namespace CSF.IO
     /// Writes the specified data to a string-based format.
     /// </summary>
     /// <param name='data'>
-    /// The tabular data structure.
+    /// The data to write.
     /// </param>
     string Write(IList<IList<string>> data);
+    
+    /// <summary>
+    /// Writes the specified data to a string-based format.
+    /// </summary>
+    /// <param name='data'>
+    /// The data to write.
+    /// </param>
+    /// <param name='options'>
+    /// Additional write options to use when writing.
+    /// </param>
+    string Write(IList<IList<string>> data, TabularDataWriteOptions options);
     
     /// <summary>
     /// Write the specified data to a given <see cref="TextWriter"/>.
     /// </summary>
     /// <param name='data'>
-    /// Data.
+    /// A <see cref="TextWriter"/> to write the data to.
     /// </param>
     /// <param name='stringDataWriter'>
     /// String data writer.
     /// </param>
     void Write(IList<IList<string>> data, TextWriter stringDataWriter);
+    
+    /// <summary>
+    /// Write the specified data to a given <see cref="TextWriter"/>.
+    /// </summary>
+    /// <param name='data'>
+    /// The data to write.
+    /// </param>
+    /// <param name='stringDataWriter'>
+    /// A <see cref="TextWriter"/> to write the data to.
+    /// </param>
+    /// <param name='options'>
+    /// Additional write options to use when writing.
+    /// </param>
+    void Write(IList<IList<string>> data, TextWriter stringDataWriter, TabularDataWriteOptions options);
     
     #endregion
   }

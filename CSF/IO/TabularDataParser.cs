@@ -136,7 +136,7 @@ namespace CSF.IO
     /// </param>
     public virtual IList<IList<string>> Read(TextReader stringDataReader)
     {
-      ITabularDataStream readHelper = this.GetDataStream(stringDataReader);
+      TabularDataStream readHelper = this.GetDataStream(stringDataReader);
       int currentRow = 0;
       IList<IList<string>> output = null;
       
@@ -247,7 +247,7 @@ namespace CSF.IO
     /// <param name='reader'>
     /// A <see cref="TextReader"/>.
     /// </param>
-    protected virtual ITabularDataStream GetDataStream(TextReader reader)
+    protected virtual TabularDataStream GetDataStream(TextReader reader)
     {
       return new TabularDataStream(this, reader);
     }

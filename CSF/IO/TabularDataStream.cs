@@ -27,7 +27,7 @@ namespace CSF.IO
   /// <summary>
   /// A data stream for reading tabular data.
   /// </summary>
-  public class TabularDataStream : ITabularDataStream
+  public class TabularDataStream : IEnumerable<IList<string>>
   {
     #region fields
     
