@@ -29,6 +29,28 @@ namespace CSF.IO
   /// </summary>
   public interface ITabularDataParser
   {
+    #region properties
+    
+    /// <summary>
+    /// Gets or sets information about the format of data that this parser reads and writes.
+    /// </summary>
+    /// <value>
+    /// The format.
+    /// </value>
+    TabularDataFormat Format { get; }
+    
+    /// <summary>
+    /// Gets or sets the size (in bytes) of the buffer used for read operations.
+    /// </summary>
+    /// <value>
+    /// The size of the read buffer.
+    /// </value>
+    int ReadBufferSize { get; set; }
+    
+    #endregion
+    
+    #region methods
+    
     /// <summary>
     /// Reads the specified string-based data and returns a collection representing the tabular data.
     /// </summary>
@@ -63,6 +85,8 @@ namespace CSF.IO
     /// String data writer.
     /// </param>
     void Write(IList<IList<string>> data, TextWriter stringDataWriter);
+    
+    #endregion
   }
 }
 

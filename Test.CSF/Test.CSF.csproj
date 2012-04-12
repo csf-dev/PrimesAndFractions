@@ -39,8 +39,8 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="IO\TestTabularDataList.cs" />
-    <Compile Include="IO\TestCsvDataParser.cs" />
     <Compile Include="TestInt32Extensions.cs" />
+    <Compile Include="IO\TestTabularDataParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

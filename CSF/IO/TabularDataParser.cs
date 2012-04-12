@@ -36,59 +36,73 @@ namespace CSF.IO
   /// Represents a concrete <see cref="ITabularDataParser"/> that is able to read from &amp; write to tabular string data
   /// structures.
   /// </summary>
-  public abstract class TabularDataParser : ITabularDataParser
+  public class TabularDataParser : ITabularDataParser
   {
+    #region constants
+    
+    /// <summary>
+    /// Constant value indicates the 'end of file' character.
+    /// </summary>
+    public static readonly char EndOfFile = '\0';
+    
+    /// <summary>
+    /// Constant value contains the default/hardcoded length of the read buffer.
+    /// </summary>
+    public static readonly int DefaultBufferSize = 4096;
+    
+    #endregion
+    
     #region fields
     
-    private string _columnDelimiter, _rowDelimiter;
+    private TabularDataFormat _format;
+    private int _readBufferSize;
     
     #endregion
     
     #region properties
-    
+  
     /// <summary>
-    /// Gets or sets the character that separates fields of data within a row.
+    /// Gets or sets information about the format of data that this parser reads and writes.
     /// </summary>
     /// <value>
-    /// The column delimiter.
+    /// The format.
     /// </value>
     /// <exception cref='ArgumentNullException'>
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
     /// </exception>
-    protected virtual string ColumnDelimiter
+    public TabularDataFormat Format
     {
       get {
-        return _columnDelimiter;
+        return _format;
       }
-      set {
-        if (value == null) {
+      private set {
+        if(value == null)
+        {
           throw new ArgumentNullException ("value");
         }
         
-        _columnDelimiter = value;
+        _format = value;
       }
     }
     
     /// <summary>
-    /// Gets or sets the character that separates rows of data.
+    /// Gets or sets the size (in bytes) of the buffer used for read operations.
     /// </summary>
     /// <value>
-    /// The row delimiter.
+    /// The size of the read buffer.
     /// </value>
-    /// <exception cref='ArgumentNullException'>
-    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
-    /// </exception>
-    protected virtual string RowDelimiter
+    public virtual int ReadBufferSize
     {
       get {
-        return _rowDelimiter;
+        return _readBufferSize;
       }
       set {
-        if (value == null) {
-          throw new ArgumentNullException ("value");
+        if(value < 1)
+        {
+          throw new ArgumentOutOfRangeException("value", "Read buffer cannot be less than one byte");
         }
         
-        _rowDelimiter = value;
+        _readBufferSize = value;
       }
     }
     
@@ -151,30 +165,47 @@ namespace CSF.IO
     /// Writes the specified data to a string-based format.
     /// </summary>
     /// <param name='data'>
-    /// The tabular data structure.
+    /// The data to write.
     /// </param>
-    public virtual string Write(IList<IList<string>> data)
+    /// <param name='options'>
+    /// The options to use when writing the data.
+    /// </param>
+    public virtual string Write(IList<IList<string>> data, TabularDataWriteOptions options)
     {
       StringBuilder output = new StringBuilder();
       
       using(TextWriter writer = new StringWriter(output))
       {
-        this.Write(data, writer);
+        this.Write(data, writer, options);
       }
       
       return output.ToString();
     }
     
     /// <summary>
+    /// Writes the specified data to a string-based format.
+    /// </summary>
+    /// <param name='data'>
+    /// The tabular data structure.
+    /// </param>
+    public virtual string Write(IList<IList<string>> data)
+    {
+      return this.Write(data, this.Format.DefaultWriteOptions);
+    }
+    
+    /// <summary>
     /// Write the specified data to a given <see cref="TextWriter"/>.
     /// </summary>
     /// <param name='data'>
-    /// Data.
+    /// The tabular data structure.
     /// </param>
     /// <param name='stringDataWriter'>
-    /// String data writer.
+    /// A <see cref="TextWriter"/> to write the output to.
     /// </param>
-    public virtual void Write(IList<IList<string>> data, TextWriter stringDataWriter)
+    /// <param name='options'>
+    /// The options to use when writing the data.
+    /// </param>
+    public virtual void Write(IList<IList<string>> data, TextWriter stringDataWriter, TabularDataWriteOptions options)
     {
       if(data == null)
       {
@@ -184,12 +215,27 @@ namespace CSF.IO
       for(int rowNumber = 0; rowNumber < data.Count; rowNumber++)
       {
         IList<string> row = data[rowNumber];
-        this.Write(row, stringDataWriter);
+        this.Write(row, stringDataWriter, options);
+        
         if(rowNumber < data.Count - 1)
         {
-          stringDataWriter.Write(this.RowDelimiter);
+          stringDataWriter.Write(this.Format.RowDelimiter);
         }
       }
+    }
+    
+    /// <summary>
+    /// Write the specified data to a given <see cref="TextWriter"/>.
+    /// </summary>
+    /// <param name='data'>
+    /// The tabular data structure.
+    /// </param>
+    /// <param name='stringDataWriter'>
+    /// A <see cref="TextWriter"/> to write the output to.
+    /// </param>
+    public virtual void Write(IList<IList<string>> data, TextWriter stringDataWriter)
+    {
+      this.Write(data, stringDataWriter, this.Format.DefaultWriteOptions);
     }
     
     /// <summary>
@@ -201,7 +247,10 @@ namespace CSF.IO
     /// <param name='reader'>
     /// A <see cref="TextReader"/>.
     /// </param>
-    protected abstract ITabularDataStream GetDataStream(TextReader reader);
+    protected virtual ITabularDataStream GetDataStream(TextReader reader)
+    {
+      return new TabularDataStream(this, reader);
+    }
     
     /// <summary>
     /// Writes a single row of data to the <paramref name="writer"/>.
@@ -212,16 +261,58 @@ namespace CSF.IO
     /// <param name='writer'>
     /// The <see cref="TextWriter"/> to write to
     /// </param>
-    protected abstract void Write(IList<string> row, TextWriter writer);
+    /// <param name='options'>
+    /// A set of <see cref="TabularDataWriteOptions"/> providing additional options for the writer.
+    /// </param>
+    protected virtual void Write(IList<string> row, TextWriter writer, TabularDataWriteOptions options)
+    {
+      if(row == null)
+      {
+        throw new ArgumentNullException ("row");
+      }
+      else if(writer == null)
+      {
+        throw new ArgumentNullException ("writer");
+      }
+      
+      for(int columnPosition = 0; columnPosition < row.Count; columnPosition++)
+      {
+        string valueToWrite = row[columnPosition]?? String.Empty;
+        bool writeColumnDelimiter = (columnPosition < row.Count - 1);
+        
+        if(this.Format.QuoteWhenWriting(valueToWrite, options))
+        {
+          writer.Write(String.Format("{0}{1}{0}{2}",
+                                     this.Format.QuotationCharacter,
+                                     valueToWrite.Replace(this.Format.QuotationCharacter.ToString(),
+                                                          String.Concat(this.Format.QuotationEscapeCharacter,
+                                                                        this.Format.QuotationCharacter)),
+                                     writeColumnDelimiter? this.Format.ColumnDelimiter.ToString() : String.Empty));
+        }
+        else
+        {
+          writer.Write(String.Format("{0}{1}",
+                                     valueToWrite,
+                                     writeColumnDelimiter? this.Format.ColumnDelimiter.ToString() : String.Empty));
+        }
+      }
+    }
     
     #endregion
     
-    #region contained types
+    #region constructor
     
     /// <summary>
-    /// Interface for a stream of tabular data
+    /// Initializes a new instance of the <see cref="CSF.IO.TabularDataParser"/> class.
     /// </summary>
-    public interface ITabularDataStream : IEnumerable<IList<string>> {}
+    /// <param name='format'>
+    /// The format information for the type of file that the current instance will read.
+    /// </param>
+    public TabularDataParser(TabularDataFormat format)
+    {
+      this.Format = format;
+      this.ReadBufferSize = DefaultBufferSize;
+    }
     
     #endregion
   }
