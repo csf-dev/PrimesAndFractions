@@ -47,6 +47,10 @@
     <Compile Include="IO\TabularDataFormat.cs" />
     <Compile Include="IO\TabularDataStream.cs" />
     <Compile Include="IO\TabularDataStreamEnumerator.cs" />
+    <Compile Include="IO\IIniDocument.cs" />
+    <Compile Include="IO\IIniSection.cs" />
+    <Compile Include="IO\IniDocument.cs" />
+    <Compile Include="IO\IniSection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
