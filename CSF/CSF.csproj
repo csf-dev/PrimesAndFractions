@@ -52,10 +52,12 @@
     <Compile Include="IO\IniDocument.cs" />
     <Compile Include="IO\IniSection.cs" />
     <Compile Include="EnumExtensions.cs" />
+    <Compile Include="Collections\IKeyValueSerializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="IO\" />
+    <Folder Include="Collections\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
