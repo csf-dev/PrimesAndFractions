@@ -51,6 +51,7 @@
     <Compile Include="IO\IIniSection.cs" />
     <Compile Include="IO\IniDocument.cs" />
     <Compile Include="IO\IniSection.cs" />
+    <Compile Include="EnumExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

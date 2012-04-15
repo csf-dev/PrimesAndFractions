@@ -42,6 +42,7 @@
     <Compile Include="TestInt32Extensions.cs" />
     <Compile Include="IO\TestTabularDataParser.cs" />
     <Compile Include="IO\TestIniDocument.cs" />
+    <Compile Include="TestEnumExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
