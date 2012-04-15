@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace CSF.IO
 {
@@ -60,7 +61,7 @@ namespace CSF.IO
     
     #endregion
     
-    #region publicMethods
+    #region public methods
     
     /// <summary>
     /// <para>Adds a new setting to this instance.</para>
@@ -92,9 +93,51 @@ namespace CSF.IO
       return base.Remove(key);
     }
     
+    /// <summary>
+    /// Writes this instance to the given <see cref="TextWriter"/>.
+    /// </summary>
+    /// <param name='writer'>
+    /// A <see cref="TextWriter"/> to write the output to.
+    /// </param>
+    /// <param name='name'>
+    /// The name of this section.
+    /// </param>
+    public void WriteTo(TextWriter writer, string name)
+    {
+      bool writeNewLine = false;
+      
+      if(writer == null)
+      {
+        throw new ArgumentNullException ("writer");
+      }
+      
+      if(!String.IsNullOrEmpty(name))
+      {
+        writer.Write("[{0}]", name);
+        writeNewLine = true;
+      }
+      
+      foreach(string key in this.Keys)
+      {
+        writer.Write("{2}{0} = {1}", key, this[key], writeNewLine? "\n" : String.Empty);
+        writeNewLine = true;
+      }
+    }
+    
+    /// <summary>
+    /// Writes this instance to the given <see cref="TextWriter"/>.
+    /// </summary>
+    /// <param name='writer'>
+    /// A <see cref="TextWriter"/> to write the output to.
+    /// </param>
+    protected void WriteTo(TextWriter writer)
+    {
+      this.WriteTo(writer, null);
+    }
+    
     #endregion
     
-    #region privateMethods
+    #region private methods
     
     /// <summary>
     /// Validates a string key.

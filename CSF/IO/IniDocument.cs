@@ -38,7 +38,7 @@ namespace CSF.IO
     private const string
       EMPTY_LINE_REGEX                  = @"^\s*$",
       COMMENT_LINE_REGEX                = @"^\s*[#;].*$",
-      SECTION_REGEX                     = @"^\[(\S+)\]$",
+      SECTION_REGEX                     = @"^\[([\S ]+)\]$",
       VALUE_REGEX                       = @"^([^:=]+)[:=](.+)$";
     
     private static readonly Regex
@@ -122,23 +122,31 @@ namespace CSF.IO
     /// </param>
     public void Write(TextWriter writer)
     {
+      bool writeNewlineBeforeSection = false;
+      
       if(writer == null)
       {
         throw new ArgumentNullException ("writer");
       }
       
-      foreach(string key in this.Keys)
+      if(this.Count != 0)
       {
-        writer.WriteLine("{0} = {1}", key, this[key]);
+        this.WriteTo(writer);
+        writeNewlineBeforeSection = true;
       }
       
       foreach(string sectionName in this.Sections.Keys)
       {
-        writer.WriteLine("[{0}]", sectionName);
-        foreach(string key in this.Sections[sectionName].Keys)
+        if(writeNewlineBeforeSection)
         {
-          writer.WriteLine("{0} = {1}", key, this.Sections[sectionName][key]);
+          writer.WriteLine();
         }
+        else
+        {
+          writeNewlineBeforeSection = true;
+        }
+        
+        this.Sections[sectionName].WriteTo(writer, sectionName);
       }
     }
     
@@ -231,6 +239,10 @@ namespace CSF.IO
           continue;
         }
         
+#if DEBUG
+        Console.Error.WriteLine("Unexpected line in INI file - erroneous line below:");
+        Console.Error.Write("'{0}'", currentLine);
+#endif
         throw new FormatException("Unexpected line reading ini file");
       }
       

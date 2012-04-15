@@ -20,12 +20,25 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace CSF.IO
 {
   /// <summary>
   /// Interface for an INI file section.
   /// </summary>
-  public interface IIniSection : IDictionary<string, string> {}
+  public interface IIniSection : IDictionary<string, string>
+  {
+    /// <summary>
+    /// Writes this instance to the given <see cref="TextWriter"/>.
+    /// </summary>
+    /// <param name='writer'>
+    /// A <see cref="TextWriter"/> to write the output to.
+    /// </param>
+    /// <param name='name'>
+    /// The name of this section.
+    /// </param>
+    void WriteTo(TextWriter writer, string name);
+  }
 }
 
