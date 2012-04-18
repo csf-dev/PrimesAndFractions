@@ -35,6 +35,7 @@
       <Private>False</Private>
       <Package>nunit-2.4</Package>
     </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -44,6 +45,8 @@
     <Compile Include="IO\TestIniDocument.cs" />
     <Compile Include="TestEnumExtensions.cs" />
     <Compile Include="TestSimpleCalculator.cs" />
+    <Compile Include="Collections\TestPropertyKeyAssociation.cs" />
+    <Compile Include="Reflection\TestReflectionHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -54,5 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IO\" />
+    <Folder Include="Collections\" />
+    <Folder Include="Reflection\" />
   </ItemGroup>
 </Project>

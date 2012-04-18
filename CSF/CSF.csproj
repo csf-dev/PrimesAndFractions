@@ -56,11 +56,14 @@
     <Compile Include="UITextAttribute.cs" />
     <Compile Include="ICalculator.cs" />
     <Compile Include="SimpleCalculator.cs" />
+    <Compile Include="Collections\PropertyKeyAssociation.cs" />
+    <Compile Include="Reflection\ReflectionHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="IO\" />
     <Folder Include="Collections\" />
+    <Folder Include="Reflection\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

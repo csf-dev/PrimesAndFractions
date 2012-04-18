@@ -22,6 +22,7 @@ using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq.Expressions;
 
 namespace CSF.Collections
 {
@@ -45,6 +46,12 @@ namespace CSF.Collections
   /// </remarks>
   public interface IKeyValueSerializer<TObject> where TObject : new()
   {
+    #region properties
+    
+    
+    
+    #endregion
+    
     #region deserialization
     
     /// <summary>
@@ -212,10 +219,7 @@ namespace CSF.Collections
     /// <param name='property'>
     /// A lambda expression or other reference that identifies the property to map.
     /// </param>
-    /// <typeparam name='TProperty'>
-    /// The return type of the property.  This can often be inferred by a lambda expression.
-    /// </typeparam>
-    IKeyValueSerializer<TObject> Map<TProperty>(Func<TProperty> property);
+    IKeyValueSerializer<TObject> Map(Expression<Func<TObject, object>> property);
     
     /// <summary>
     /// Maps a single property for serialization and/or deserialization.
@@ -229,10 +233,7 @@ namespace CSF.Collections
     /// <param name='mandatory'>
     /// Mandatory.
     /// </param>
-    /// <typeparam name='TProperty'>
-    /// The return type of the property.  This can often be inferred by a lambda expression.
-    /// </typeparam>
-    IKeyValueSerializer<TObject> Map<TProperty>(Func<TProperty> property, bool mandatory);
+    IKeyValueSerializer<TObject> Map(Expression<Func<TObject, object>> property, bool mandatory);
     
     /// <summary>
     /// Maps a single property for serialization and/or deserialization.
@@ -272,10 +273,7 @@ namespace CSF.Collections
     /// <param name='key'>
     /// The string key for this property when serializing or deserializing.
     /// </param>
-    /// <typeparam name='TProperty'>
-    /// The return type of the property.  This can often be inferred by a lambda expression.
-    /// </typeparam>
-    IKeyValueSerializer<TObject> Map<TProperty>(Func<TProperty> property, string key);
+    IKeyValueSerializer<TObject> Map(Expression<Func<TObject, object>> property, string key);
     
     /// <summary>
     /// Maps a single property for serialization and/or deserialization.
@@ -293,10 +291,7 @@ namespace CSF.Collections
     /// A value indicating whether or not this property is mandatory.  If true then deserialization will be considered
     /// a failure if no value for this property is found.
     /// </param>
-    /// <typeparam name='TProperty'>
-    /// The return type of the property.  This can often be inferred by a lambda expression.
-    /// </typeparam>
-    IKeyValueSerializer<TObject> Map<TProperty>(Func<TProperty> property, string key, bool mandatory);
+    IKeyValueSerializer<TObject> Map(Expression<Func<TObject, object>> property, string key, bool mandatory);
     
     /// <summary>
     /// Maps a single property for serialization and/or deserialization.

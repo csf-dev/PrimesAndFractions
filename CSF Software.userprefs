@@ -1,8 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CSF/Collections/IKeyValueSerializer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CSF/Collections/PropertyKeyAssociation.cs">
     <Files>
-      <File FileName="CSF/Collections/IKeyValueSerializer.cs" Line="212" Column="1" />
+      <File FileName="CSF/SimpleCalculator.cs" Line="86" Column="17" />
+      <File FileName="Test.CSF/TestSimpleCalculator.cs" Line="114" Column="61" />
+      <File FileName="CSF/Int32Extensions.cs" Line="1" Column="1" />
+      <File FileName="Test.CSF/TestInt32Extensions.cs" Line="1" Column="1" />
+      <File FileName="CSF/Collections/IKeyValueSerializer.cs" Line="294" Column="17" />
+      <File FileName="CSF/Collections/PropertyKeyAssociation.cs" Line="127" Column="67" />
+      <File FileName="Test.CSF/Collections/TestPropertyKeyAssociation.cs" Line="20" Column="81" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
