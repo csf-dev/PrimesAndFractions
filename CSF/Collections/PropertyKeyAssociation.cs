@@ -30,6 +30,9 @@ namespace CSF.Collections
   /// property's identifier when making use of a <c>IKeyValueSerializer</c> to serialize/deserialize instances
   /// of an object.
   /// </summary>
+  /// <remarks>
+  /// <para>This type is immutable.</para>
+  /// </remarks>
   public class PropertyKeyAssociation<TObject>
   {
     #region fields
@@ -56,7 +59,7 @@ namespace CSF.Collections
       get {
         return _key;
       }
-      set {
+      private set {
         if(value == null)
         {
           throw new ArgumentNullException ("value");
@@ -77,7 +80,7 @@ namespace CSF.Collections
       get {
         return _mandatory;
       }
-      set {
+      private set {
         _mandatory = value;
       }
     }
@@ -96,7 +99,7 @@ namespace CSF.Collections
       get {
         return _property;
       }
-      set {
+      private set {
         if(value == null)
         {
           throw new ArgumentNullException ("value");
@@ -112,20 +115,102 @@ namespace CSF.Collections
     
     #endregion
     
-    #region methods
+    #region constructor
     
     /// <summary>
-    /// Sets the value of <see cref="Property"/> by using a delegate that points to the <see cref="PropertyInfo"/>.
+    /// Initializes this instance.
     /// </summary>
-    /// <param name='expression'>
+    /// <param name='property'>
     /// Property.
     /// </param>
-    /// <typeparam name='TObject'>
-    /// The type of the object that contains this property.
-    /// </typeparam>
-    public void SetProperty(Expression<Func<TObject, object>> expression)
+    public PropertyKeyAssociation(PropertyInfo property)
+    {
+      this.Property = property;
+      this.Key = this.Property.Name;
+      this.Mandatory = false;
+    }
+    
+    /// <summary>
+    /// Initializes this instance.
+    /// </summary>
+    /// <param name='expression'>
+    /// Expression.
+    /// </param>
+    public PropertyKeyAssociation(Expression<Func<TObject, object>> expression)
     {
       this.Property = ReflectionHelper.GetProperty<TObject>(expression);
+      this.Key = this.Property.Name;
+      this.Mandatory = false;
+    }
+    
+    /// <summary>
+    /// Initializes this instance.
+    /// </summary>
+    /// <param name='property'>
+    /// Property.
+    /// </param>
+    /// <param name='key'>
+    /// Key.
+    /// </param>
+    /// <param name='mandatory'>
+    /// Mandatory.
+    /// </param>
+    public PropertyKeyAssociation(PropertyInfo property, string key, bool mandatory)
+    {
+      this.Property = property;
+      this.Key = key;
+      this.Mandatory = mandatory;
+    }
+    
+    /// <summary>
+    /// Initializes this instance.
+    /// </summary>
+    /// <param name='property'>
+    /// Property.
+    /// </param>
+    /// <param name='key'>
+    /// Key.
+    /// </param>
+    public PropertyKeyAssociation(PropertyInfo property, string key)
+    {
+      this.Property = property;
+      this.Key = key;
+      this.Mandatory = false;
+    }
+    
+    /// <summary>
+    /// Initializes this instance.
+    /// </summary>
+    /// <param name='expression'>
+    /// Expression.
+    /// </param>
+    /// <param name='key'>
+    /// Key.
+    /// </param>
+    /// <param name='mandatory'>
+    /// Mandatory.
+    /// </param>
+    public PropertyKeyAssociation(Expression<Func<TObject, object>> expression, string key, bool mandatory)
+    {
+      this.Property = ReflectionHelper.GetProperty<TObject>(expression);
+      this.Key = key;
+      this.Mandatory = mandatory;
+    }
+    
+    /// <summary>
+    /// Initializes this instance.
+    /// </summary>
+    /// <param name='expression'>
+    /// Expression.
+    /// </param>
+    /// <param name='key'>
+    /// Key.
+    /// </param>
+    public PropertyKeyAssociation(Expression<Func<TObject, object>> expression, string key)
+    {
+      this.Property = ReflectionHelper.GetProperty<TObject>(expression);
+      this.Key = key;
+      this.Mandatory = false;
     }
     
     #endregion

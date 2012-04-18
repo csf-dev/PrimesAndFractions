@@ -10,14 +10,14 @@ namespace Test.CSF.Collections
     #region tests
 
     [Test]
-    public void TestSetProperty()
+    public void TestConstructor()
     {
-      PropertyKeyAssociation<SampleObject> association = new PropertyKeyAssociation<SampleObject>();
+      PropertyKeyAssociation<SampleObject> association;
       
-      association.SetProperty(x => x.PropertyOne);
-      
-      Assert.IsNotNull(association.Property, "Property is not null");
-      Assert.AreEqual("PropertyOne", association.Property.Name, "Correct name");
+      association = new PropertyKeyAssociation<SampleObject>(x => x.PropertyOne);
+      Assert.IsNotNull(association.Property, "Property not null");
+      Assert.AreEqual("PropertyOne", association.Property.Name, "Correct property name");
+      Assert.AreEqual("PropertyOne", association.Key, "Correct key");
     }
     
     #endregion

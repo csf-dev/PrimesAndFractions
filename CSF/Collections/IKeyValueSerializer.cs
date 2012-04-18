@@ -48,7 +48,13 @@ namespace CSF.Collections
   {
     #region properties
     
-    
+    /// <summary>
+    /// Gets a collection of the mappings that this instance is 'aware' of.
+    /// </summary>
+    /// <value>
+    /// The mappings.
+    /// </value>
+    IList<PropertyKeyAssociation<TObject>> Mappings { get; }
     
     #endregion
     
