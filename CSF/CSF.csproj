@@ -53,6 +53,9 @@
     <Compile Include="IO\IniSection.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="Collections\IKeyValueSerializer.cs" />
+    <Compile Include="UITextAttribute.cs" />
+    <Compile Include="ICalculator.cs" />
+    <Compile Include="SimpleCalculator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

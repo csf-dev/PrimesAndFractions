@@ -241,7 +241,7 @@ namespace CSF.IO
         
 #if DEBUG
         Console.Error.WriteLine("Unexpected line in INI file - erroneous line below:");
-        Console.Error.Write("'{0}'", currentLine);
+        Console.Error.WriteLine("'{0}'", currentLine);
 #endif
         throw new FormatException("Unexpected line reading ini file");
       }

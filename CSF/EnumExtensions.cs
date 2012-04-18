@@ -51,7 +51,7 @@ namespace CSF
     /// <exception cref='ArgumentException'>
     /// Is thrown when the specified value does not correspond to a member of the enumeration.
     /// </exception>
-    public static string GetDescription(this Enum value)
+    public static string GetUIText(this Enum value)
     {
       if(value == null)
       {
@@ -71,7 +71,7 @@ namespace CSF
                                     "value");
       }
       
-      object[] attributes = field.GetCustomAttributes(typeof(DescriptionAttribute), false);
+      object[] attributes = field.GetCustomAttributes(typeof(UITextAttribute), false);
       
       if(attributes.Length == 0)
       {
@@ -79,8 +79,8 @@ namespace CSF
       }
       else
       {
-        DescriptionAttribute attribute = (DescriptionAttribute) attributes[0];
-        output = attribute.Description;
+        UITextAttribute attribute = (UITextAttribute) attributes[0];
+        output = attribute.Text;
       }
       
       return output;

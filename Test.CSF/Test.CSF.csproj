@@ -43,6 +43,7 @@
     <Compile Include="IO\TestTabularDataParser.cs" />
     <Compile Include="IO\TestIniDocument.cs" />
     <Compile Include="TestEnumExtensions.cs" />
+    <Compile Include="TestSimpleCalculator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

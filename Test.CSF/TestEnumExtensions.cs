@@ -10,22 +10,22 @@ namespace Test.CSF
     #region tests
     
     [Test]
-    public void TestGetDescription()
+    public void TestGetUIText()
     {
-      Assert.AreEqual("First", SampleEnum.One.GetDescription(), "Correct description");
+      Assert.AreEqual("First", SampleEnum.One.GetUIText(), "Correct description");
     }
     
     [Test]
-    public void TestGetDescriptionNull()
+    public void TestGetUITextNull()
     {
-      Assert.IsNull(SampleEnum.Three.GetDescription(), "Null description");
+      Assert.IsNull(SampleEnum.Three.GetUIText(), "Null description");
     }
     
     [Test]
     [ExpectedException(ExceptionType = typeof(ArgumentException))]
-    public void TestGetDescriptionInvalid()
+    public void TestGetUITextInvalid()
     {
-      ((SampleEnum) 5).GetDescription();
+      ((SampleEnum) 5).GetUIText();
       Assert.Fail("Test should not reach this point");
     }
     
@@ -35,10 +35,10 @@ namespace Test.CSF
     
     enum SampleEnum : int
     {
-      [System.ComponentModel.Description("First")]
+      [UIText("First")]
       One   = 1,
       
-      [System.ComponentModel.Description("Second")]
+      [UIText("Second")]
       Two   = 2,
       
       Three = 3
