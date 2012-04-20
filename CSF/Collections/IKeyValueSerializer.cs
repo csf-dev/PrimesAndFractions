@@ -44,7 +44,7 @@ namespace CSF.Collections
   /// <see cref="NameValueCollection"/> instances.
   /// </para>
   /// </remarks>
-  public interface IKeyValueSerializer<TObject> where TObject : new()
+  public interface IKeyValueSerializer<TObject> where TObject : class, new()
   {
     #region properties
     
@@ -341,7 +341,7 @@ namespace CSF.Collections
     /// A string that represents the format to use for deserializing/serializing multiple objects.  It should be a
     /// regular expression pattern that contains two named capturing groups: <c>key</c> and <c>id</c>.
     /// </param>
-    IKeyValueSerializer<TObject> ListFormat(string formatString);
+    IKeyValueSerializer<TObject> SetListFormat(string formatString);
     
     #endregion
   }

@@ -138,7 +138,7 @@ namespace CSF.Collections
     /// </param>
     public PropertyKeyAssociation(Expression<Func<TObject, object>> expression)
     {
-      this.Property = ReflectionHelper.GetProperty<TObject>(expression);
+      this.Property = StaticReflectionUtility.GetProperty<TObject>(expression);
       this.Key = this.Property.Name;
       this.Mandatory = false;
     }
@@ -192,7 +192,7 @@ namespace CSF.Collections
     /// </param>
     public PropertyKeyAssociation(Expression<Func<TObject, object>> expression, string key, bool mandatory)
     {
-      this.Property = ReflectionHelper.GetProperty<TObject>(expression);
+      this.Property = StaticReflectionUtility.GetProperty<TObject>(expression);
       this.Key = key;
       this.Mandatory = mandatory;
     }
@@ -208,9 +208,41 @@ namespace CSF.Collections
     /// </param>
     public PropertyKeyAssociation(Expression<Func<TObject, object>> expression, string key)
     {
-      this.Property = ReflectionHelper.GetProperty<TObject>(expression);
+      this.Property = StaticReflectionUtility.GetProperty<TObject>(expression);
       this.Key = key;
       this.Mandatory = false;
+    }
+    
+    /// <summary>
+    /// Initializes this instance.
+    /// </summary>
+    /// <param name='property'>
+    /// Property.
+    /// </param>
+    /// <param name='mandatory'>
+    /// Mandatory.
+    /// </param>
+    public PropertyKeyAssociation(PropertyInfo property, bool mandatory)
+    {
+      this.Property = property;
+      this.Key = this.Property.Name;
+      this.Mandatory = mandatory;
+    }
+    
+    /// <summary>
+    /// Initializes this instance.
+    /// </summary>
+    /// <param name='expression'>
+    /// Expression.
+    /// </param>
+    /// <param name='mandatory'>
+    /// Mandatory.
+    /// </param>
+    public PropertyKeyAssociation(Expression<Func<TObject, object>> expression, bool mandatory)
+    {
+      this.Property = StaticReflectionUtility.GetProperty<TObject>(expression);
+      this.Key = this.Property.Name;
+      this.Mandatory = mandatory;
     }
     
     #endregion

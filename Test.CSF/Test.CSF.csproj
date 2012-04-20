@@ -46,7 +46,8 @@
     <Compile Include="TestEnumExtensions.cs" />
     <Compile Include="TestSimpleCalculator.cs" />
     <Compile Include="Collections\TestPropertyKeyAssociation.cs" />
-    <Compile Include="Reflection\TestReflectionHelper.cs" />
+    <Compile Include="Collections\TestKeyValueSerializer.cs" />
+    <Compile Include="Reflection\TestStaticReflectionUtility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

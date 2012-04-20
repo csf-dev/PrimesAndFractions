@@ -18,6 +18,11 @@ namespace Test.CSF.Collections
       Assert.IsNotNull(association.Property, "Property not null");
       Assert.AreEqual("PropertyOne", association.Property.Name, "Correct property name");
       Assert.AreEqual("PropertyOne", association.Key, "Correct key");
+      
+      association = new PropertyKeyAssociation<SampleObject>(x => x.PropertyTwo);
+      Assert.IsNotNull(association.Property, "Property not null");
+      Assert.AreEqual("PropertyTwo", association.Property.Name, "Correct property name");
+      Assert.AreEqual("PropertyTwo", association.Key, "Correct key");
     }
     
     #endregion

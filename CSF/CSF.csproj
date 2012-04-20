@@ -57,7 +57,8 @@
     <Compile Include="ICalculator.cs" />
     <Compile Include="SimpleCalculator.cs" />
     <Compile Include="Collections\PropertyKeyAssociation.cs" />
-    <Compile Include="Reflection\ReflectionHelper.cs" />
+    <Compile Include="Collections\KeyValueSerializer.cs" />
+    <Compile Include="Reflection\StaticReflectionUtility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
