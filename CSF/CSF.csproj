@@ -59,12 +59,21 @@
     <Compile Include="Collections\PropertyKeyAssociation.cs" />
     <Compile Include="Collections\KeyValueSerializer.cs" />
     <Compile Include="Reflection\StaticReflectionUtility.cs" />
+    <Compile Include="Validation\IValidator.cs" />
+    <Compile Include="Validation\Validator.cs" />
+    <Compile Include="Validation\ValidationFunction.cs" />
+    <Compile Include="Validation\ValidationTest.cs" />
+    <Compile Include="Validation\IValidationTest.cs" />
+    <Compile Include="Validation\ValidationFailureList.cs" />
+    <Compile Include="Validation\ValidationFailureException`1.cs" />
+    <Compile Include="Validation\ValidationFailureException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="IO\" />
     <Folder Include="Collections\" />
     <Folder Include="Reflection\" />
+    <Folder Include="Validation\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

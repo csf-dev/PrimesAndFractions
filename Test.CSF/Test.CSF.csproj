@@ -48,6 +48,7 @@
     <Compile Include="Collections\TestPropertyKeyAssociation.cs" />
     <Compile Include="Collections\TestKeyValueSerializer.cs" />
     <Compile Include="Reflection\TestStaticReflectionUtility.cs" />
+    <Compile Include="Validation\TestValidator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -60,5 +61,6 @@
     <Folder Include="IO\" />
     <Folder Include="Collections\" />
     <Folder Include="Reflection\" />
+    <Folder Include="Validation\" />
   </ItemGroup>
 </Project>
