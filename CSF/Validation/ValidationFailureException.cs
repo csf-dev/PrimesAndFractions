@@ -25,6 +25,10 @@ namespace CSF.Validation
   /// <summary>
   /// Base type for an exception that is thrown as a result of a validation failure.
   /// </summary>
+  /// <remarks>
+  /// This exception may be thrown if the validator is configured to throw exceptions on failed validation, or if an
+  /// individual validation test raises an exception.
+  /// </remarks>
   public abstract class ValidationFailureException : Exception
   {
     #region properties

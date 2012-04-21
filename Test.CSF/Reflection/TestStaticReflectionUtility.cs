@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using CSF.Reflection;
 using System.Reflection;
+using Test.CSF.Mocks;
 
 namespace Test.CSF.Reflection
 {
@@ -36,25 +37,6 @@ namespace Test.CSF.Reflection
       property = StaticReflectionUtility.GetProperty<SampleObject>(x => x.PropertyTwo);
       Assert.IsNotNull(property, "2 not null");
       Assert.AreEqual("PropertyTwo", property.Name, "2 correct name");
-    }
-    
-    #endregion
-    
-    #region contained object
-    
-    class SampleObject
-    {
-      public string PropertyOne
-      {
-        get;
-        set;
-      }
-      
-      public int PropertyTwo
-      {
-        get;
-        set;
-      }
     }
     
     #endregion

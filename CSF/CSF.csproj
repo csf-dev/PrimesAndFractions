@@ -62,11 +62,12 @@
     <Compile Include="Validation\IValidator.cs" />
     <Compile Include="Validation\Validator.cs" />
     <Compile Include="Validation\ValidationFunction.cs" />
-    <Compile Include="Validation\ValidationTest.cs" />
     <Compile Include="Validation\IValidationTest.cs" />
-    <Compile Include="Validation\ValidationFailureList.cs" />
     <Compile Include="Validation\ValidationFailureException`1.cs" />
     <Compile Include="Validation\ValidationFailureException.cs" />
+    <Compile Include="Validation\ValidationTest`2.cs" />
+    <Compile Include="Validation\ValidationTest`1.cs" />
+    <Compile Include="Validation\ValidationTestList.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

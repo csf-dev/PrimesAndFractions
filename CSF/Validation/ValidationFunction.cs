@@ -21,6 +21,10 @@
 
 namespace CSF.Validation
 {
+  /// <summary>
+  /// Delegate representing a function/method that performs validation upon a value and returns a
+  /// <see cref="System.Boolean"/> indicating whether the <paramref name="value"/> was valid or not.
+  /// </summary>
   public delegate bool ValidationFunction<TValue>(TValue value);
 }
 

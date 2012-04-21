@@ -213,7 +213,7 @@ namespace CSF.Validation
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="target"/> is null.
     /// </exception>
-    bool Validate(TTarget target, out ValidationFailureList<TTarget> failures);
+    bool Validate(TTarget target, out ValidationTestList<TTarget> failures);
     
     #endregion
   }

@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using CSF.Collections;
 using System.Collections.Generic;
+using Test.CSF.Mocks;
 
 namespace Test.CSF.Collections
 {
@@ -394,25 +395,6 @@ namespace Test.CSF.Collections
         .SerializeMany(objects, collection);
       
       Assert.Fail("Test should not reach this point");
-    }
-    
-    #endregion
-    
-    #region contained type
-    
-    class SampleObject
-    {
-      public string PropertyOne
-      {
-        get;
-        set;
-      }
-      
-      public int PropertyTwo
-      {
-        get;
-        set;
-      }
     }
     
     #endregion

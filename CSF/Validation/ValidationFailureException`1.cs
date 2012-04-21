@@ -26,6 +26,9 @@ namespace CSF.Validation
   /// An exception thrown by instances of <c>IValidator&lt;TTarget&gt;</c> when validation fails and the parameters of
   /// the validator indicate that an exception should be thrown.
   /// </summary>
+  /// <remarks>
+  /// This exception may also be thrown if an individual validation test raises an exception.
+  /// </remarks>
   public class ValidationFailureException<TTarget> : ValidationFailureException
   {
     #region properties
@@ -52,10 +55,10 @@ namespace CSF.Validation
     /// <exception cref='ArgumentNullException'>
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
     /// </exception>
-    public ValidationFailureList<TTarget> Failures
+    public ValidationTestList<TTarget> Failures
     {
       get {
-        return (ValidationFailureList<TTarget>) this.Data["Failures"];
+        return (ValidationTestList<TTarget>) this.Data["Failures"];
       }
       private set {
         if(value == null)
@@ -77,7 +80,7 @@ namespace CSF.Validation
     /// <param name='failures'>
     /// The collection of validation failures.
     /// </param>
-    public ValidationFailureException(ValidationFailureList<TTarget> failures) : this(failures, null) {}
+    public ValidationFailureException(ValidationTestList<TTarget> failures) : this(failures, null) {}
     
     /// <summary>
     /// Initializes a new instance.
@@ -88,9 +91,9 @@ namespace CSF.Validation
     /// <param name='inner'>
     /// An <see cref="System.Exception"/> that was encountered whilst performing validation.
     /// </param>
-    public ValidationFailureException(ValidationFailureList<TTarget> failures, Exception inner) : base(String.Format("Validation failure of a `{0}'",
-                                                                                                                     typeof(TTarget).FullName),
-                                                                                                       inner)
+    public ValidationFailureException(ValidationTestList<TTarget> failures, Exception inner) : base(String.Format("Validation failure of a `{0}'",
+                                                                                                                  typeof(TTarget).FullName),
+                                                                                                    inner)
     {
       this.Failures = failures;
     }

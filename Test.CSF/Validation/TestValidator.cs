@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using CSF.Validation;
+using Test.CSF.Mocks;
 
 namespace Test.CSF.Validation
 {
@@ -13,9 +14,6 @@ namespace Test.CSF.Validation
     public void TestAddTest()
     {
       IValidator<SampleObject> validator = new Validator<SampleObject>();
-      SampleObject target = new SampleObject() {
-        PropertyTwo = 3
-      };
       
       validator.AddTest(x => x.PropertyTwo > 5);
       
@@ -27,9 +25,6 @@ namespace Test.CSF.Validation
     public void TestAddTestGeneric()
     {
       IValidator<SampleObject> validator = new Validator<SampleObject>();
-      SampleObject target = new SampleObject() {
-        PropertyOne = "Hi"
-      };
       
       validator.AddTest<string>(x => x.PropertyOne,
                                 y => y.Length > 4);
@@ -39,23 +34,85 @@ namespace Test.CSF.Validation
       Assert.AreEqual("PropertyOne", validator.Tests[0].Member.Name, "Correct member name");
     }
     
-    #endregion
-    
-    #region contained type
-    
-    class SampleObject
+    [Test]
+    public void TestValidate()
     {
-      public string PropertyOne
-      {
-        get;
-        set;
-      }
+      var validator = new Validator<SampleObject>();
       
-      public int PropertyTwo
-      {
-        get;
-        set;
-      }
+      validator.AddTest<string>(x => x.PropertyOne,
+                                y => y.Length == 3,
+                                "Test one");
+      validator.AddTest<string>(x => x.PropertyOne,
+                                y => y.StartsWith("f"),
+                                "Test two");
+      
+      SampleObject target = new SampleObject() {
+        PropertyOne = "bar"
+      };
+      
+      Assert.IsFalse(validator.Validate(target), "Not valid");
+      
+      target.PropertyOne = "foo!";
+      
+      Assert.IsFalse(validator.Validate(target), "Still not valid");
+      
+      target.PropertyOne = "foo";
+      
+      Assert.IsTrue(validator.Validate(target), "Is valid");
+    }
+    
+    [Test]
+    [ExpectedException(ExceptionType = typeof(ValidationFailureException<SampleObject>))]
+    public void TestValidateException()
+    {
+      var validator = new Validator<SampleObject>();
+      
+      validator.AddTest<string>(x => x.PropertyOne,
+                                y => y.Length == 3,
+                                "Test one");
+      validator.AddTest<string>(x => x.PropertyOne,
+                                y => y.StartsWith("f"),
+                                "Test two");
+      
+      SampleObject target = new SampleObject() {
+        PropertyOne = "bar"
+      };
+      
+      validator.Validate(target, true);
+      Assert.Fail("Test should not reach this point");
+    }
+    
+    [Test]
+    public void TestValidateResults()
+    {
+      var validator = new Validator<SampleObject>();
+      ValidationTestList<SampleObject> list;
+      
+      validator.AddTest<string>(x => x.PropertyOne,
+                                y => y.Length == 3,
+                                "Test one");
+      validator.AddTest<string>(x => x.PropertyOne,
+                                y => y.StartsWith("f"),
+                                "Test two");
+      
+      SampleObject target = new SampleObject() {
+        PropertyOne = "bar"
+      };
+      
+      Assert.IsFalse(validator.Validate(target, out list), "Not valid");
+      Assert.AreEqual(1, list.Count, "Correct count of failures (1)");
+      Assert.AreEqual("Test two", list[0].Identifier, "Correct identifier (1)");
+      
+      target.PropertyOne = "foo!";
+      
+      Assert.IsFalse(validator.Validate(target, out list), "Still not valid");
+      Assert.AreEqual(1, list.Count, "Correct count of failures (2)");
+      Assert.AreEqual("Test one", list[0].Identifier, "Correct identifier (2)");
+      
+      target.PropertyOne = "foo";
+      
+      Assert.IsTrue(validator.Validate(target, out list), "Is valid");
+      Assert.AreEqual(0, list.Count, "Correct count of failures (3)");
     }
     
     #endregion

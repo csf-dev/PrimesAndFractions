@@ -23,18 +23,49 @@ using System.Reflection;
 
 namespace CSF.Validation
 {
+  /// <summary>
+  /// Interface for a validation test; a single test that may be performed against an object, which returns either
+  /// <c>true</c> or <c>false</c> (pass or fail).
+  /// </summary>
   public interface IValidationTest<TTarget>
   {
     #region properties
     
+    /// <summary>
+    /// Gets the member associated with this test.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// If this test is associated with a specific member then this will be non-null.  If the test is unassociated and
+    /// is performed on the overall object instance then this property will return <c>null</c>.
+    /// </para>
+    /// <para>
+    /// If this property is non-null then the test will be performed upon the value of the member.
+    /// </para>
+    /// </remarks>
+    /// <value>
+    /// The member.
+    /// </value>
     MemberInfo Member { get; }
     
+    /// <summary>
+    /// Gets an identifier that may be used to distinguish this test from others.
+    /// </summary>
+    /// <value>
+    /// The identifier.
+    /// </value>
     object Identifier { get; }
     
     #endregion
     
     #region methods
     
+    /// <summary>
+    /// Executes/performs this test against the specified target object instance.
+    /// </summary>
+    /// <param name='target'>
+    /// The object instance to perform this test against.
+    /// </param>
     bool Execute(TTarget target);
     
     #endregion

@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using CSF.Collections;
+using Test.CSF.Mocks;
 
 namespace Test.CSF.Collections
 {
@@ -23,25 +24,6 @@ namespace Test.CSF.Collections
       Assert.IsNotNull(association.Property, "Property not null");
       Assert.AreEqual("PropertyTwo", association.Property.Name, "Correct property name");
       Assert.AreEqual("PropertyTwo", association.Key, "Correct key");
-    }
-    
-    #endregion
-    
-    #region test object
-    
-    class SampleObject
-    {
-      public string PropertyOne
-      {
-        get;
-        set;
-      }
-      
-      public int PropertyTwo
-      {
-        get;
-        set;
-      }
     }
     
     #endregion

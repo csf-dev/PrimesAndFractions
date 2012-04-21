@@ -102,7 +102,7 @@ namespace CSF.Validation
     public IValidator<TTarget> AddTest(ValidationFunction<TTarget> test,
                                        object testIdentifier)
     {
-      this.Tests.Add(new ValidationTest<TTarget, TTarget>(test, testIdentifier));
+      this.Tests.Add(new ValidationTest<TTarget>(test, testIdentifier));
       return this;
     }
     
@@ -207,19 +207,98 @@ namespace CSF.Validation
     
     #region validation
     
+    /// <summary>
+    /// Validates the specified object instance.
+    /// </summary>
+    /// <returns>
+    /// A value that indicates whether validation was successful or not.
+    /// </returns>
+    /// <param name='target'>
+    /// The target object instance to validate.
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="target"/> is null.
+    /// </exception>
     public bool Validate (TTarget target)
     {
-      throw new NotImplementedException ();
+      return this.Validate(target, false);
     }
-
+  
+    /// <summary>
+    /// Validates the specified object instance.
+    /// </summary>
+    /// <returns>
+    /// A value indicating whether validation was successful or not.
+    /// </returns>
+    /// <param name='target'>
+    /// The target object instance to perform validation on.
+    /// </param>
+    /// <param name='throwOnFailure'>
+    /// A value that indicates whether a <see cref="ValidationFailureException"/> should be thrown on unsuccessful
+    /// validation.
+    /// </param>
+    /// <exception cref="ValidationFailureException">
+    /// Thrown if <paramref name="throwOnFailure"/> and the validation process fails.
+    /// </exception>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="target"/> is null.
+    /// </exception>
     public bool Validate (TTarget target, bool throwOnFailure)
     {
-      throw new NotImplementedException ();
+      ValidationTestList<TTarget> failures;
+      bool output = this.Validate(target, out failures);
+      
+      if(throwOnFailure && !output)
+      {
+        throw new ValidationFailureException<TTarget>(failures);
+      }
+      
+      return output;
     }
-
-    public bool Validate (TTarget target, out ValidationFailureList<TTarget> failures)
+  
+    /// <summary>
+    /// Validates the specified object instance.
+    /// </summary>
+    /// <returns>
+    /// A value that indicates whether validation was successful or not.
+    /// </returns>
+    /// <param name='target'>
+    /// The target object instance to validate.
+    /// </param>
+    /// <param name='failures'>
+    /// Exposes a collection of the validation failures.  If validation is a success this collection will be empty.
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="target"/> is null.
+    /// </exception>
+    public bool Validate (TTarget target, out ValidationTestList<TTarget> failures)
     {
-      throw new NotImplementedException ();
+      if(target == null)
+      {
+        throw new ArgumentNullException ("target");
+      }
+      
+      failures = new ValidationTestList<TTarget>();
+      
+      foreach(IValidationTest<TTarget> test in this.Tests)
+      {
+        try
+        {
+          bool pass = test.Execute(target);
+          if(!pass)
+          {
+            failures.Add(test);
+          }
+        }
+        catch(Exception ex)
+        {
+          failures = new ValidationTestList<TTarget>();
+          failures.Add(test);
+          throw new ValidationFailureException<TTarget>(failures, ex);
+        }
+      }
+      
+      return (failures.Count == 0);
     }
     
     #endregion
