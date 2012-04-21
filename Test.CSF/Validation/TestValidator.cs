@@ -115,6 +115,26 @@ namespace Test.CSF.Validation
       Assert.AreEqual(0, list.Count, "Correct count of failures (3)");
     }
     
+    [Test]
+    public void TestValidateEmailAddress()
+    {
+      var validator = new Validator<SampleObject>();
+      
+      validator.AddTest<string>(x => x.PropertyOne,
+                                ValidationTests.String.EmailAddress,
+                                "Test one");
+      
+      SampleObject target = new SampleObject() {
+        PropertyOne = "invalid.invalid"
+      };
+      
+      Assert.IsFalse(validator.Validate(target), "Not valid");
+      
+      target.PropertyOne = "test@example.com";
+      
+      Assert.IsTrue(validator.Validate(target), "Is valid");
+    }
+    
     #endregion
   }
 }

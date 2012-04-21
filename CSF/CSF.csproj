@@ -68,6 +68,7 @@
     <Compile Include="Validation\ValidationTest`2.cs" />
     <Compile Include="Validation\ValidationTest`1.cs" />
     <Compile Include="Validation\ValidationTestList.cs" />
+    <Compile Include="Validation\ValidationTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
