@@ -1,11 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CSF/Collections/KeyValueSerializer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CSF/Cli/IParameterSpecification.cs">
     <Files>
-      <File FileName="CSF/Collections/PropertyKeyAssociation.cs" Line="128" Column="32" />
-      <File FileName="Test.CSF/Collections/TestPropertyKeyAssociation.cs" Line="25" Column="35" />
-      <File FileName="Test.CSF/Collections/TestKeyValueSerializer.cs" Line="77" Column="42" />
-      <File FileName="CSF/Collections/KeyValueSerializer.cs" Line="253" Column="27" />
+      <File FileName="CSF/Cli/IParsedParameters.cs" Line="43" Column="36" />
+      <File FileName="CSF/Cli/IParameterParser.cs" Line="1" Column="1" />
+      <File FileName="CSF/Cli/IParameter.cs" Line="31" Column="1" />
+      <File FileName="CSF/Cli/IParameterSpecification.cs" Line="34" Column="25" />
+      <File FileName="CSF/Cli/IParameter`1.cs" Line="27" Column="39" />
+      <File FileName="CSF/Cli/IParemeterSpecification`1.cs" Line="27" Column="1" />
+      <File FileName="CSF/Cli/ParameterBehaviour.cs" Line="31" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

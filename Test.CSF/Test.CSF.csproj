@@ -52,6 +52,7 @@
     <Compile Include="Validation\TestValidationFailureList.cs" />
     <Compile Include="Mocks\SampleObject.cs" />
     <Compile Include="Validation\TestValidationTest.cs" />
+    <Compile Include="Cli\TestPosixParameterParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -66,5 +67,6 @@
     <Folder Include="Reflection\" />
     <Folder Include="Validation\" />
     <Folder Include="Mocks\" />
+    <Folder Include="Cli\" />
   </ItemGroup>
 </Project>

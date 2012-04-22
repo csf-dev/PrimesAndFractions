@@ -69,6 +69,16 @@
     <Compile Include="Validation\ValidationTest`1.cs" />
     <Compile Include="Validation\ValidationTestList.cs" />
     <Compile Include="Validation\ValidationTests.cs" />
+    <Compile Include="Cli\IParsedParameters.cs" />
+    <Compile Include="Cli\IParameterParser.cs" />
+    <Compile Include="Cli\ParameterBehaviour.cs" />
+    <Compile Include="Cli\IParameter.cs" />
+    <Compile Include="Cli\IParameter`1.cs" />
+    <Compile Include="Cli\ParameterAttribute.cs" />
+    <Compile Include="Cli\Parameter`1.cs" />
+    <Compile Include="Cli\ParsedParameters.cs" />
+    <Compile Include="Cli\PosixParameterParser.cs" />
+    <Compile Include="Cli\ParameterNameAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -76,6 +86,7 @@
     <Folder Include="Collections\" />
     <Folder Include="Reflection\" />
     <Folder Include="Validation\" />
+    <Folder Include="Cli\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
