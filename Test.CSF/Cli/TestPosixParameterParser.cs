@@ -32,7 +32,7 @@ namespace Test.CSF.Cli
       
       parser.AddParameters<SampleClass>();
       
-      Assert.AreEqual(4, parser.RegisteredParameters.Count, "Correct count of parameters");
+      Assert.AreEqual(2, parser.RegisteredParameters.Count, "Correct count of parameters");
       
       object identifier = StaticReflectionUtility.GetMember<SampleClass>(x => x.PropertyOne);
       IParameter testParameter = (from x in parser.RegisteredParameters
@@ -48,20 +48,16 @@ namespace Test.CSF.Cli
     
     class SampleClass : ParsedParameters
     {
-      [Parameter(ParameterBehaviour.ValueOptional, ShortName = "f")]
-      [ParameterName("h")]
-      public string FieldOne;
-      
-      [Parameter(ParameterBehaviour.Switch, LongName = "long-field")]
-      public bool FieldTwo;
-      
       [Parameter(ParameterBehaviour.ValueRequired, ShortName = "n")]
       [ParameterName("l")]
       [ParameterName("m")]
       public int PropertyOne
       {
-        get;
-        set;
+        get {
+          IParameter<int> parameter = this.Get<SampleClass, int>(x => x.PropertyOne);
+          
+          return (parameter != null)? parameter.GetValue() : 0;
+        }
       }
       
       [Parameter(ParameterBehaviour.Switch, ShortName = "s", LongName = "switch")]
@@ -69,8 +65,9 @@ namespace Test.CSF.Cli
       [ParameterName("another-switch", IsLongName = true)]
       public bool PropertyTwo
       {
-        get;
-        set;
+        get {
+          return this.Contains<SampleClass>(x => x.PropertyOne);
+        }
       }
       
       public SampleClass(IDictionary<object, IParameter> parameters,

@@ -29,6 +29,17 @@ namespace CSF.Cli
   /// </summary>
   public class PosixParameterParser : IParameterParser
   {
+    #region constants
+    
+    /// <summary>
+    /// The parameters that make up the method signature for the constructor that is required of any type that
+    /// implements <see cref="IParsedParameters"/>.
+    /// </summary>
+    private static readonly Type[]
+      IParsedParametersCtorSignature = new Type[] { typeof(IDictionary<object, IParameter>), typeof(IList<string>) };
+    
+    #endregion
+    
     #region fields
     
     private IList<IParameter> _registeredParameters;
@@ -198,85 +209,74 @@ namespace CSF.Cli
     /// </typeparam>
     public IParameterParser AddParameters<TParameterType>() where TParameterType : IParsedParameters
     {
-      // HACK: This method works but it could use some clean-up
-      
       Type parameterType = typeof(TParameterType);
-      Type[] constructorParams = new Type[] { typeof(IDictionary<object, IParameter>), typeof(IList<string>) };
-      ConstructorInfo constructor = parameterType.GetConstructor(constructorParams);
+      ConstructorInfo constructor = parameterType.GetConstructor(IParsedParametersCtorSignature);
       
       if(constructor == null)
       {
-        string message = String.Format("The parameter result/output type `{0}' does not contain a constructor that" +
-                                       "takes IDictionary<object, IParameter> and IList<string>.",
+        string message = String.Format("The parameter result/output type `{0}' does not contain a constructor with" +
+                                       "the required signature: (IDictionary<object, IParameter>, IList<string>)",
                                        parameterType.FullName);
         throw new InvalidOperationException(message);
       }
       
-      foreach(MemberInfo member in parameterType.GetMembers())
+      foreach(PropertyInfo property in parameterType.GetProperties())
       {
-        PropertyInfo property = member as PropertyInfo;
-        FieldInfo field = member as FieldInfo;
-        
-        if(property == null && field == null)
+        object[] allAttributes = property.GetCustomAttributes(typeof(ParameterAttribute), true);
+        if(allAttributes.Length == 1)
         {
-          continue;
+          this.AddParameter(property, (ParameterAttribute) allAttributes[0]);
         }
-        
-        object[] allAttributes = member.GetCustomAttributes(typeof(ParameterAttribute), true);
-        
-        if(allAttributes.Length != 1)
-        {
-          continue;
-        }
-        
-        ParameterAttribute attribute = (ParameterAttribute) allAttributes[0];
-        
-        List<string> shortNames = new List<string>();
-        List<string> longNames = new List<string>();
-        Type memberType;
-        
-        if(property != null)
-        {
-          memberType = property.PropertyType;
-        }
-        else
-        {
-          memberType = field.FieldType;
-        }
-        
-        if(attribute.ShortName != null)
-        {
-          shortNames.Add(attribute.ShortName);
-        }
-        if(attribute.LongName != null)
-        {
-          longNames.Add(attribute.LongName);
-        }
-        
-        foreach(ParameterNameAttribute name in member.GetCustomAttributes(typeof(ParameterNameAttribute), true))
-        {
-          if(name.IsLongName)
-          {
-            longNames.Add(name.Name);
-          }
-          else
-          {
-            shortNames.Add(name.Name);
-          }
-        }
-        
-        Type parameterValueType = typeof(Parameter<>).MakeGenericType(new Type[] { memberType });
-        IParameter createdParameter = (IParameter) parameterValueType.GetConstructor(Type.EmptyTypes).Invoke(null);
-        
-        createdParameter.Behaviour = attribute.Behaviour;
-        createdParameter.Identifier = member;
-        createdParameter.ShortNames = shortNames;
-        createdParameter.LongNames = longNames;
-        
-        this.RegisteredParameters.Add(createdParameter);
       }
       
       return this;
+    }
+    
+    /// <summary>
+    /// Adds a single parameter to the current instance.
+    /// </summary>
+    /// <param name='property'>
+    /// The property for which to add the parameter.
+    /// </param>
+    /// <param name='attribute'>
+    /// The <see cref="ParameterAttribute"/> found on that property.
+    /// </param>
+    /// <exception cref='ArgumentNullException'>
+    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
+    /// </exception>
+    private void AddParameter(PropertyInfo property, ParameterAttribute attribute)
+    {
+      if(property == null)
+      {
+        throw new ArgumentNullException ("property");
+      }
+      if(attribute == null)
+      {
+        throw new ArgumentNullException ("attribute");
+      }
+          
+      Type parameterGenericType = typeof(Parameter<>).MakeGenericType(new Type[] { property.PropertyType });
+      IParameter parameter = (IParameter) parameterGenericType.GetConstructor(Type.EmptyTypes).Invoke(null);
+      
+      parameter.Behaviour = attribute.Behaviour;
+      parameter.Identifier = property;
+      
+      if(attribute.ShortName != null)
+      {
+        parameter.ShortNames.Add(attribute.ShortName);
+      }
+      if(attribute.LongName != null)
+      {
+        parameter.LongNames.Add(attribute.LongName);
+      }
+      
+      foreach(ParameterNameAttribute name in property.GetCustomAttributes(typeof(ParameterNameAttribute), true))
+      {
+        var paramList = name.IsLongName? parameter.LongNames : parameter.ShortNames;
+        paramList.Add(name.Name);
+      }
+      
+      this.RegisteredParameters.Add(parameter);
     }
     
     #endregion

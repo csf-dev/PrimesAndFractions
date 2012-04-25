@@ -168,6 +168,20 @@ namespace CSF.Cli
     }
     
     #endregion
+    
+    #region constructor
+    
+    /// <summary>
+    /// Initializes a new instance.
+    /// </summary>
+    public Parameter()
+    {
+      this.ShortNames = new List<string>();
+      this.LongNames = new List<string>();
+      this.Behaviour = ParameterBehaviour.ValueOptional;
+    }
+    
+    #endregion
   }
 }
 
