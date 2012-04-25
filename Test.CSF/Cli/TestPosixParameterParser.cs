@@ -46,7 +46,7 @@ namespace Test.CSF.Cli
     
     #region contained type
     
-    class SampleClass : ParsedParameters
+    class SampleClass : ParsedParameters<SampleClass>
     {
       [Parameter(ParameterBehaviour.ValueRequired, ShortName = "n")]
       [ParameterName("l")]
@@ -54,7 +54,7 @@ namespace Test.CSF.Cli
       public int PropertyOne
       {
         get {
-          IParameter<int> parameter = this.Get<SampleClass, int>(x => x.PropertyOne);
+          IParameter<int> parameter = this.Get<int>(x => x.PropertyOne);
           
           return (parameter != null)? parameter.GetValue() : 0;
         }
@@ -66,15 +66,12 @@ namespace Test.CSF.Cli
       public bool PropertyTwo
       {
         get {
-          return this.Contains<SampleClass>(x => x.PropertyOne);
+          return this.Contains(x => x.PropertyOne);
         }
       }
       
       public SampleClass(IDictionary<object, IParameter> parameters,
-                         IList<string> remainingArguments) : base(parameters, remainingArguments)
-      {
-        
-      }
+                         IList<string> remainingArguments) : base(parameters, remainingArguments) {}
     }
     
     #endregion

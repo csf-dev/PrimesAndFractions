@@ -79,6 +79,7 @@
     <Compile Include="Cli\ParsedParameters.cs" />
     <Compile Include="Cli\PosixParameterParser.cs" />
     <Compile Include="Cli\ParameterNameAttribute.cs" />
+    <Compile Include="Cli\ParsedParameters`1.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -283,9 +283,9 @@ namespace CSF.Cli
     
     #region parsing
 
-    public IParsedParameters Parse (IList<string> commandLineArguments)
+    public IParsedParameters Parse(IList<string> commandLineArguments)
     {
-      throw new NotImplementedException ();
+      return this.Parse<ParsedParameters>(commandLineArguments);
     }
 
     public TOutput Parse<TOutput>(IList<string> commandLineArguments) where TOutput : IParsedParameters

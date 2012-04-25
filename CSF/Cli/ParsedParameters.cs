@@ -134,50 +134,6 @@ namespace CSF.Cli
       return this.Get(identifier) as IParameter<TParameterValue>;
     }
     
-    /// <summary>
-    /// Gets a value that indicates whether the parameter (identified using the specified <paramref name="identifier"/>)
-    /// is contained within this instance.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// This is a convenience method intended for use by subclassing types that are created in conjunction with
-    /// <see cref="ParameterAttribute"/>.  They provide a simple way of getting parameter values based on the member
-    /// that the attribute was defined upon.
-    /// </para>
-    /// </remarks>
-    /// <param name='identifier'>
-    /// The identifier for this parameter.
-    /// </param>
-    protected bool Contains<TParsedParameters>(Expression<Func<TParsedParameters, object>> identifier)
-    {
-      return this.Contains(StaticReflectionUtility.GetMember<TParsedParameters>(identifier));
-    }
-    
-    /// <summary>
-    /// Gets a parameter using the specified identifier.
-    /// </summary>
-    /// <param name='identifier'>
-    /// The identifier for this parameter.
-    /// </param>
-    protected IParameter Get<TParsedParameters>(Expression<Func<TParsedParameters, object>> identifier)
-    {
-      return this.Get(StaticReflectionUtility.GetMember<TParsedParameters>(identifier));
-    }
-    
-    /// <summary>
-    /// Gets a strongly-typed parameter using the specified identifier.
-    /// </summary>
-    /// <param name='identifier'>
-    /// The identifier for this parameter.
-    /// </param>
-    /// <typeparam name='TParameterValue'>
-    /// The value-type for the parameter.
-    /// </typeparam>
-    protected IParameter<TParameterValue> Get<TParsedParameters, TParameterValue>(Expression<Func<TParsedParameters, object>> identifier)
-    {
-      return this.Get<TParameterValue>(StaticReflectionUtility.GetMember<TParsedParameters>(identifier));
-    }
-    
     #endregion
     
     #region constructors
