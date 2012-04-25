@@ -137,25 +137,38 @@ namespace CSF.IO
     public virtual IList<IList<string>> Read(TextReader stringDataReader)
     {
       TabularDataStream readHelper = this.GetDataStream(stringDataReader);
-      int currentRow = 0;
+      int currentRow = 1;
       IList<IList<string>> output = null;
       
-      foreach(IList<string> row in readHelper)
+      try
       {
-        try
+        foreach(IList<string> row in readHelper)
         {
           if(output == null)
           {
             output = new TabularDataList(row.Count);
           }
           output.Add(row);
+          currentRow++;
         }
-        catch(ArgumentException ex)
-        {
-          string message = String.Format("An error was encountered whilst parsing row {0}.", currentRow);
-          throw new InvalidOperationException(message, ex);
-        }
-        currentRow++;
+      }
+      catch(ArgumentException ex)
+      {
+        string message = String.Format("Invalid tabular data, an error was encountered whilst parsing row {0}.",
+                                       currentRow);
+        throw new ArgumentException(message, ex);
+      }
+      catch(IOException ex)
+      {
+        string message = String.Format("Invalid tabular data, an error was encountered whilst parsing row {0}.",
+                                       currentRow);
+        throw new ArgumentException(message, ex);
+      }
+      catch(IndexOutOfRangeException ex)
+      {
+        string message = String.Format("Invalid tabular data, an error was encountered whilst parsing row {0}.",
+                                       currentRow);
+        throw new ArgumentException(message, ex);
       }
       
       return output;

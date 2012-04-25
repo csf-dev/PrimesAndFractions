@@ -200,11 +200,14 @@ namespace CSF.IO
       IIniDocument output = new IniDocument();
       IIniSection currentSection = output;
       bool endOfStream = false;
+      int lineNumber = 0;
         
       while(!endOfStream)
       {
         string currentLine = reader.ReadLine();
         Match currentMatch;
+        
+        lineNumber ++;
         
         // If we get a null response then we are at the end of the stream and can exit
         if(currentLine == null)
@@ -238,12 +241,8 @@ namespace CSF.IO
           currentSection[key] = value;
           continue;
         }
-        
-#if DEBUG
-        Console.Error.WriteLine("Unexpected line in INI file - erroneous line below:");
-        Console.Error.WriteLine("'{0}'", currentLine);
-#endif
-        throw new FormatException("Unexpected line reading ini file");
+
+        throw new FormatException(String.Format("Invalid INI data at line {0}.", lineNumber));
       }
       
       return output;

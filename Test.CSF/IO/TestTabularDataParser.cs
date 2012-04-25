@@ -88,6 +88,31 @@ namespace Test.CSF.IO
       Assert.AreEqual(expectedOutput, output, "Correct string rendering");
     }
     
+    [Test]
+    [ExpectedException(ExceptionType = typeof(ArgumentException),
+                       ExpectedMessage = "Invalid tabular data, an error was encountered whilst parsing row 4.")]
+    public void TestReadCsvInvalid()
+    {
+      string input = "r1c1,,\r\n" +
+                     ",,\r\n" +
+                     "r3c1,,\r\n";
+      new TabularDataParser(TabularDataFormat.Csv).Read(input);
+      Assert.Fail("Test should not reach this point");
+    }
+    
+    [Test]
+    public void TestReadCsvEmptyLines()
+    {
+      string input = "r1c1,,\r\n" +
+                     ",,\r\n" +
+                     "r3c1,,";
+      IList<IList<string>> output = new TabularDataParser(TabularDataFormat.Csv).Read(input);
+      
+      Assert.AreEqual("r1c1", output[0][0], "Row 1 column 1");
+      Assert.AreEqual(String.Empty, output[0][2], "Row 1 column 3");
+      Assert.AreEqual("r3c1", output[2][0], "Row 3 column 1");
+    }
+    
     #endregion
     
     #region TSV tests

@@ -159,7 +159,7 @@ namespace CSF.IO
         quotesOpened = false,
         quotesClosed = false,
         complete = false;
-      char currentCharacter;
+      char currentCharacter, previousCharacter = TabularDataParser.EndOfFile;
       
       for(currentCharacter = this.GetNextCharacter();
           complete == false;
@@ -186,15 +186,10 @@ namespace CSF.IO
              && currentCharacter.ToString() == this.Stream.Parser.Format.RowDelimiter)
             || (this.Stream.Parser.Format.RowDelimiter.Length == 2
                 && currentCharacter == this.Stream.Parser.Format.RowDelimiter[1]
-                && output[output.Length - 1] == this.Stream.Parser.Format.RowDelimiter[0]))
+                && previousCharacter == this.Stream.Parser.Format.RowDelimiter[0]))
            && (!quotesOpened
                || (quotesOpened && quotesClosed)))
         {
-          if(this.Stream.Parser.Format.RowDelimiter.Length == 2)
-          {
-            output.Length --;
-          }
-          
           complete = true;
           atEndOfRow = true;
           break;
@@ -205,6 +200,7 @@ namespace CSF.IO
            && ((output.Length == 0 && !quotesOpened))
                || (quotesOpened && quotesClosed))
         {
+          previousCharacter = currentCharacter;
           continue;
         }
         
@@ -257,6 +253,7 @@ namespace CSF.IO
         }
         
         output.Append(currentCharacter);
+        previousCharacter = currentCharacter;
       }
       
       while(!quotesOpened && output.Length > 0 && Char.IsWhiteSpace(output[output.Length - 1]))
