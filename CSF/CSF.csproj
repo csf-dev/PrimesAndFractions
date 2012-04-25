@@ -81,6 +81,10 @@
     <Compile Include="Cli\ParameterNameAttribute.cs" />
     <Compile Include="Cli\ParsedParameters`1.cs" />
     <Compile Include="IO\FileSystemInfoExtensions.cs" />
+    <Compile Include="Security\IPasswordService.cs" />
+    <Compile Include="Security\IHashAndSaltPair.cs" />
+    <Compile Include="Security\StringHashAndSaltPair.cs" />
+    <Compile Include="Security\BinaryHashAndSaltPair.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -89,6 +93,7 @@
     <Folder Include="Reflection\" />
     <Folder Include="Validation\" />
     <Folder Include="Cli\" />
+    <Folder Include="Security\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

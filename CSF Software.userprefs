@@ -1,6 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="CSF/Security/IPasswordService.cs">
+    <Files>
+      <File FileName="CSF/Security/IPasswordService.cs" Line="89" Column="17" />
+      <File FileName="CSF/Security/StringHashAndSaltPair.cs" Line="58" Column="22" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
