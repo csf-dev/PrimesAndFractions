@@ -167,6 +167,11 @@ namespace CSF.Cli
       return this.GetValue();
     }
     
+    void IParameter.SetValue(string value)
+    {
+      this.SetValue((TParameterValue) Convert.ChangeType(value, typeof(TParameterValue)));
+    }
+    
     #endregion
     
     #region constructor

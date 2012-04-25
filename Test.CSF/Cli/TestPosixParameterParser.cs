@@ -42,6 +42,30 @@ namespace Test.CSF.Cli
       Assert.AreEqual(3, testParameter.ShortNames.Count, "Correct count of short names");
     }
     
+    [Test]
+    public void TestParse()
+    {
+      PosixParameterParser parser = new PosixParameterParser();
+      
+      parser.AddParameters<SampleClass>();
+      
+      SampleClass output = parser.Parse<SampleClass>(new string[] { "-n",
+                                                                    "5",
+                                                                    "Extra parameter",
+                                                                    "--another-switch",
+                                                                    "But this is an extra parameter" });
+      
+      Assert.IsNotNull(output, "Output not null");
+      Assert.AreEqual(5, output.PropertyOne, "Property one correct value");
+      Assert.IsTrue(output.PropertyTwo, "Property two correct value");
+      
+      IList<string> extraParams = output.RemainingArguments.ToList();
+      
+      Assert.AreEqual(2, extraParams.Count, "Correct count of extra arguments");
+      Assert.AreEqual("Extra parameter", extraParams[0], "Correct first extra param");
+      Assert.AreEqual("But this is an extra parameter", extraParams[1], "Correct second extra param");
+    }
+    
     #endregion
     
     #region contained type

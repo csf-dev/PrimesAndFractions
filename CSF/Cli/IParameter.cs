@@ -74,6 +74,14 @@ namespace CSF.Cli
     /// </returns>
     object GetValue();
     
+    /// <summary>
+    /// Sets a value into the current instance.
+    /// </summary>
+    /// <param name='value'>
+    /// The value to store.
+    /// </param>
+    void SetValue(string value);
+    
     #endregion
   }
 }

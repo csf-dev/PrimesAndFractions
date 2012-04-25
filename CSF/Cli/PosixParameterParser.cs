@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace CSF.Cli
 {
@@ -37,6 +38,14 @@ namespace CSF.Cli
     /// </summary>
     private static readonly Type[]
       IParsedParametersCtorSignature = new Type[] { typeof(IDictionary<object, IParameter>), typeof(IList<string>) };
+    
+    private const string
+      LONG_PARAMETER_PATTERN            = @"^--([A-Za-z0-9_-]{2,})$",
+      SHORT_PARAMETER_PATTERN           = @"^-([A-Za-z0-9])$";
+    
+    private static readonly Regex
+      LongParameter                     = new Regex(LONG_PARAMETER_PATTERN, RegexOptions.Compiled),
+      ShortParameter                    = new Regex(SHORT_PARAMETER_PATTERN, RegexOptions.Compiled);
     
     #endregion
     
@@ -282,15 +291,213 @@ namespace CSF.Cli
     #endregion
     
     #region parsing
-
+  
+    /// <summary>
+    /// Parses the specified command line arguments and returns a default object instance that implements
+    /// <see cref="IParsedParameters"/>.
+    /// </summary>
+    /// <param name='commandLineArguments'>
+    /// The raw command line arguments to parse.
+    /// </param>
     public IParsedParameters Parse(IList<string> commandLineArguments)
     {
       return this.Parse<ParsedParameters>(commandLineArguments);
     }
-
+  
+    /// <summary>
+    /// Parses the specified command line arguments and returns an object instance that implements
+    /// <see cref="IParsedParameters"/>, based upon the generic type parameter passed to this method.
+    /// </summary>
+    /// <param name='commandLineArguments'>
+    /// The raw command line arguments to parse.
+    /// </param>
+    /// <typeparam name='TOutput'>
+    /// The output (parsed parameters container) type to return.
+    /// </typeparam>
     public TOutput Parse<TOutput>(IList<string> commandLineArguments) where TOutput : IParsedParameters
     {
-      throw new NotImplementedException ();
+      IDictionary<string, IParameter> parametersByShortName, parametersByLongName;
+      IDictionary<object, IParameter> parametersFound = new Dictionary<object, IParameter>();
+      IList<string> remainingArguments = new List<string>();
+      IParameter currentParameter = null;
+      
+      if(commandLineArguments == null)
+      {
+        throw new ArgumentNullException ("commandLineArguments");
+      }
+      
+      this.NormalisesParameterAliases(this.RegisteredParameters, out parametersByLongName, out parametersByShortName);
+      
+      foreach(string argument in commandLineArguments)
+      {
+        IParameter parameter;
+        
+        // If there is a current parameter expecting a value then we can just store this argument as that value.
+        if(currentParameter != null && currentParameter.Behaviour == ParameterBehaviour.ValueRequired)
+        {
+          currentParameter.SetValue(argument);
+          currentParameter = null;
+          continue;
+        }
+        
+        parameter = this.GetParameter(argument, parametersByShortName, parametersByLongName);
+        
+        if(parameter == null && currentParameter != null)
+        {
+          // The current parameter is expecting a value and the current argument doesn't match a parameter definition
+          currentParameter.SetValue(argument);
+          currentParameter = null;
+        }
+        else if(parameter == null)
+        {
+          // The current argument doesn't match a parameter definition but we were not expecting a value
+          remainingArguments.Add(argument);
+        }
+        else
+        {
+          // The current argument is a parameter
+          parametersFound.Add(parameter.Identifier, parameter);
+          currentParameter = (parameter.Behaviour == ParameterBehaviour.ValueOptional
+                              || parameter.Behaviour == ParameterBehaviour.ValueRequired)? parameter : null;
+        }
+      }
+      
+      if(currentParameter != null && currentParameter.Behaviour == ParameterBehaviour.ValueRequired)
+      {
+        throw new InvalidOperationException("A value-mandatory parameter is missing a value.");
+      }
+      
+      return CreateParameterContainer<TOutput>(parametersFound, remainingArguments);
+    }
+    
+    /// <summary>
+    /// Normaliseses the parameter aliases into two dictionaries for quick searching.
+    /// </summary>
+    /// <param name='parameters'>
+    /// The registered parameters.
+    /// </param>
+    /// <param name='longAliases'>
+    /// A dictionary of the registered parameters, indexed by their long names.
+    /// </param>
+    /// <param name='shortAliases'>
+    /// A dictionary of the registered parameters, indexed by their short names.
+    /// </param>
+    /// <exception cref='ArgumentNullException'>
+    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
+    /// </exception>
+    /// <exception cref='InvalidOperationException'>
+    /// Is thrown when an operation cannot be performed.
+    /// </exception>
+    private void NormalisesParameterAliases(IEnumerable<IParameter> parameters,
+                                            out IDictionary<string, IParameter> longAliases,
+                                            out IDictionary<string, IParameter> shortAliases)
+    {
+      longAliases = new Dictionary<string, IParameter>();
+      shortAliases = new Dictionary<string, IParameter>();
+      
+      if(parameters == null)
+      {
+        throw new ArgumentNullException("parameters");
+      }
+      
+      foreach(IParameter param in parameters)
+      {
+        foreach(string name in param.LongNames)
+        {
+          if(!longAliases.ContainsKey(name))
+          {
+            longAliases.Add(name, param);
+          }
+          else
+          {
+            string message = String.Format("Duplicate parameter long name: '{0}'.  Multiple registered parameters " +
+                                           "with the same names are not permitted.",
+                                           name);
+            throw new InvalidOperationException(message);
+          }
+        }
+        
+        foreach(string name in param.ShortNames)
+        {
+          if(!shortAliases.ContainsKey(name))
+          {
+            shortAliases.Add(name, param);
+          }
+          else
+          {
+            string message = String.Format("Duplicate parameter short name: '{0}'.  Multiple registered parameters " +
+                                           "with the same names are not permitted.",
+                                           name);
+            throw new InvalidOperationException(message);
+          }
+        }
+      }
+    }
+    
+    /// <summary>
+    /// Gets the parameter that matches the <paramref name="argument"/> if one is found.
+    /// </summary>
+    /// <returns>
+    /// The parameter, or a null reference if no matching parameter was found.
+    /// </returns>
+    /// <param name='argument'>
+    /// The argument to match.
+    /// </param>
+    /// <param name='parametersByShortName'>
+    /// Parameters by short name.
+    /// </param>
+    /// <param name='parametersByLongName'>
+    /// Parameters by long name.
+    /// </param>
+    private IParameter GetParameter(string argument,
+                                      IDictionary<string, IParameter> parametersByShortName,
+                                      IDictionary<string, IParameter> parametersByLongName)
+    {
+      IParameter output = null;
+      Match
+        longParameter = LongParameter.Match(argument),
+        shortParameter = ShortParameter.Match(argument);
+      
+      if(longParameter.Success && parametersByLongName.ContainsKey(longParameter.Groups[1].Value))
+      {
+        output = parametersByLongName[longParameter.Groups[1].Value];
+      }
+      else if(shortParameter.Success && parametersByShortName.ContainsKey(shortParameter.Groups[1].Value))
+      {
+        output = parametersByShortName[shortParameter.Groups[1].Value];
+      }
+      
+      return output;
+    }
+    
+    /// <summary>
+    /// Creates an instance of a parameter container type.
+    /// </summary>
+    /// <returns>
+    /// The parameter container.
+    /// </returns>
+    /// <param name='parameters'>
+    /// The parameters found by the parsing process.
+    /// </param>
+    /// <param name='remainingArguments'>
+    /// The remaining (non-parameter) command line arguments.
+    /// </param>
+    /// <typeparam name='TOutput'>
+    /// The output (parsed parameters container) type to return.
+    /// </typeparam>
+    private TOutput CreateParameterContainer<TOutput>(IDictionary<object, IParameter> parameters,
+                                                      IList<string> remainingArguments) where TOutput : IParsedParameters
+    {
+      ConstructorInfo constructor = typeof(TOutput).GetConstructor(IParsedParametersCtorSignature);
+      
+      if(constructor == null)
+      {
+        throw new InvalidOperationException(String.Format("`{0}' does not contain a constructor of the required " +
+                                                          "signature: (IDictionary<object, IParameter>, IList<string>)",
+                                                          typeof(TOutput).FullName));
+      }
+      
+      return (TOutput) constructor.Invoke(new object[] { parameters, remainingArguments });
     }
     
     #endregion
