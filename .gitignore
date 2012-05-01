@@ -2,3 +2,4 @@ bin/
 TestResult.xml
 *.pidb
 *.VisualState.xml
+*.userprefs
