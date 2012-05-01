@@ -27,6 +27,20 @@ namespace CSF.Security
   /// </summary>
   public interface IPasswordService
   {
+    #region properties
+    
+    /// <summary>
+    /// Gets the name of the hashing algorithm that will be used by this instance.
+    /// </summary>
+    /// <value>
+    /// The name of the algorithm.
+    /// </value>
+    string AlgorithmName { get; }
+    
+    #endregion
+    
+    #region methods
+    
     /// <summary>
     /// Generates a new password hash and salt pair from a password, using the specified length of password salt.
     /// </summary>
@@ -91,6 +105,8 @@ namespace CSF.Security
     /// The length of randomised string to create.
     /// </param>
     string GenerateRandomString(char[] dictionary, int length);
+    
+    #endregion
   }
 }
 

@@ -54,6 +54,7 @@
     <Compile Include="Validation\TestValidationTest.cs" />
     <Compile Include="Cli\TestPosixParameterParser.cs" />
     <Compile Include="IO\TestFileSystemInfoExtensions.cs" />
+    <Compile Include="Security\TestBinaryPasswordService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -69,5 +70,6 @@
     <Folder Include="Validation\" />
     <Folder Include="Mocks\" />
     <Folder Include="Cli\" />
+    <Folder Include="Security\" />
   </ItemGroup>
 </Project>

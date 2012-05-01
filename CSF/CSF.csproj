@@ -83,8 +83,8 @@
     <Compile Include="IO\FileSystemInfoExtensions.cs" />
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\IHashAndSaltPair.cs" />
-    <Compile Include="Security\StringHashAndSaltPair.cs" />
     <Compile Include="Security\BinaryHashAndSaltPair.cs" />
+    <Compile Include="Security\BinaryPasswordService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
