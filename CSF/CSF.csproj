@@ -85,6 +85,8 @@
     <Compile Include="Security\IHashAndSaltPair.cs" />
     <Compile Include="Security\BinaryHashAndSaltPair.cs" />
     <Compile Include="Security\BinaryPasswordService.cs" />
+    <Compile Include="Fraction.cs" />
+    <Compile Include="PrimeFactoriser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

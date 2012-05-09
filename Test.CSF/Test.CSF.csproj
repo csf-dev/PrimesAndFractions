@@ -55,6 +55,8 @@
     <Compile Include="Cli\TestPosixParameterParser.cs" />
     <Compile Include="IO\TestFileSystemInfoExtensions.cs" />
     <Compile Include="Security\TestBinaryPasswordService.cs" />
+    <Compile Include="TestFraction.cs" />
+    <Compile Include="TestPrimeFactoriser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
