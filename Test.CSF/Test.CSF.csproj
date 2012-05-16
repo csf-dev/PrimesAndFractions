@@ -57,6 +57,7 @@
     <Compile Include="Security\TestBinaryPasswordService.cs" />
     <Compile Include="TestFraction.cs" />
     <Compile Include="TestPrimeFactoriser.cs" />
+    <Compile Include="Patterns\IoC\TestServiceLocator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -73,5 +74,7 @@
     <Folder Include="Mocks\" />
     <Folder Include="Cli\" />
     <Folder Include="Security\" />
+    <Folder Include="Patterns\" />
+    <Folder Include="Patterns\IoC\" />
   </ItemGroup>
 </Project>
