@@ -25,7 +25,7 @@ namespace CSF.Patterns.IoC
   /// <summary>
   /// Type for describing a registered service implementation within a <see cref="ServiceLocator"/>.
   /// </summary>
-  public class RegisteredService
+  public class RegisteredService : IRegisteredService
   {
     #region fields
     
@@ -76,6 +76,40 @@ namespace CSF.Patterns.IoC
         
         _lifespan = value;
       }
+    }
+    
+    #endregion
+    
+    #region methods
+    
+    /// <summary>
+    /// Creates a new instance of this service, ensuring that it implements <c>TService</c>.
+    /// </summary>
+    /// <typeparam name='TService'>
+    /// The type that the created instance must implement.
+    /// </typeparam>
+    public TService Create<TService>() where TService : class
+    {
+      object tempOutput = this.ServiceFactory();
+      Type serviceType = typeof(TService);
+      
+      if(tempOutput == null)
+      {
+        throw new InvalidOperationException(String.Format("Registered factory method for service '{0}' returned null.",
+                                                          serviceType.FullName));
+      }
+      
+      TService output = tempOutput as TService;
+      
+      if(output == null)
+      {
+        throw new InvalidOperationException(String.Format("Registered factory method returned object of type '{0}', " +
+                                                          "however this does not match service type '{1}'",
+                                                          tempOutput.GetType().FullName,
+                                                          serviceType.FullName));
+      }
+      
+      return output;
     }
     
     #endregion

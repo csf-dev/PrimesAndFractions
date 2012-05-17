@@ -41,7 +41,7 @@ namespace CSF.Patterns.IoC
     
     #region fields
     
-    private Dictionary<Type, RegisteredService> _registeredServiceFactories;
+    private Dictionary<Type, IRegisteredService> _registeredServiceFactories;
     
     private static IServiceInstanceCache _singletonServices;
     
@@ -58,7 +58,7 @@ namespace CSF.Patterns.IoC
     /// <value>
     /// The registered service factories.
     /// </value>
-    protected Dictionary<Type, RegisteredService> RegisteredServiceFactories
+    protected Dictionary<Type, IRegisteredService> RegisteredServiceFactories
     {
       get {
         return _registeredServiceFactories;
@@ -184,7 +184,7 @@ namespace CSF.Patterns.IoC
                                                           interfaceType.FullName));
       }
       
-      RegisteredService service = this.RegisteredServiceFactories[interfaceType];
+      IRegisteredService service = this.RegisteredServiceFactories[interfaceType];
       IServiceInstanceCache serviceCache = this.GetServiceCache(service.Lifespan);
       
       if(serviceCache != null
@@ -194,24 +194,7 @@ namespace CSF.Patterns.IoC
       }
       else
       {
-        object tempOutput = service.ServiceFactory();
-        
-        if(tempOutput == null)
-        {
-          throw new InvalidOperationException(String.Format("Factory method for service '{0}' returned null output.",
-                                                            interfaceType.FullName));
-        }
-        
-        output = tempOutput as TInterface;
-        
-        if(output == null)
-        {
-          throw new InvalidOperationException(String.Format("Factory method created an implementation of type '{0}', " +
-                                                            "however this does not implement interface type '{1}'",
-                                                            tempOutput.GetType().FullName,
-                                                            interfaceType.FullName));
-        }
-        
+        output = service.Create<TInterface>();
         if(serviceCache != null)
         {
           serviceCache.Add<TInterface>(output);
@@ -287,7 +270,7 @@ namespace CSF.Patterns.IoC
     /// </summary>
     public ServiceLocator ()
     {
-      _registeredServiceFactories = new Dictionary<Type, RegisteredService>();
+      _registeredServiceFactories = new Dictionary<Type, IRegisteredService>();
     }
     
     /// <summary>

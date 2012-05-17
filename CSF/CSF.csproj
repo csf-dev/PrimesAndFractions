@@ -95,6 +95,7 @@
     <Compile Include="Patterns\IoC\ServiceLocatorHttpModule.cs" />
     <Compile Include="Patterns\IoC\ServiceInstanceCache.cs" />
     <Compile Include="Patterns\IoC\IServiceInstanceCache.cs" />
+    <Compile Include="Patterns\IoC\IRegisteredService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
