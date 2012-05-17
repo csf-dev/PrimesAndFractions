@@ -26,7 +26,7 @@ namespace CSF.Patterns.IoC
   /// Interface for a Service Locator type that is capable of registering and providing service implementations
   /// on-demand.
   /// </summary>
-  public interface IServiceLocator
+  public interface IServiceLocator : IDisposable
   {
     #region methods
 

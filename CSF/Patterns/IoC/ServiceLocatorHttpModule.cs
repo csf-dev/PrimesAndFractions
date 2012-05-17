@@ -29,6 +29,16 @@ namespace CSF.Patterns.IoC
   /// </summary>
   public class ServiceLocatorHttpModule : IHttpModule
   {
+    #region constants
+    
+    /// <summary>
+    /// Gets the string 'key' at which the <see cref="IServiceInstanceCache"/> is stored within
+    /// <c>HttpContext.Current.Items</c>.
+    /// </summary>
+    public static readonly string HttpContextCacheKey = typeof(ServiceLocator).FullName;
+    
+    #endregion
+    
     #region methods
     
     /// <summary>
@@ -62,7 +72,7 @@ namespace CSF.Patterns.IoC
     /// </param>
     protected void CreateServiceCache(object sender, EventArgs ev)
     {
-      HttpContext.Current.Items[typeof(ServiceLocator).FullName] = new Dictionary<Type, object>();
+      HttpContext.Current.Items[HttpContextCacheKey] = new ServiceInstanceCache();
     }
     
     /// <summary>
@@ -76,21 +86,12 @@ namespace CSF.Patterns.IoC
     /// </param>
     protected void DisposeServiceCache(object sender, EventArgs ev)
     {
-      Dictionary<Type, object> existingCache;
-      existingCache = HttpContext.Current.Items[typeof(ServiceLocator).FullName] as Dictionary<Type, object>;
+      IServiceInstanceCache cache = HttpContext.Current.Items[HttpContextCacheKey] as IServiceInstanceCache;
       
-      if(existingCache != null)
+      if(cache != null)
       {
-        foreach(object service in existingCache.Values)
-        {
-          IDisposable disposableService = service as IDisposable;
-          if(disposableService != null)
-          {
-            disposableService.Dispose();
-          }
-        }
-        
-        HttpContext.Current.Items.Remove(typeof(ServiceLocator).FullName);
+        cache.Dispose();
+        HttpContext.Current.Items.Remove(HttpContextCacheKey);
       }
     }
     

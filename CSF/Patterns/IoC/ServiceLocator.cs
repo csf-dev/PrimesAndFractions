@@ -43,10 +43,10 @@ namespace CSF.Patterns.IoC
     
     private Dictionary<Type, RegisteredService> _registeredServiceFactories;
     
-    private static Dictionary<Type, object> _singletonServices;
+    private static IServiceInstanceCache _singletonServices;
     
     [ThreadStatic]
-    private static Dictionary<Type, object> _threadServices;
+    private static IServiceInstanceCache _threadServices;
     
     #endregion
     
@@ -71,7 +71,7 @@ namespace CSF.Patterns.IoC
     /// <value>
     /// The singleton services.
     /// </value>
-    protected Dictionary<Type, object> SingletonServices
+    protected IServiceInstanceCache SingletonServices
     {
       get {
         return _singletonServices;
@@ -84,7 +84,7 @@ namespace CSF.Patterns.IoC
     /// <value>
     /// The thread services.
     /// </value>
-    protected Dictionary<Type, object> ThreadServices
+    protected IServiceInstanceCache ThreadServices
     {
       get {
         return _threadServices;
@@ -97,15 +97,15 @@ namespace CSF.Patterns.IoC
     /// <value>
     /// The http context services.
     /// </value>
-    protected Dictionary<Type, object> HttpContextServices
+    protected IServiceInstanceCache HttpContextServices
     {
       get {
-        Dictionary<Type, object> output = null;
+        IServiceInstanceCache output = null;
         
         if(HttpContext.Current != null
-           && HttpContext.Current.Items[this.GetType().FullName] != null)
+           && HttpContext.Current.Items[ServiceLocatorHttpModule.HttpContextCacheKey] != null)
         {
-          output = HttpContext.Current.Items[this.GetType().FullName] as Dictionary<Type, object>;
+          output = HttpContext.Current.Items[ServiceLocatorHttpModule.HttpContextCacheKey] as IServiceInstanceCache;
         }
         
         return output;
@@ -153,12 +153,11 @@ namespace CSF.Patterns.IoC
       
       if(this.RegisteredServiceFactories.ContainsKey(interfaceType))
       {
-        Dictionary<Type, object> serviceCache;
-        serviceCache = this.GetServiceCache(this.RegisteredServiceFactories[interfaceType].Lifespan);
+        IServiceInstanceCache cache = this.GetServiceCache(this.RegisteredServiceFactories[interfaceType].Lifespan);
         
-        if(serviceCache != null)
+        if(cache != null)
         {
-          serviceCache.Remove(interfaceType);
+          cache.Remove<TInterface>();
         }
       }
       
@@ -186,22 +185,12 @@ namespace CSF.Patterns.IoC
       }
       
       RegisteredService service = this.RegisteredServiceFactories[interfaceType];
-      Dictionary<Type, object> serviceCache = this.GetServiceCache(service.Lifespan);
+      IServiceInstanceCache serviceCache = this.GetServiceCache(service.Lifespan);
       
       if(serviceCache != null
-         && serviceCache.ContainsKey(interfaceType)
-         && serviceCache[interfaceType] != null)
+         && serviceCache.Contains<TInterface>())
       {
-        object cachedOutput = serviceCache[interfaceType];
-        
-        output = cachedOutput as TInterface;
-        if(output == null)
-        {
-          throw new InvalidOperationException(String.Format("Got a cached service implementation of type '{0}', " +
-                                                            "however this does not implement interface type '{1}'",
-                                                            cachedOutput.GetType().FullName,
-                                                            interfaceType.FullName));
-        }
+        output = serviceCache.Get<TInterface>();
       }
       else
       {
@@ -225,11 +214,31 @@ namespace CSF.Patterns.IoC
         
         if(serviceCache != null)
         {
-          serviceCache[interfaceType] = output;
+          serviceCache.Add<TInterface>(output);
         }
       }
       
       return output;
+    }
+    
+    /// <summary>
+    /// Releases all resource used by the <see cref="CSF.Patterns.IoC.ServiceLocator"/> object.
+    /// </summary>
+    /// <remarks>
+    /// Call <see cref="Dispose"/> when you are finished using the <see cref="CSF.Patterns.IoC.ServiceLocator"/>. The
+    /// <see cref="Dispose"/> method leaves the <see cref="CSF.Patterns.IoC.ServiceLocator"/> in an unusable state.
+    /// After calling <see cref="Dispose"/>, you must release all references to the
+    /// <see cref="CSF.Patterns.IoC.ServiceLocator"/> so the garbage collector can reclaim the memory that the
+    /// <see cref="CSF.Patterns.IoC.ServiceLocator"/> was occupying.
+    /// </remarks>
+    public virtual void Dispose ()
+    {
+      this.SingletonServices.Dispose();
+      this.ThreadServices.Dispose();
+      if(this.HttpContextServices != null)
+      {
+        this.HttpContextServices.Dispose();
+      }
     }
     
     /// <summary>
@@ -244,9 +253,9 @@ namespace CSF.Patterns.IoC
     /// <exception cref='InvalidOperationException'>
     /// Is thrown when an operation cannot be performed.
     /// </exception>
-    protected Dictionary<Type, object> GetServiceCache(ServiceLifetime lifetime)
+    protected IServiceInstanceCache GetServiceCache(ServiceLifetime lifetime)
     {
-      Dictionary<Type, object> output;
+      IServiceInstanceCache output;
       
       switch(lifetime)
       {
@@ -288,8 +297,8 @@ namespace CSF.Patterns.IoC
     {
       DefaultInstance = new ServiceLocator();
       
-      _singletonServices = new Dictionary<Type, object>();
-      _threadServices = new Dictionary<Type, object>();
+      _singletonServices = new ServiceInstanceCache();
+      _threadServices = new ServiceInstanceCache();
     }
     
     #endregion
@@ -374,6 +383,46 @@ namespace CSF.Patterns.IoC
     public static TInterface Get<TInterface>() where TInterface : class
     {
       return DefaultInstance.GetService<TInterface>();
+    }
+    
+    /// <summary>
+    /// Replaces the current <see cref="IServiceLocator"/> back-end for this type with the provided implementation.
+    /// </summary>
+    /// <remarks>
+    /// This method additionally disposes the current service locator and all of the service instances that is
+    /// may contain.
+    /// </remarks>
+    /// <param name='serviceLocatorImplementation'>
+    /// The service locator implementation to use from now on.
+    /// </param>
+    /// <exception cref='ArgumentNullException'>
+    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
+    /// </exception>
+    public static void DisposeAndReplace(IServiceLocator serviceLocatorImplementation)
+    {
+      if(serviceLocatorImplementation == null)
+      {
+        throw new ArgumentNullException ("serviceLocatorImplementation");
+      }
+      
+      if(DefaultInstance != null)
+      {
+        DefaultInstance.Dispose();
+      }
+      
+      DefaultInstance = serviceLocatorImplementation;
+    }
+    
+    /// <summary>
+    /// Replaces the current <see cref="IServiceLocator"/> back-end for this type with a new default implementation.
+    /// </summary>
+    /// <remarks>
+    /// This method additionally disposes the current service locator and all of the service instances that is
+    /// may contain.
+    /// </remarks>
+    public static void DisposeAndReplace()
+    {
+      DisposeAndReplace(new ServiceLocator());
     }
     
     #endregion
