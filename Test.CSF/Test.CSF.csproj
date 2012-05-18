@@ -60,6 +60,7 @@
     <Compile Include="Patterns\IoC\TestServiceLocator.cs" />
     <Compile Include="Entities\TestEntity.cs" />
     <Compile Include="Entities\TestIdentity.cs" />
+    <Compile Include="TestMemorySessionStorage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
