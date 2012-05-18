@@ -12,7 +12,6 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\bin\Debug</OutputPath>
@@ -20,8 +19,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <GenerateDocumentation>true</GenerateDocumentation>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -96,6 +96,14 @@
     <Compile Include="Patterns\IoC\ServiceInstanceCache.cs" />
     <Compile Include="Patterns\IoC\IServiceInstanceCache.cs" />
     <Compile Include="Patterns\IoC\IRegisteredService.cs" />
+    <Compile Include="Entities\EntityReader.cs" />
+    <Compile Include="Entities\Identity.cs" />
+    <Compile Include="Entities\Identity`T.cs" />
+    <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="Entities\IEntity`T.cs" />
+    <Compile Include="Entities\IIdentity.cs" />
+    <Compile Include="Entities\IIdentity`T.cs" />
+    <Compile Include="Entities\Entity`T.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
