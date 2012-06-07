@@ -110,6 +110,7 @@
     <Compile Include="AspNetSessionStorage.cs" />
     <Compile Include="MemorySessionStorage.cs" />
     <Compile Include="Configuration\ConnectionStringSettingsExtensions.cs" />
+    <Compile Include="VersionExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

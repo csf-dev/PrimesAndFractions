@@ -21,6 +21,7 @@
 
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace CSF
 {
@@ -311,6 +312,50 @@ namespace CSF
       return output;
     }
     
+    /// <summary>
+    /// Gets a collection of the decimal bit numbers that would represent the binary bits that make up the binary
+    /// representation of the input.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method returns the input <paramref name="integerValue"/> broken down into a collection of
+    /// <see cref="System.Int32"/> values which - when added together - would equal the original input value.  The
+    /// output values are all decimal representations of binary bit numbers (IE: powers of two).
+    /// </para>
+    /// <example>
+    /// If the value <c>45</c> were passed into this method, the output would be the collection of integers:
+    /// <c>{ 1, 4, 8, 32 }</c>.  These correspond to the bits <c>101101</c> (which is the binary representation of
+    /// <c>45</c>).
+    /// </example>
+    /// <para>
+    /// If the input to this method is negative then all of the output bits will also be negative.
+    /// </para>
+    /// </remarks>
+    /// <returns>
+    /// The bit numbers.
+    /// </returns>
+    /// <param name='integerValue'>
+    /// The value for which to get the bit numbers.
+    /// </param>
+    public static IList<int> GetBitNumbers(int integerValue)
+    {
+      int bitNumber = 0, remainingValue = integerValue, currentBit;
+      IList<int> output = new List<int>();
+      
+      while(remainingValue != 0)
+      {
+        currentBit = ((remainingValue > 0)? 1 : -1) << bitNumber++;
+        
+        if((Math.Abs(remainingValue) & Math.Abs(currentBit)) == Math.Abs(currentBit))
+        {
+          output.Add(currentBit);
+          remainingValue -= currentBit;
+        }
+      }
+      
+      return output;
+    }
+    
     #endregion
     
     #region private methods
@@ -575,6 +620,36 @@ namespace CSF
     public static string ToAlphabeticReference(this int number, bool zeroBased)
     {
       return GenerateAlphabeticReference(number, zeroBased);
+    }
+    
+    /// <summary>
+    /// Gets a collection of the decimal bit numbers that would represent the binary bits that make up the binary
+    /// representation of the input.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method returns the input <paramref name="number"/> broken down into a collection of
+    /// <see cref="System.Int32"/> values which - when added together - would equal the original input value.  The
+    /// output values are all decimal representations of binary bit numbers (IE: powers of two).
+    /// </para>
+    /// <example>
+    /// If the value <c>45</c> were passed into this method, the output would be the collection of integers:
+    /// <c>{ 1, 4, 8, 32 }</c>.  These correspond to the bits <c>101101</c> (which is the binary representation of
+    /// <c>45</c>).
+    /// </example>
+    /// <para>
+    /// If the input to this method is negative then all of the output bits will also be negative.
+    /// </para>
+    /// </remarks>
+    /// <returns>
+    /// The bit numbers.
+    /// </returns>
+    /// <param name='number'>
+    /// The value for which to get the bit numbers.
+    /// </param>
+    public static IList<int> ToBitNumbers(this int number)
+    {
+      return GetBitNumbers(number);
     }
     
     #endregion

@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using CSF;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Test.CSF
 {
@@ -126,6 +127,31 @@ namespace Test.CSF
       {
         Assert.AreEqual(nonZeroBased[number], number.ToAlphabeticReference(false), "Correct reference");
       }
+    }
+    
+    #endregion
+    
+    #region other tests
+    
+    [Test]
+    public void TestToBitNumbers()
+    {
+      IList<int> result;
+      result = (45).ToBitNumbers();
+      
+      Assert.IsTrue(result.Contains(1),  "Contains value 1");
+      Assert.IsTrue(result.Contains(4),  "Contains value 4");
+      Assert.IsTrue(result.Contains(8),  "Contains value 8");
+      Assert.IsTrue(result.Contains(32), "Contains value 32");
+      Assert.AreEqual(4, result.Count, "Correct count");
+      
+      result = (-46).ToBitNumbers();
+      
+      Assert.IsTrue(result.Contains(-2),  "Contains value -2");
+      Assert.IsTrue(result.Contains(-4),  "Contains value -4");
+      Assert.IsTrue(result.Contains(-8),  "Contains value -8");
+      Assert.IsTrue(result.Contains(-32), "Contains value -32");
+      Assert.AreEqual(4, result.Count, "Correct count");
     }
     
     #endregion
