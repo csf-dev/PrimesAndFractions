@@ -111,6 +111,7 @@
     <Compile Include="MemorySessionStorage.cs" />
     <Compile Include="Configuration\ConnectionStringSettingsExtensions.cs" />
     <Compile Include="VersionExtensions.cs" />
+    <Compile Include="IEnumerableExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
