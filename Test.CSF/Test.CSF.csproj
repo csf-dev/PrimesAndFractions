@@ -64,6 +64,7 @@
     <Compile Include="TestIEnumerableExtensions.cs" />
     <Compile Include="Reflection\TestEnumExtensions.cs" />
     <Compile Include="Reflection\TestMemberInfoExtensions.cs" />
+    <Compile Include="Reflection\TestTypeExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

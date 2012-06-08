@@ -113,6 +113,7 @@
     <Compile Include="Reflection\MemberInfoExtensions.cs" />
     <Compile Include="Reflection\EnumExtensions.cs" />
     <Compile Include="Reflection\UITextAttribute.cs" />
+    <Compile Include="Reflection\TypeExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
