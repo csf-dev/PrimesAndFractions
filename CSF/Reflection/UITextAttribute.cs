@@ -20,7 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 
-namespace CSF
+namespace CSF.Reflection
 {
   /// <summary>
   /// Attribute to mark the user interface text that corresponds to an enumeration value.
@@ -47,7 +47,7 @@ namespace CSF
     #region constructor
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="CSF.UITextAttribute"/> class.
+    /// Initializes a new instance of the <see cref="CSF.Reflection.UITextAttribute"/> class.
     /// </summary>
     /// <param name='text'>
     /// Text.

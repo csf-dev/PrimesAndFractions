@@ -43,7 +43,6 @@
     <Compile Include="TestInt32Extensions.cs" />
     <Compile Include="IO\TestTabularDataParser.cs" />
     <Compile Include="IO\TestIniDocument.cs" />
-    <Compile Include="TestEnumExtensions.cs" />
     <Compile Include="TestSimpleCalculator.cs" />
     <Compile Include="Collections\TestPropertyKeyAssociation.cs" />
     <Compile Include="Collections\TestKeyValueSerializer.cs" />
@@ -63,6 +62,8 @@
     <Compile Include="TestMemorySessionStorage.cs" />
     <Compile Include="TestVersionExtensions.cs" />
     <Compile Include="TestIEnumerableExtensions.cs" />
+    <Compile Include="Reflection\TestEnumExtensions.cs" />
+    <Compile Include="Reflection\TestMemberInfoExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

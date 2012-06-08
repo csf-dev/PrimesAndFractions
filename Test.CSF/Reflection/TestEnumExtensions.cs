@@ -1,8 +1,10 @@
 using System;
 using NUnit.Framework;
+using CSF.Reflection;
 using CSF;
+using System.Reflection;
 
-namespace Test.CSF
+namespace Test.CSF.Reflection
 {
   [TestFixture]
   public class TestEnumExtensions
@@ -27,6 +29,14 @@ namespace Test.CSF
     {
       ((SampleEnum) 5).GetUIText();
       Assert.Fail("Test should not reach this point");
+    }
+    
+    [Test]
+    public void TestGetFieldInfo()
+    {
+      FieldInfo field = SampleEnum.Three.GetFieldInfo();
+      Assert.IsNotNull(field, "Field info not null");
+      Assert.AreEqual(SampleEnum.Three.ToString(), field.Name, "Field hsa correct name");
     }
     
     #endregion

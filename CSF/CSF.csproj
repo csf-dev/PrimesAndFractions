@@ -54,9 +54,7 @@
     <Compile Include="IO\IIniSection.cs" />
     <Compile Include="IO\IniDocument.cs" />
     <Compile Include="IO\IniSection.cs" />
-    <Compile Include="EnumExtensions.cs" />
     <Compile Include="Collections\IKeyValueSerializer.cs" />
-    <Compile Include="UITextAttribute.cs" />
     <Compile Include="ICalculator.cs" />
     <Compile Include="SimpleCalculator.cs" />
     <Compile Include="Collections\PropertyKeyAssociation.cs" />
@@ -112,6 +110,9 @@
     <Compile Include="Configuration\ConnectionStringSettingsExtensions.cs" />
     <Compile Include="VersionExtensions.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="Reflection\MemberInfoExtensions.cs" />
+    <Compile Include="Reflection\EnumExtensions.cs" />
+    <Compile Include="Reflection\UITextAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
