@@ -128,6 +128,42 @@ namespace CSF.Reflection
       return memberOrType.GetCustomAttributes(typeof(TAttribute), inherit).Cast<TAttribute>().ToList();
     }
 
+    /// <summary>
+    /// Determines whether this instance is decorated with the specified attribute.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c> if this instance is decorated with the specified attribute; otherwise, <c>false</c>.
+    /// </returns>
+    /// <param name='memberOrType'>
+    /// The member or type to inspect.
+    /// </param>
+    /// <typeparam name='TAttribute'>
+    /// The attribute type to look for.
+    /// </typeparam>
+    public static bool HasAttribute<TAttribute>(this MemberInfo memberOrType) where TAttribute : Attribute
+    {
+      return memberOrType.HasAttribute<TAttribute>(false);
+    }
+
+    /// <summary>
+    /// Determines whether this instance is decorated with the specified attribute.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c> if this instance is decorated with the specified attribute; otherwise, <c>false</c>.
+    /// </returns>
+    /// <param name='memberOrType'>
+    /// The member or type to inspect.
+    /// </param>
+    /// <param name='inherit'>
+    /// Whether or not to search the <paramref name="memberOrType"/>'s inheritance chain to find the attribute or not.
+    /// </param>
+    /// <typeparam name='TAttribute'>
+    /// The attribute type to look for.
+    /// </typeparam>
+    public static bool HasAttribute<TAttribute>(this MemberInfo memberOrType, bool inherit) where TAttribute : Attribute
+    {
+      return (memberOrType.GetAttributes<TAttribute>(inherit).Count > 0);
+    }
     
     #endregion
   }

@@ -114,6 +114,7 @@
     <Compile Include="Reflection\EnumExtensions.cs" />
     <Compile Include="Reflection\UITextAttribute.cs" />
     <Compile Include="Reflection\TypeExtensions.cs" />
+    <Compile Include="Web\HttpResponseExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -126,6 +127,8 @@
     <Folder Include="Patterns\" />
     <Folder Include="Patterns\IoC\" />
     <Folder Include="Configuration\" />
+    <Folder Include="Web\" />
+    <Folder Include="Web\UI\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

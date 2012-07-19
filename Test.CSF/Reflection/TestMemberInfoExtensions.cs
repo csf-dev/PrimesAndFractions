@@ -76,6 +76,15 @@ namespace Test.CSF.Reflection
       Assert.IsTrue(attrib.Contains(new SampleAttribute(4)), "Contains 4");
       Assert.IsTrue(attrib.Contains(new SampleAttribute(5)), "Contains 5");
     }
+
+    [Test]
+    public void TestHasAttribute()
+    {
+      Assert.IsTrue(typeof(FooClass).HasAttribute<SampleAttribute>(), "FooClass has the attribute");
+      Assert.IsTrue(StaticReflectionUtility.GetMember<FooClass>(x => x.Baz).HasAttribute<SampleAttribute>(),
+                    "Member 'Baz' has the sample attribute");
+      Assert.IsFalse(typeof(FooEnum).HasAttribute<SampleAttribute>(), "FooEnum does not have the attribute");
+    }
     
     #endregion
     
