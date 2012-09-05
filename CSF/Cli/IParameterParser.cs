@@ -28,6 +28,21 @@ namespace CSF.Cli
   /// </summary>
   public interface IParameterParser
   {
+    #region properties
+
+    /// <summary>
+    /// Gets or sets a collection of the parameters registered with this instance.
+    /// </summary>
+    /// <value>
+    /// The registered parameters.
+    /// </value>
+    /// <exception cref='ArgumentNullException'>
+    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
+    /// </exception>
+    IList<IParameter> RegisteredParameters { get; set; }
+
+    #endregion
+
     #region adding definitions
     
     /// <summary>

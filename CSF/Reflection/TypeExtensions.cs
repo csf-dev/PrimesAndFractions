@@ -91,7 +91,7 @@ namespace CSF.Reflection
       
       return searchAssembly.GetTypes().Where(x => x.IsSubclassOf(type)).ToList();
     }
-    
+
     #endregion
   }
 }

@@ -10,6 +10,7 @@
     <RootNamespace>CSF</RootNamespace>
     <AssemblyName>CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ReleaseVersion>0.0.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -115,6 +116,10 @@
     <Compile Include="Reflection\UITextAttribute.cs" />
     <Compile Include="Reflection\TypeExtensions.cs" />
     <Compile Include="Web\HttpResponseExtensions.cs" />
+    <Compile Include="Configuration\ConfigurationHelper.cs" />
+    <Compile Include="DateTimeEqualityComparer.cs" />
+    <Compile Include="Reflection\AssemblyExtensions.cs" />
+    <Compile Include="Collections\OrderNeutralEqualityComparer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -128,7 +133,6 @@
     <Folder Include="Patterns\IoC\" />
     <Folder Include="Configuration\" />
     <Folder Include="Web\" />
-    <Folder Include="Web\UI\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

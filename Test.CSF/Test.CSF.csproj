@@ -10,6 +10,7 @@
     <RootNamespace>Test.CSF</RootNamespace>
     <AssemblyName>Test.CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ReleaseVersion>0.0.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +37,7 @@
       <Package>nunit-2.4</Package>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -65,6 +67,11 @@
     <Compile Include="Reflection\TestEnumExtensions.cs" />
     <Compile Include="Reflection\TestMemberInfoExtensions.cs" />
     <Compile Include="Reflection\TestTypeExtensions.cs" />
+    <Compile Include="Configuration\TestConfigurationHelper.cs" />
+    <Compile Include="Configuration\MockConfigurationSection.cs" />
+    <Compile Include="TestDateTimeEqualityComparer.cs" />
+    <Compile Include="Reflection\TestAssemblyExtensions.cs" />
+    <Compile Include="Collections\TestOrderNeutralEqualityComparer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -83,5 +90,11 @@
     <Folder Include="Security\" />
     <Folder Include="Patterns\" />
     <Folder Include="Patterns\IoC\" />
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reflection\TestResource.txt">
+      <LogicalName>TestResource.txt</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
