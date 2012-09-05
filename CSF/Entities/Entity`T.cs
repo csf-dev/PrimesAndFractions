@@ -20,6 +20,11 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using CSF.Collections;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
+using CSF.Reflection;
 
 namespace CSF.Entities
 {
@@ -34,7 +39,7 @@ namespace CSF.Entities
   /// <remarks>
   /// <para>This type supports access to the reference ID within that repository.</para>
   /// </remarks>
-//  [Serializable]
+  [Serializable]
   public class Entity<T> : IEntity<T>
   {
     #region fields
@@ -343,7 +348,175 @@ namespace CSF.Entities
     {
       return this.GetType();
     }
-    
+
+    /// <summary>
+    /// Gets (setting up if neccesary) a list designed to hold 'reciprocal' references between this entity and related
+    /// entities.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method is used to either pass-through and return an existing event-bound list for the one-to-many
+    /// relationship or to create and configure that list before returning it.  This private overload requires the
+    /// source list to be non-null.
+    /// </para>
+    /// <para>
+    /// This method is very heavily based on the excellent work found at:
+    /// <c>https://handcraftsman.wordpress.com/2011/01/05/nhibernate-custom-collection-options/</c>.
+    /// </para>
+    /// </remarks>
+    /// <returns>
+    /// A list that wraps the source list with events.
+    /// </returns>
+    /// <param name='sourceList'>
+    /// The 'source' list of related entities.
+    /// </param>
+    /// <param name='property'>
+    /// An expression that exposes a property (upon the items within the source list) that holds the reference back to
+    /// the 'parent' entity.
+    /// </param>
+    /// <typeparam name='TItem'>
+    /// The type of items in the list.
+    /// </typeparam>
+    private IEventBoundList<TItem> GetOneToManyReferenceList<TItem>(IList<TItem> sourceList,
+                                                                    Expression<Func<TItem, object>> property)
+      where TItem : class
+    {
+      if(sourceList == null)
+      {
+        throw new ArgumentNullException("sourceList");
+      }
+
+      IEventBoundList<TItem> output = sourceList as IEventBoundList<TItem>;
+
+      if(output == null)
+      {
+        PropertyInfo propInfo = StaticReflectionUtility.GetProperty(property);
+
+        output = sourceList.WrapWithBeforeActions(
+          (list, item) => {
+            if(item == null)
+            {
+              throw new ArgumentNullException("item");
+            }
+            propInfo.SetValue(item, this, null);
+            return true;
+          },
+          (list, item) => {
+            if(item == null)
+            {
+              throw new ArgumentNullException("item");
+            }
+            bool contained = list.Contains(item);
+            if(contained)
+            {
+              propInfo.SetValue(item, null, null);
+            }
+            return contained;
+          });
+      }
+
+      return output;
+    }
+
+    /// <summary>
+    /// Gets (setting up if neccesary) a list designed to hold 'reciprocal' references between this entity and related
+    /// entities.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method is used to either pass-through and return an existing event-bound list for the one-to-many
+    /// relationship or to create and configure that list before returning it.  If the source list is null then it is
+    /// initialised as an empty list before use.
+    /// </para>
+    /// <para>
+    /// This method is very heavily based on the excellent work found at:
+    /// <c>https://handcraftsman.wordpress.com/2011/01/05/nhibernate-custom-collection-options/</c>.
+    /// </para>
+    /// </remarks>
+    /// <returns>
+    /// A list that wraps the source list with events.
+    /// </returns>
+    /// <param name='wrappedList'>
+    /// The existing wrapped list, which may be null.
+    /// </param>
+    /// <param name='sourceList'>
+    /// The 'source' list of related entities.
+    /// </param>
+    /// <param name='property'>
+    /// An expression that exposes a property (upon the items within the source list) that holds the reference back to
+    /// the 'parent' entity.
+    /// </param>
+    /// <typeparam name='TItem'>
+    /// The type of items in the list.
+    /// </typeparam>
+    protected virtual IEventBoundList<TItem> GetOneToManyReferenceList<TItem>(ref IList<TItem> wrappedList,
+                                                                              ref IList<TItem> sourceList,
+                                                                              Expression<Func<TItem, object>> property)
+      where TItem : class
+    {
+      IEventBoundList<TItem> typedList = wrappedList as IEventBoundList<TItem>;
+
+      if(typedList == null)
+      {
+        sourceList = sourceList?? new List<TItem>();
+        wrappedList = this.GetOneToManyReferenceList(sourceList, property);
+      }
+
+      return (IEventBoundList<TItem>) wrappedList;
+    }
+
+    /// <summary>
+    /// Handles cleanup and 'bookkeeping' tasks when replacing an existing many-to-many reciprocal reference list with
+    /// a new list instance.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method is very heavily based on the excellent work found at:
+    /// <c>https://handcraftsman.wordpress.com/2011/01/05/nhibernate-custom-collection-options/</c>.
+    /// </para>
+    /// </remarks>
+    /// <returns>
+    /// A list that wraps the replacement list.
+    /// </returns>
+    /// <param name='wrappedList'>
+    /// The old/original wrapped list, which will be cleared gracefully before it is overwritten.
+    /// </param>
+    /// <param name='replacementList'>
+    /// The list with which to replace the old.
+    /// </param>
+    /// <param name='property'>
+    /// An expression that exposes a property (upon the items within the source list) that holds the reference back to
+    /// the 'parent' entity.
+    /// </param>
+    /// <typeparam name='TItem'>
+    /// The type of items in the list.
+    /// </typeparam>
+    protected virtual IEventBoundList<TItem> ReplaceOneToManyReferenceList<TItem>(IList<TItem> wrappedList,
+                                                                                  IList<TItem> replacementList,
+                                                                                  Expression<Func<TItem, object>> property)
+      where TItem : class
+    {
+      if(replacementList == null)
+      {
+        throw new ArgumentNullException("replacementList");
+      }
+
+      IEventBoundList<TItem> typedList = wrappedList as IEventBoundList<TItem>;
+
+      if(typedList != null)
+      {
+        typedList.DetachAll();
+      }
+
+      PropertyInfo propInfo = StaticReflectionUtility.GetProperty(property);
+      foreach(TItem item in replacementList)
+      {
+        propInfo.SetValue(item, this, null);
+      }
+
+      return this.GetOneToManyReferenceList(replacementList, property);
+    }
+
     /// <summary>
     /// <para>Private method to validate an identity value.</para>
     /// </summary>

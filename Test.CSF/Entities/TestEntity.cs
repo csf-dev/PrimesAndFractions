@@ -21,6 +21,7 @@
 using System;
 using CSF.Entities;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Test.CSF.Entities
 {
@@ -158,14 +159,96 @@ namespace Test.CSF.Entities
       Assert.IsFalse(three != threeAgain, "Identical instances are equal");
       Assert.IsTrue(three != threeProduct, "Non-matching types not equal");
     }
+
+    [Test]
+    public void TestGetReciprocalReferenceList()
+    {
+      Person
+        person = new Person() { Id = 1 },
+        personTwo = new Person() { Id = 2 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order(),
+        orderThree = new Order();
+
+      person.Orders.Add(orderOne);
+      person.Orders.Add(orderTwo);
+
+      Assert.AreEqual(2, person.Orders.Count, "Correct order count");
+      Assert.AreEqual(2, person.SourceList.Count, "Correct order count (source)");
+      Assert.AreEqual(person, orderOne.Owner, "Correct owner (order 1)");
+      Assert.AreEqual(person, orderTwo.Owner, "Correct owner (order 2)");
+      Assert.IsNull(orderThree.Owner, "Owner is null (order 3)");
+
+      Assert.IsTrue(person.Orders.Remove(orderTwo), "Truth when removing an order that was in the set");
+      Assert.IsNull(orderTwo.Owner, "Owner is null after removal (order 2)");
+      Assert.AreEqual(1, person.Orders.Count, "Correct order count (after removal)");
+      Assert.AreEqual(1, person.SourceList.Count, "Correct order count (source, after removal)");
+
+      person.Orders = new Order[] { orderThree };
+
+      Assert.IsNull(orderOne.Owner, "Owner is null after overwriting list (order 1)");
+      Assert.AreEqual(person, orderThree.Owner, "Correct owner after overwriting list (order 3)");
+      Assert.AreEqual(1, person.Orders.Count, "Correct order count (after overwriting)");
+      Assert.AreEqual(1, person.SourceList.Count, "Correct order count (source, after overwriting)");
+
+      person.Orders = new List<Order>();
+
+      personTwo.Orders.Add(orderOne);
+      bool removed = person.Orders.Remove(orderOne);
+      Assert.IsFalse(removed, "No item was removed");
+      Assert.AreEqual(personTwo, orderOne.Owner, "Owner of order 1 remains intact");
+    }
+
+    [Test]
+    [ExpectedException(ExceptionType = typeof(ArgumentNullException))]
+    public void TestGetReciprocalReferenceListReplaceWithNull()
+    {
+      Person person = new Person() {
+        Id = 1
+      };
+      person.Orders = null;
+    }
     
     #endregion
     
     #region mocks
     
-    public class Person : Entity<uint> {}
+    public class Person : Entity<uint>
+    {
+      private IList<Order> _orders, _wrappedOrders;
+
+      public virtual IList<Order> Orders
+      {
+        get {
+          return this.GetOneToManyReferenceList(ref _wrappedOrders, ref _orders, x => x.Owner);
+        }
+        set {
+          _wrappedOrders = this.ReplaceOneToManyReferenceList(_wrappedOrders, value, x => x.Owner);
+          _orders = value;
+        }
+      }
+
+      public virtual IList<Order> SourceList
+      {
+        get {
+          return _orders;
+        }
+      }
+    }
     
-    public class Product : Entity<uint> {}
+    public class Order : Entity<uint>
+    {
+      public virtual Person Owner
+      {
+        get;
+        set;
+      }
+    }
+    
+    public class Product : Entity<uint>
+    {}
     
     #endregion
   }

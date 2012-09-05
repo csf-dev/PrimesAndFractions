@@ -72,6 +72,7 @@
     <Compile Include="TestDateTimeEqualityComparer.cs" />
     <Compile Include="Reflection\TestAssemblyExtensions.cs" />
     <Compile Include="Collections\TestOrderNeutralEqualityComparer.cs" />
+    <Compile Include="Collections\TestIListExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
