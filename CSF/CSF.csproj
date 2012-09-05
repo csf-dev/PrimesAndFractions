@@ -10,6 +10,7 @@
     <RootNamespace>CSF</RootNamespace>
     <AssemblyName>CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ReleaseVersion>0.0.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -54,9 +55,7 @@
     <Compile Include="IO\IIniSection.cs" />
     <Compile Include="IO\IniDocument.cs" />
     <Compile Include="IO\IniSection.cs" />
-    <Compile Include="EnumExtensions.cs" />
     <Compile Include="Collections\IKeyValueSerializer.cs" />
-    <Compile Include="UITextAttribute.cs" />
     <Compile Include="ICalculator.cs" />
     <Compile Include="SimpleCalculator.cs" />
     <Compile Include="Collections\PropertyKeyAssociation.cs" />
@@ -112,6 +111,18 @@
     <Compile Include="Configuration\ConnectionStringSettingsExtensions.cs" />
     <Compile Include="VersionExtensions.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="Reflection\MemberInfoExtensions.cs" />
+    <Compile Include="Reflection\EnumExtensions.cs" />
+    <Compile Include="Reflection\UITextAttribute.cs" />
+    <Compile Include="Reflection\TypeExtensions.cs" />
+    <Compile Include="Web\HttpResponseExtensions.cs" />
+    <Compile Include="Configuration\ConfigurationHelper.cs" />
+    <Compile Include="DateTimeEqualityComparer.cs" />
+    <Compile Include="Reflection\AssemblyExtensions.cs" />
+    <Compile Include="Collections\OrderNeutralEqualityComparer.cs" />
+    <Compile Include="Collections\IEventBoundList`T.cs" />
+    <Compile Include="Collections\EventBoundListWrapper`T.cs" />
+    <Compile Include="Collections\IListExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -124,6 +135,7 @@
     <Folder Include="Patterns\" />
     <Folder Include="Patterns\IoC\" />
     <Folder Include="Configuration\" />
+    <Folder Include="Web\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

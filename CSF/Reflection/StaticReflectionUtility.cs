@@ -29,6 +29,8 @@ namespace CSF.Reflection
   /// </summary>
   public class StaticReflectionUtility
   {
+    #region methods
+    
     /// <summary>
     /// Gets a <see cref="MemberInfo"/> from an expression that indicates a member of a specified type.
     /// </summary>
@@ -78,33 +80,6 @@ namespace CSF.Reflection
       return GetMember(expression.Body);
     }
     
-    private static MemberInfo GetMember(Expression expression)
-    {
-      MemberExpression memberExpression = null;
-      
-      if(expression == null)
-      {
-        throw new ArgumentNullException ("expression");
-      }
-      
-      if(expression.NodeType == ExpressionType.Convert)
-      {
-        UnaryExpression unary = (UnaryExpression) expression;
-        memberExpression = unary.Operand as MemberExpression;
-      }
-      else if(expression.NodeType == ExpressionType.MemberAccess)
-      {
-        memberExpression = (MemberExpression) expression;
-      }
-      
-      if(memberExpression == null)
-      {
-        throw new ArgumentException("The expression is not a MemberExpression");
-      }
-      
-      return memberExpression.Member;
-    }
-    
     /// <summary>
     /// Gets a <see cref="PropertyInfo"/> from an expression that indicates a member of a specified type.
     /// </summary>
@@ -150,6 +125,77 @@ namespace CSF.Reflection
     {
       return GetMember<TObject>(expression) as FieldInfo;
     }
+    
+    /// <summary>
+    /// Gets a <see cref="MethodInfo"/> from an expression that indicates a member of a specified type.
+    /// </summary>
+    /// <returns>
+    /// The method information.
+    /// </returns>
+    /// <param name='expression'>
+    /// The lambda expression that indicates a type, such as <c>x => x.MyProperty</c>.
+    /// </param>
+    /// <typeparam name='TObject'>
+    /// The type that contains the member which we are interested in.
+    /// </typeparam>
+    /// <exception cref='ArgumentNullException'>
+    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
+    /// </exception>
+    /// <exception cref='ArgumentException'>
+    /// Is thrown when an argument passed to a method is invalid.
+    /// </exception>
+    public static MethodInfo GetMethod<TObject>(Expression<Func<TObject, object>> expression)
+    {
+      return GetMember<TObject>(expression) as MethodInfo;
+    }
+    
+    #endregion
+    
+    #region private methods
+    
+    /// <summary>
+    /// Gets a <see cref="MemberInfo"/> from a LINQ expression.
+    /// </summary>
+    /// <returns>
+    /// The member that the expression refers to.
+    /// </returns>
+    /// <param name='expression'>
+    /// The expression, which must be a <see cref="MemberExpression"/>.
+    /// </param>
+    /// <exception cref='ArgumentNullException'>
+    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
+    /// </exception>
+    /// <exception cref='ArgumentException'>
+    /// Is thrown when an argument passed to a method is invalid.
+    /// </exception>
+    private static MemberInfo GetMember(Expression expression)
+    {
+      MemberExpression memberExpression = null;
+      
+      if(expression == null)
+      {
+        throw new ArgumentNullException ("expression");
+      }
+      
+      if(expression.NodeType == ExpressionType.Convert)
+      {
+        UnaryExpression unary = (UnaryExpression) expression;
+        memberExpression = unary.Operand as MemberExpression;
+      }
+      else if(expression.NodeType == ExpressionType.MemberAccess)
+      {
+        memberExpression = (MemberExpression) expression;
+      }
+      
+      if(memberExpression == null)
+      {
+        throw new ArgumentException("The expression is not a MemberExpression");
+      }
+      
+      return memberExpression.Member;
+    }
+    
+    #endregion
   }
 }
 
