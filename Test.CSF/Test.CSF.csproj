@@ -73,12 +73,21 @@
     <Compile Include="Reflection\TestAssemblyExtensions.cs" />
     <Compile Include="Collections\TestOrderNeutralEqualityComparer.cs" />
     <Compile Include="Collections\TestIListExtensions.cs" />
+    <Compile Include="Testing\TestCheckClassAttributes.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\CSF\CSF.csproj">
       <Project>{E563D7BC-1AB1-4AFB-8533-51315437C6E6}</Project>
       <Name>CSF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CSF.Testing\CSF.Testing.csproj">
+      <Project>{80484DD4-6FAE-4473-9FF2-E5A68AE7C669}</Project>
+      <Name>CSF.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CSF.Testing.Mocks\CSF.Testing.Mocks.csproj">
+      <Project>{F9B97F83-AAB0-4E83-B2E6-9D4A2958B820}</Project>
+      <Name>CSF.Testing.Mocks</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +101,7 @@
     <Folder Include="Patterns\" />
     <Folder Include="Patterns\IoC\" />
     <Folder Include="Configuration\" />
+    <Folder Include="Testing\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reflection\TestResource.txt">
