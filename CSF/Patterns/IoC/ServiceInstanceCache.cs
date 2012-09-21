@@ -81,7 +81,20 @@ namespace CSF.Patterns.IoC
     /// </typeparam>
     public void Remove<TService>() where TService : class
     {
-      this.UnderlyingCache.Remove(typeof(TService));
+      Type serviceType = typeof(TService);
+
+      // If the cached service instance implements IDisposable then properly dispose of it before removing it
+      if(this.UnderlyingCache.ContainsKey(serviceType))
+      {
+        IDisposable disposableCachedService = this.UnderlyingCache[serviceType] as IDisposable;
+
+        if(disposableCachedService != null)
+        {
+          disposableCachedService.Dispose();
+        }
+      }
+
+      this.UnderlyingCache.Remove(serviceType);
     }
 
     /// <summary>

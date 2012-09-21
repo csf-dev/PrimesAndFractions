@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -148,7 +149,75 @@ namespace CSF.Reflection
     {
       return GetMember<TObject>(expression) as MethodInfo;
     }
-    
+
+    /// <summary>
+    /// Similar to <c>Type.GetType</c> but searches every assembly within an <see cref="AppDomain"/>.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="Type"/>.
+    /// </returns>
+    /// <param name='typeName'>
+    /// The full name of the type to find and return, does not need to be assembly-qualified.
+    /// </param>
+    public static Type GetTypeFromAppDomain(string typeName)
+    {
+      return GetTypeFromAppDomain(AppDomain.CurrentDomain, typeName);
+    }
+
+    /// <summary>
+    /// Similar to <c>Type.GetType</c> but searches every assembly within an <see cref="AppDomain"/>.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="Type"/>.
+    /// </returns>
+    /// <param name='domain'>
+    /// The AppDomain to search.
+    /// </param>
+    /// <param name='typeName'>
+    /// The full name of the type to find and return, does not need to be assembly-qualified.
+    /// </param>
+    public static Type GetTypeFromAppDomain(AppDomain domain, string typeName)
+    {
+      if(domain == null)
+      {
+        throw new ArgumentNullException("domain");
+      }
+      else if(String.IsNullOrEmpty(typeName))
+      {
+        throw new ArgumentException("Type name may not be null or empty");
+      }
+
+      var output = domain.GetAssemblies()
+                   .SelectMany(s => s.GetTypes())
+                   .Where(x => x.FullName == typeName);
+
+      if(output.Count() == 0)
+      {
+        string message = String.Format("Could not find type '{0}' in the specified AppDomain", typeName);
+        throw new InvalidOperationException(message);
+      }
+      else if(output.Count() > 1)
+      {
+        string message = String.Format("Error: Multiple types of name '{0}' found in the specified AppDomain",
+                                       typeName);
+        throw new InvalidOperationException(message);
+      }
+
+      return output.First();
+    }
+
+    /// <summary>
+    /// Determines whether the application is executing using the Mono framework.  This uses the supported manner of
+    /// detecting mono.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c> if the application is executing on the mono framework; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool IsUsingMonoFramework()
+    {
+      return (Type.GetType("Mono.Runtime") != null);
+    }
+
     #endregion
     
     #region private methods

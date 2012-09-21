@@ -161,9 +161,9 @@ namespace CSF.Testing.Reflection
       List<Type> failures = new List<Type>();
       StringBuilder message = new StringBuilder();
 
-      foreach(Type type in this.Assembly.GetTypes())
+      foreach(Type type in this.Assembly.GetTypes().OrderBy(x => x.FullName))
       {
-        if(!type.IsClass)
+        if(!type.IsClass || type.IsNotPublic)
         {
           continue;
         }
@@ -173,7 +173,7 @@ namespace CSF.Testing.Reflection
           continue;
         }
 
-        if(this.IgnoredNamespaces.Any(x => type.Namespace.StartsWith(x)))
+        if(this.IgnoredNamespaces.Any(x => (String.IsNullOrEmpty(type.Namespace) || type.Namespace.StartsWith(x))))
         {
           continue;
         }

@@ -40,6 +40,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Data" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -123,6 +124,11 @@
     <Compile Include="Collections\IEventBoundList`T.cs" />
     <Compile Include="Collections\EventBoundListWrapper`T.cs" />
     <Compile Include="Collections\IListExtensions.cs" />
+    <Compile Include="Serialization\ISerializationService.cs" />
+    <Compile Include="Serialization\SerializationService.cs" />
+    <Compile Include="Serialization\ISerializationContainer.cs" />
+    <Compile Include="Serialization\XmlSerializationContainer.cs" />
+    <Compile Include="DictionaryEqualityComparer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -136,6 +142,7 @@
     <Folder Include="Patterns\IoC\" />
     <Folder Include="Configuration\" />
     <Folder Include="Web\" />
+    <Folder Include="Serialization\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

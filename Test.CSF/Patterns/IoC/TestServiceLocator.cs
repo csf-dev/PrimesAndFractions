@@ -7,6 +7,12 @@ namespace Test.CSF.Patterns.IoC
   [TestFixture]
   public class TestServiceLocator
   {
+    #region fields
+
+    private MockServiceOne CachedService;
+
+    #endregion
+
     #region tests
     
     [Test]
@@ -32,6 +38,28 @@ namespace Test.CSF.Patterns.IoC
       Assert.IsInstanceOfType(typeof(MockServiceTwo), service, "Second service correct type");
       Assert.AreEqual(typeof(MockServiceTwo).Name, service.GetString(), "Second service correct output");
     }
+
+    
+    [Test]
+    [Category("Integration")]
+    public void TestDisposedAfterReplacement()
+    {
+      ServiceLocator.Select<IMockService>(() => {
+        this.CachedService = new MockServiceOne();
+        return this.CachedService;
+      });
+
+      IMockService service = ServiceLocator.Get<IMockService>();
+
+      Assert.AreEqual(this.CachedService, service, "Returns cached service");
+      Assert.IsFalse(this.CachedService.IsDisposed, "Not disposed yet");
+
+      ServiceLocator.Select<IMockService>(() => new MockServiceTwo());
+      service = ServiceLocator.Get<IMockService>();
+
+      Assert.AreNotEqual(this.CachedService, service, "Service replaced correctly");
+      Assert.IsTrue(this.CachedService.IsDisposed, "Disposed");
+    }
     
     #endregion
     
@@ -42,11 +70,18 @@ namespace Test.CSF.Patterns.IoC
       string GetString();
     }
     
-    public class MockServiceOne : IMockService
+    public class MockServiceOne : IMockService, IDisposable
     {
+      public bool IsDisposed = false;
+
       public string GetString()
       {
         return this.GetType().Name;
+      }
+
+      public void Dispose()
+      {
+        this.IsDisposed = true;
       }
     }
     
