@@ -46,7 +46,28 @@ namespace Test.CSF.Reflection
       Assert.IsNotNull(targetType);
       Assert.AreEqual(typeof(global::CSF.Testing.Mocks.SampleClass), targetType, "Correct type");
     }
+
+    [Test]
+    public void TestGetMethod()
+    {
+      MethodInfo method = StaticReflectionUtility.GetMethod<SampleClass>(x => x.GetString());
+      Assert.IsNotNull(method, "Method is not null");
+      string output = (string) method.Invoke(new SampleClass(), null);
+      Assert.AreEqual("I am a sample string", output, "Correct output");
+    }
     
+    #endregion
+
+    #region mocks
+
+    public class SampleClass
+    {
+      public string GetString()
+      {
+        return "I am a sample string";
+      }
+    }
+
     #endregion
   }
 }

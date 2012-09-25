@@ -240,6 +240,7 @@ namespace CSF.Reflection
     private static MemberInfo GetMember(Expression expression)
     {
       MemberExpression memberExpression = null;
+      MemberInfo output = null;
       
       if(expression == null)
       {
@@ -255,13 +256,17 @@ namespace CSF.Reflection
       {
         memberExpression = (MemberExpression) expression;
       }
-      
-      if(memberExpression == null)
+      else if(expression is MethodCallExpression)
       {
-        throw new ArgumentException("The expression is not a MemberExpression");
+        output = ((MethodCallExpression) expression).Method;
       }
       
-      return memberExpression.Member;
+      if(memberExpression == null && output == null)
+      {
+        throw new ArgumentException("Could not retrieve a member from the given expression.");
+      }
+      
+      return output ?? memberExpression.Member;
     }
     
     #endregion
