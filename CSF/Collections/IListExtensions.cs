@@ -58,6 +58,8 @@ namespace CSF.Collections
                                                               Action<T> beforeAdd,
                                                               Action<T> beforeRemove) where T : class
     {
+      // See the remarks for IEventBoundList<T> for an important rationale discussion for the generic constraint 'class'
+
       IEventBoundList<T> output = (sourceList as IEventBoundList<T>)?? new EventBoundListWrapper<T>(sourceList);
 
       output.BeforeAdd = (list, item) => {
@@ -103,6 +105,8 @@ namespace CSF.Collections
                                                               Func<IList<T>, T, bool> beforeAdd,
                                                               Func<IList<T>, T, bool> beforeRemove) where T : class
     {
+      // See the remarks for IEventBoundList<T> for an important rationale discussion for the generic constraint 'class'
+
       IEventBoundList<T> output = (sourceList as IEventBoundList<T>)?? new EventBoundListWrapper<T>(sourceList);
 
       output.BeforeAdd = beforeAdd;
