@@ -10,6 +10,7 @@
     <RootNamespace>CSF.Testing.Mocks</RootNamespace>
     <AssemblyName>CSF.Testing.Mocks</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ReleaseVersion>0.1.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
