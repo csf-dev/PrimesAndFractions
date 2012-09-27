@@ -49,6 +49,6 @@ Global
 		$1.inheritsSet = VisualStudio
 		$1.inheritsScope = text/plain
 		$1.scope = text/plain
-		version = 0.0.1
+		version = 0.1.1
 	EndGlobalSection
 EndGlobal
