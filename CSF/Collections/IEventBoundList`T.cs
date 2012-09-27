@@ -33,9 +33,23 @@ namespace CSF.Collections
   /// This type is very heavily based on the excellent work found at:
   /// <c>https://handcraftsman.wordpress.com/2011/01/05/nhibernate-custom-collection-options/</c>.
   /// </para>
+  /// <para>
+  /// An important explanation as to the rationale for the <c>class</c> constraint on the generic type of the list
+  /// items:  This is entirely because the contained items within the list must be reference types and not value types.
+  /// If the list items were value types then the actions (before and after) would not be able to modify these instances
+  /// in their own method bodies.
+  /// </para>
+  /// <example>
+  /// For example:  A list is configured with a <see cref="BeforeAdd"/> handler which sets a property on the item that
+  /// is to be added to the list.  However, if this item were a value type then it would be passed in as a value - the
+  /// property would be set but only on that 'copy' of the value passed into the anonymous method.  The original value
+  /// would remain unchanged and the entire purpose of the action will have been lost.
+  /// </example>
   /// </remarks>
   public interface IEventBoundList<T> : IList<T>, ICollection where T : class
   {
+    // See the remarks for this type for an important rationale discussion for the generic constraint 'class'.
+
     /// <summary>
     /// Gets or sets the action to perform after an item is added to this collection.
     /// </summary>

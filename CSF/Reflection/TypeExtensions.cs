@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace CSF.Reflection
 {
@@ -88,8 +89,64 @@ namespace CSF.Reflection
       {
         throw new ArgumentNullException ("type");
       }
-      
-      return searchAssembly.GetTypes().Where(x => x.IsSubclassOf(type)).ToList();
+
+      return (from x in searchAssembly.GetTypes()
+              where
+                type.IsAssignableFrom(x)
+                && x != type
+              select x).ToList();
+    }
+
+    /// <summary>
+    /// Determines whether the current type implements the specified interface.
+    /// </summary>
+    /// <returns>
+    /// True if the <paramref name="type"/> implements the desired interface, false otherwise.
+    /// </returns>
+    /// <param name='type'>
+    /// The type upon which to search for the interface
+    /// </param>
+    /// <typeparam name='TInterface'>
+    /// The type of the interface to search for.
+    /// </typeparam>
+    public static bool ImplementsInterface<TInterface>(this Type type)
+    {
+      if(type == null)
+      {
+        throw new ArgumentNullException("type");
+      }
+
+      return type.ImplementsInterface(typeof(TInterface));
+    }
+
+    /// <summary>
+    /// Determines whether the current type implements the specified interface.
+    /// </summary>
+    /// <returns>
+    /// True if the <paramref name="type"/> implements the desired interface, false otherwise.
+    /// </returns>
+    /// <param name='type'>
+    /// The type upon which to search for the interface
+    /// </param>
+    /// <param name='interfaceType'>
+    /// The type of the interface to search for.
+    /// </param>
+    public static bool ImplementsInterface(this Type type, Type interfaceType)
+    {
+      if(type == null)
+      {
+        throw new ArgumentNullException("type");
+      }
+      if(interfaceType == null)
+      {
+        throw new ArgumentNullException("interfaceType");
+      }
+      else if(!interfaceType.IsInterface)
+      {
+        throw new ArgumentException("interfaceType must be an interface");
+      }
+
+      return interfaceType.IsAssignableFrom(type);
     }
 
     #endregion

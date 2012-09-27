@@ -381,6 +381,8 @@ namespace CSF.Entities
                                                                     Expression<Func<TItem, object>> property)
       where TItem : class
     {
+      // See the remarks for IEventBoundList<T> for an important rationale discussion for the generic constraint 'class'
+
       if(sourceList == null)
       {
         throw new ArgumentNullException("sourceList");
@@ -454,6 +456,8 @@ namespace CSF.Entities
                                                                               Expression<Func<TItem, object>> property)
       where TItem : class
     {
+      // See the remarks for IEventBoundList<T> for an important rationale discussion for the generic constraint 'class'
+
       IEventBoundList<TItem> typedList = wrappedList as IEventBoundList<TItem>;
 
       if(typedList == null)
@@ -496,6 +500,8 @@ namespace CSF.Entities
                                                                                   Expression<Func<TItem, object>> property)
       where TItem : class
     {
+      // See the remarks for IEventBoundList<T> for an important rationale discussion for the generic constraint 'class'
+
       if(replacementList == null)
       {
         throw new ArgumentNullException("replacementList");

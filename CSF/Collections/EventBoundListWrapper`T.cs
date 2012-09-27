@@ -37,6 +37,8 @@ namespace CSF.Collections
   [Serializable]
   public class EventBoundListWrapper<T> : IEventBoundList<T> where T : class
   {
+    // See the remarks for IEventBoundList<T> for an important rationale discussion for the generic constraint 'class'.
+
     #region fields
 
     private readonly IList<T> _wrapped;

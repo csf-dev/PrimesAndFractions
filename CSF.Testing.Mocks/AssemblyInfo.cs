@@ -4,8 +4,8 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("CSF.Data.NHibernate")]
-[assembly: AssemblyDescription("Useful types specific to making use of NHibernate")]
+[assembly: AssemblyTitle("CSF.Testing.Mocks")]
+[assembly: AssemblyDescription("Mock objects to help facilitate the unit tests for the CSF.Testing assembly")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CSF Software Limited")]
 [assembly: AssemblyProduct("")]

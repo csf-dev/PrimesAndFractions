@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{18466B45-F3E5-46D9-808D-EA2896CC7ACD}</ProjectGuid>
+    <ProjectGuid>{80484DD4-6FAE-4473-9FF2-E5A68AE7C669}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>CSF.Data.NHibernate</RootNamespace>
-    <AssemblyName>CSF.Data.NHibernate</AssemblyName>
+    <RootNamespace>CSF.Testing</RootNamespace>
+    <AssemblyName>CSF.Testing</AssemblyName>
     <ReleaseVersion>0.1.1</ReleaseVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -21,6 +21,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <GenerateDocumentation>true</GenerateDocumentation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -29,27 +31,25 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <GenerateDocumentation>true</GenerateDocumentation>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="NHibernate, Version=3.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4">
+    <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
       <Private>False</Private>
-      <Package>nhibernate-3.1</Package>
+      <Package>nunit-2.4</Package>
     </Reference>
-    <Reference Include="Mono.Data.Sqlite" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Core" />
-    <Reference Include="FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880">
-      <Private>False</Private>
-      <Package>fluent-nhibernate-1.2.0.712</Package>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="MonoNHibernateSqlLiteDriver.cs" />
-    <Compile Include="SQLiteConfigurationExtensions.cs" />
+    <Compile Include="Reflection\CheckClassAttributes.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Reflection\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF\CSF.csproj">
       <Project>{E563D7BC-1AB1-4AFB-8533-51315437C6E6}</Project>
