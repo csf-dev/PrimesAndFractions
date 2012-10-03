@@ -75,6 +75,7 @@
     <Compile Include="Collections\TestIListExtensions.cs" />
     <Compile Include="Testing\TestCheckClassAttributes.cs" />
     <Compile Include="TestDictionaryEqualityComparer.cs" />
+    <Compile Include="TestDateTimeExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

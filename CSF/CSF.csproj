@@ -131,6 +131,7 @@
     <Compile Include="DictionaryEqualityComparer.cs" />
     <Compile Include="Entities\IIdentityUnwrappingService.cs" />
     <Compile Include="Entities\IIdentityExtensions.cs" />
+    <Compile Include="DateTimeExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
