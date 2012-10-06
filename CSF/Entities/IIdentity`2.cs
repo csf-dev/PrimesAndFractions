@@ -1,5 +1,5 @@
 //
-//  IIdentityUnwrappingService.cs
+//  IIdentity2.cs
 //
 //  Author:
 //       Craig Fowler <craig@craigfowler.me.uk>
@@ -19,33 +19,25 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
+using CSF.Patterns.IoC;
 
 namespace CSF.Entities
 {
   /// <summary>
-  /// Interface for a service that is able to 'unwrap' an <see cref="IIdentity"/> into its original entity, using some
-  /// kind of retreival mechanism.
+  /// <para>
+  /// Interface to describe the identity that every generic <see cref="IEntity"/> exposes in its
+  /// <see cref="IEntity.GetIdentity"/> method.
+  /// </para>
   /// </summary>
-  public interface IIdentityUnwrappingService
+  public interface IIdentity<TEntity,TIdentifier> : IIdentity<TEntity> where TEntity : IEntity
   {
     /// <summary>
-    /// Unwrap the specified identity returning the entity that the identity represents.
+    /// <para>
+    /// Read-only.  An <see cref="System.Object"/> of the generic type associated with this instance that uniquely
+    /// identifies this entity amongst all other entities of the same <see cref="Type"/>.
+    /// </para>
     /// </summary>
-    /// <param name='identity'>
-    /// An <see cref="IIdentity"/> instance.
-    /// </param>
-    /// <typeparam name='TEntity'>
-    /// The type of entity expected by the unwrapping action.
-    /// </typeparam>
-    TEntity Unwrap<TEntity>(IIdentity<TEntity> identity) where TEntity : IEntity;
-
-    /// <summary>
-    /// Unwrap the specified identity returning the entity that the identity represents.
-    /// </summary>
-    /// <param name='identity'>
-    /// An <see cref="IIdentity"/> instance.
-    /// </param>
-    IEntity Unwrap(IIdentity identity);
+    new TIdentifier Value { get; }
   }
 }
 

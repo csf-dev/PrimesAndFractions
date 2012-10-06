@@ -20,6 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using CSF.Patterns.IoC;
 
 namespace CSF.Entities
 {
@@ -32,9 +33,17 @@ namespace CSF.Entities
   public interface IIdentity
   {
     /// <summary>
-    /// <para>Read-only.  A <see cref="System.Type"/> that is associated with this identity instance.</para>
+    /// <para>
+    /// Read-only.  A <see cref="System.Type"/> that indicates the type of <see cref="IEntity"/> that this identifier
+    /// represents.
+    /// </para>
     /// </summary>
-    Type Type { get; }
+    Type EntityType { get; }
+
+    /// <summary>
+    /// <para>Read-only.  Gets the type of the identifier <see cref="Value"/>.</para>
+    /// </summary>
+    Type IdentifierType { get; }
     
     /// <summary>
     /// <para>

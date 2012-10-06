@@ -20,6 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using CSF.Patterns.IoC;
 
 namespace CSF.Entities
 {
@@ -29,15 +30,8 @@ namespace CSF.Entities
   /// <see cref="IEntity.GetIdentity"/> method.
   /// </para>
   /// </summary>
-  public interface IIdentity<T> : IIdentity
+  public interface IIdentity<TEntity> : IIdentity where TEntity : IEntity
   {
-    /// <summary>
-    /// <para>
-    /// Read-only.  An <see cref="System.Object"/> of the generic type associated with this instance that uniquely
-    /// identifies this entity amongst all other entities of the same <see cref="Type"/>.
-    /// </para>
-    /// </summary>
-    new T Value { get; }
   }
 }
 

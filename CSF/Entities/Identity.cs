@@ -32,39 +32,46 @@ namespace CSF.Entities
     #region static factory method
     
     /// <summary>
-    /// <para>Static convenience method creates a new <see cref="IIdentity"/> for a generic type.</para>
+    /// <para>Static convenience method creates a new <see cref="IIdentity"/> for a specified type.</para>
     /// </summary>
     /// <param name="identifier">
     /// An identifier value.
     /// </param>
+    /// <typeparam name='TIdentifier'>
+    /// The type of the identifier.
+    /// </typeparam>
+    /// <typeparam name='TEntity'>
+    /// The type of the entity that the generated identity relates to.
+    /// </typeparam>
     /// <returns>
     /// An <see cref="IIdentity"/>
     /// </returns>
-    public static IIdentity Create<TEntity>(object identifier) where TEntity : IEntity
+    public static IIdentity<TEntity,TIdentifier> Create<TEntity,TIdentifier>(TIdentifier identifier) where TEntity : IEntity
     {
-      Type entityBase = typeof(TEntity);
-      Type[] genericArguments;
-      
-      while(entityBase.BaseType != typeof(Object))
-      {
-        entityBase = entityBase.BaseType;
-      }
-      
-      if(!entityBase.IsGenericType)
-      {
-        throw new ArgumentException("Base class for the entity type is not an Entity<T> (it is not generic)");
-      }
-      
-      genericArguments = entityBase.GetGenericArguments();
-      if(genericArguments.Length != 1)
-      {
-        throw new ArgumentException("Base class for the entity type is not an Entity<T> (wrong count of generic arguments)");
-      }
-      
-      return (IIdentity) (typeof(Identity<>)
-                          .MakeGenericType(genericArguments)
-                          .GetConstructor(new Type[] { typeof(Type), genericArguments[0] })
-                          .Invoke(new object[] { typeof(TEntity), Convert.ChangeType(identifier, genericArguments[0]) }));
+      return new Identity<TEntity,TIdentifier>(identifier);
+    }
+
+    /// <summary>
+    /// <para>Static convenience method creates a new <see cref="IIdentity"/> for a given entity type.</para>
+    /// </summary>
+    /// <param name='identifier'>
+    /// An identifier value.
+    /// </param>
+    /// <param name='entityType'>
+    /// The type of the entity that the generated identity relates to.
+    /// </param>
+    /// <typeparam name='TIdentifier'>
+    /// The type of the identifier.
+    /// </typeparam>
+    /// <returns>
+    /// An <see cref="IIdentity"/>
+    /// </returns>
+    public static IIdentity Create<TIdentifier>(TIdentifier identifier, Type entityType)
+    {
+      return (IIdentity) typeof(Identity<,>)
+                           .MakeGenericType(entityType, typeof(TIdentifier))
+                           .GetConstructor(new Type[] { typeof(TIdentifier) })
+                           .Invoke(new object[] { identifier });
     }
     
     #endregion
