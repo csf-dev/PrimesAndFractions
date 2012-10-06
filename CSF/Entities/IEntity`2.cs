@@ -28,13 +28,16 @@ namespace CSF.Entities
   /// Generic interface to describe an entity that is serialisable to a persistent data source such as a database.
   /// </para>
   /// </summary>
-  /// <typeparam name="T">
-  /// Describes the underlying type of the <see cref="IIdentity"/> to be stored within the current object instance.
-  /// </typeparam>
   /// <remarks>
   /// <para>This interface supports access to the reference ID within that repository.</para>
   /// </remarks>
-  public interface IEntity<T> : IEntity
+  /// <typeparam name="TEntity">
+  /// The entity type.
+  /// </typeparam>
+  /// <typeparam name="TIdentity">
+  /// Describes the underlying type used to create unique references to this entity - usually a primitive type.
+  /// </typeparam>
+  public interface IEntity<TEntity,TIdentity> : IEntity where TEntity : IEntity
   {
     #region properties
     
@@ -48,23 +51,23 @@ namespace CSF.Entities
     /// database-mapping layers that need a property with which to reference the unique identifier.
     /// </para>
     /// </remarks>
-    new T Id { get; }
+    new TIdentity Id { get; }
     
     #endregion
     
     #region methods
     
     /// <summary>
-    /// <para>Hides base member.  Gets the identity of the current instance.</para>
+    /// <para>Gets the identity of the current instance.</para>
     /// </summary>
     /// <returns>
-    /// An generic <see cref="IIdentity"/> instance.
+    /// An <see cref="IIdentity"/> instance.
     /// </returns>
     /// <exception cref="InvalidOperationException">
     /// If the current instance does not yet have an identity.  <see cref="HasIdentity"/>.
     /// </exception>
-    new IIdentity<T> GetIdentity();
-    
+    new IIdentity<TEntity,TIdentity> GetIdentity();
+
     /// <summary>
     /// <para>Overloaded.  Sets the reference stored within the current object instance.</para>
     /// </summary>
@@ -74,7 +77,7 @@ namespace CSF.Entities
     /// <exception cref="ArgumentException">
     /// If <paramref name="identityValue"/> is not a valid reference.
     /// </exception>
-    void SetIdentity(T identityValue);
+    void SetIdentity(TIdentity identityValue);
     
     /// <summary>
     /// <para>
@@ -88,7 +91,7 @@ namespace CSF.Entities
     /// <returns>
     /// A <see cref="System.Boolean"/>
     /// </returns>
-    bool ValidateIdentity(T identityValue);
+    bool ValidateIdentity(TIdentity identityValue);
     
     #endregion
   }
