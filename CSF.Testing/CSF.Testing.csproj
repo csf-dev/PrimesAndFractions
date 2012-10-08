@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>CSF.Testing</RootNamespace>
     <AssemblyName>CSF.Testing</AssemblyName>
-    <ReleaseVersion>0.1.1</ReleaseVersion>
+    <ReleaseVersion>1.0.0</ReleaseVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -45,6 +45,9 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Reflection\CheckClassAttributes.cs" />
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
