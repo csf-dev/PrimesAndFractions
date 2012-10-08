@@ -18,7 +18,22 @@ namespace Test.CSF.Collections
       
       serializer.Map(x => x.PropertyOne);
       serializer.Map(x => x.PropertyTwo);
+
+      Assert.AreEqual(2, serializer.Mappings.Count, "Correct count of mappings");
+    }
+
+    [Test]
+    public void TestMapCustom()
+    {
+      IKeyValueSerializer<SampleObject> serializer = new KeyValueSerializer<SampleObject>();
       
+      serializer.Map(x => x.PropertyOne,
+                     (obj, strVal) => String.Format("foo_{0}", strVal),
+                     (obj, strVal) => strVal.Substring(4));
+      serializer.Map(x => x.PropertyTwo,
+                     (obj, strVal) => strVal.Length,
+                     (obj, intVal) => String.Empty.PadLeft(intVal));
+
       Assert.AreEqual(2, serializer.Mappings.Count, "Correct count of mappings");
     }
     
@@ -214,7 +229,32 @@ namespace Test.CSF.Collections
       Assert.IsNull(testObjects[1].PropertyOne, "Object 2, property 1 OK");
       Assert.AreEqual(100, testObjects[1].PropertyTwo, "Object 2, property 2 OK");
     }
-    
+
+    [Test]
+    [Description("Deserialise an object with custom mappings")]
+    public void TestDeserializeCustom()
+    {
+      IKeyValueSerializer<SampleObject> serializer = new KeyValueSerializer<SampleObject>();
+      
+      serializer.Map(x => x.PropertyOne,
+                     (obj, strVal) => String.Format("foo_{0}", strVal),
+                     (obj, strVal) => strVal.Substring(4));
+      serializer.Map(x => x.PropertyTwo,
+                     (obj, strVal) => strVal.Length,
+                     (obj, intVal) => String.Empty.PadLeft(intVal));
+
+      IDictionary<string, string> collection = new Dictionary<string, string>();
+      
+      collection.Add("PropertyOne", "Foo bar baz");
+      collection.Add("PropertyTwo", "aaaa");
+      
+      SampleObject testObject = serializer.Deserialize(collection);
+      
+      Assert.IsNotNull(testObject, "Not null");
+      Assert.AreEqual("foo_Foo bar baz", testObject.PropertyOne, "Property one OK");
+      Assert.AreEqual(4, testObject.PropertyTwo, "Property two OK");
+    }
+
     #endregion
     
     #region serialization tests
@@ -395,6 +435,34 @@ namespace Test.CSF.Collections
         .SerializeMany(objects, collection);
       
       Assert.Fail("Test should not reach this point");
+    }
+
+    [Test]
+    [Description("Serialise an object with custom mappings")]
+    public void TestSerializeCustom()
+    {
+      SampleObject sample = new SampleObject() {
+        PropertyOne = "foo_Flim flam wobble",
+        PropertyTwo = 10
+      };
+      
+      IDictionary<string, string> collection = new Dictionary<string, string>();
+      
+      IKeyValueSerializer<SampleObject> serializer = new KeyValueSerializer<SampleObject>();
+      serializer.Map(x => x.PropertyOne,
+                     (obj, strVal) => String.Format("foo_{0}", strVal),
+                     (obj, strVal) => strVal.Substring(4));
+      serializer.Map(x => x.PropertyTwo,
+                     (obj, strVal) => strVal.Length,
+                     (obj, intVal) => String.Empty.PadLeft(intVal));
+
+      serializer.Serialize(sample, collection);
+      
+      Assert.IsTrue(collection.ContainsKey("PropertyOne"), "Contains property one");
+      Assert.IsTrue(collection.ContainsKey("PropertyTwo"), "Contains property two");
+      
+      Assert.AreEqual("Flim flam wobble", collection["PropertyOne"], "Property one correct");
+      Assert.AreEqual("          ", collection["PropertyTwo"], "Property two correct");
     }
     
     #endregion
