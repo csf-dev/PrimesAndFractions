@@ -40,11 +40,11 @@ namespace CSF.Entities
   /// <para>This type supports access to the reference ID within that repository.</para>
   /// </remarks>
   [Serializable]
-  public class Entity<TEntity,TIdentity> : IEntity<TEntity,TIdentity> where TEntity : IEntity
+  public class Entity<T> : IEntity<T>
   {
     #region fields
     
-    private IIdentity<TEntity,TIdentity> _identity;
+    private Identity<T>? _identity;
     
     #endregion
     
@@ -56,7 +56,7 @@ namespace CSF.Entities
     public virtual bool HasIdentity
     {
       get {
-        return _identity != null;
+        return (_identity.HasValue);
       }
     }
     
@@ -74,14 +74,14 @@ namespace CSF.Entities
     /// database-mapping layers that need a property with which to reference the unique identifier.
     /// </para>
     /// </remarks>
-    public virtual TIdentity Id
+    public virtual T Id
     {
       get {
-        TIdentity output = default(TIdentity);
+        T output = default(T);
         
-        if(_identity != null)
+        if(_identity.HasValue)
         {
-          output = _identity.Value;
+          output = _identity.Value.Value;
         }
         
         return output;
@@ -107,14 +107,14 @@ namespace CSF.Entities
     /// <exception cref="InvalidOperationException">
     /// If the underlying reference stored within the current object instance is not valid.
     /// </exception>
-    public virtual IIdentity<TEntity,TIdentity> GetIdentity()
+    public virtual IIdentity<T> GetIdentity()
     {
-      if(_identity == null)
+      if(!_identity.HasValue)
       {
         throw new InvalidOperationException("This entity instance does not have an identity.");
       }
       
-      return _identity;
+      return _identity.Value;
     }
 
     /// <summary>
@@ -126,9 +126,9 @@ namespace CSF.Entities
     /// <exception cref="ArgumentException">
     /// If <paramref name="identityValue"/> is not a valid reference.
     /// </exception>
-    public virtual void SetIdentity(TIdentity identityValue)
+    public virtual void SetIdentity(T identityValue)
     {
-      if(_identity != null)
+      if(_identity.HasValue)
       {
         throw new InvalidOperationException("The current entity already has an identity.  Identity may not be " +
                                             "changed once set without first calling ClearIdentity().");
@@ -145,7 +145,7 @@ namespace CSF.Entities
     /// </param>
     public virtual void SetIdentity(object identityValue)
     {
-      this.SetIdentity(Convert.ChangeType(identityValue, typeof(TIdentity)));
+      this.SetIdentity(Convert.ChangeType(identityValue, typeof(T)));
     }
 
     /// <summary>
@@ -168,7 +168,7 @@ namespace CSF.Entities
     /// <returns>
     /// A <see cref="System.Boolean"/>
     /// </returns>
-    public virtual bool ValidateIdentity(TIdentity identityValue)
+    public virtual bool ValidateIdentity(T identityValue)
     {
       return this.Validate(identityValue);
     }
@@ -182,7 +182,7 @@ namespace CSF.Entities
         return this.Id;
       }
       set {
-        this.Id = (TIdentity) value;
+        this.Id = (T) value;
       }
     }
     
@@ -193,12 +193,12 @@ namespace CSF.Entities
     
     void IEntity.SetIdentity(object identityValue)
     {
-      this.SetIdentity((TIdentity) Convert.ChangeType(identityValue, typeof(TIdentity)));
+      this.SetIdentity((T) Convert.ChangeType(identityValue, typeof(T)));
     }
     
     bool IEntity.ValidateIdentity(object identityValue)
     {
-      return this.ValidateIdentity((TIdentity) identityValue);
+      return this.ValidateIdentity((T) identityValue);
     }
     
     #endregion
@@ -328,14 +328,14 @@ namespace CSF.Entities
     /// <returns>
     /// A generic identity instance
     /// </returns>
-    protected virtual IIdentity<TEntity,TIdentity> CreateIdentity(TIdentity identityValue)
+    protected virtual Identity<T> CreateIdentity(T identityValue)
     {
       if(!this.Validate(identityValue))
       {
         throw new ArgumentException("Invalid identity value");
       }
       
-      return Identity.Create<TEntity,TIdentity>(identityValue);
+      return new Identity<T>(this.GetIdentityType(), identityValue);
     }
     
     /// <summary>
@@ -346,7 +346,7 @@ namespace CSF.Entities
     /// </returns>
     protected virtual Type GetIdentityType()
     {
-      return typeof(TEntity);
+      return this.GetType();
     }
 
     /// <summary>
@@ -532,9 +532,9 @@ namespace CSF.Entities
     /// <returns>
     /// A <see cref="System.Boolean"/>
     /// </returns>
-    private bool Validate(TIdentity identityValue)
+    private bool Validate(T identityValue)
     {
-      return !Object.Equals(identityValue, default(TIdentity));
+      return !Object.Equals(identityValue, default(T));
     }
     
     #endregion
@@ -632,7 +632,7 @@ namespace CSF.Entities
     /// <returns>
     /// A <see cref="System.Boolean"/>
     /// </returns>
-    public static bool operator ==(Entity<TEntity,TIdentity> entity, IEntity obj)
+    public static bool operator ==(Entity<T> entity, IEntity obj)
     {
       bool output;
       
@@ -663,7 +663,7 @@ namespace CSF.Entities
     /// <returns>
     /// A <see cref="System.Boolean"/>
     /// </returns>
-    public static bool operator !=(Entity<TEntity,TIdentity> entity, IEntity obj)
+    public static bool operator !=(Entity<T> entity, IEntity obj)
     {
       return !(entity == obj);
     }

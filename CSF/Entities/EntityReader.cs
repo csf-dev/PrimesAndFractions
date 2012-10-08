@@ -30,14 +30,13 @@ namespace CSF.Entities
   /// </para>
   /// </summary>
   public delegate IEntity EntityReader(IIdentity identity);
-
+  
   /// <summary>
   /// <para>
   /// A generic delegate that represents a method that is capable of reading a single generic <see cref="IEntity"/>
   /// using its unique <paramref name="identity"/>.
   /// </para>
   /// </summary>
-  public delegate TEntity EntityReader<TEntity,TIdentity>(IIdentity<TEntity,TIdentity> identity)
-                                                          where TEntity : IEntity<TEntity,TIdentity>;
+  public delegate IEntity<T> EntityReader<T>(IIdentity<T> identity);
 }
 

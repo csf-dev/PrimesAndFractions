@@ -48,7 +48,6 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="MonoNHibernateSqlLiteDriver.cs" />
     <Compile Include="SQLiteConfigurationExtensions.cs" />
-    <Compile Include="NHibernateIdentityUnwrappingService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

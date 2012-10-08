@@ -38,10 +38,6 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Configuration" />
-    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920">
-      <Private>False</Private>
-      <Package>moq-4.0</Package>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -80,7 +76,6 @@
     <Compile Include="Testing\TestCheckClassAttributes.cs" />
     <Compile Include="TestDictionaryEqualityComparer.cs" />
     <Compile Include="TestDateTimeExtensions.cs" />
-    <Compile Include="Entities\TestIIdentityExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

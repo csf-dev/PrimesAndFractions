@@ -37,7 +37,7 @@ namespace CSF.Entities
     /// <typeparam name='TEntity'>
     /// The type of entity expected by the unwrapping action.
     /// </typeparam>
-    TEntity Unwrap<TEntity>(IIdentity<TEntity> identity) where TEntity : IEntity;
+    TEntity Unwrap<TEntity>(IIdentity identity) where TEntity : IEntity;
 
     /// <summary>
     /// Unwrap the specified identity returning the entity that the identity represents.
@@ -45,7 +45,7 @@ namespace CSF.Entities
     /// <param name='identity'>
     /// An <see cref="IIdentity"/> instance.
     /// </param>
-    IEntity Unwrap(IIdentity identity);
+    object Unwrap(IIdentity identity);
   }
 }
 
