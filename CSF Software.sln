@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.Testing", "CSF.Testing\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.Testing.Mocks", "CSF.Testing.Mocks\CSF.Testing.Mocks.csproj", "{F9B97F83-AAB0-4E83-B2E6-9D4A2958B820}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7B12E9AF-526D-4F1F-93E4-B1AB5AA9AA89}"
+	ProjectSection(SolutionItems) = preProject
+		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +43,8 @@ Global
 		{F9B97F83-AAB0-4E83-B2E6-9D4A2958B820}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9B97F83-AAB0-4E83-B2E6-9D4A2958B820}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = CSF\CSF.csproj
 		Policies = $0
@@ -49,6 +56,6 @@ Global
 		$1.inheritsSet = VisualStudio
 		$1.inheritsScope = text/plain
 		$1.scope = text/plain
-		version = 0.1.1
+		version = 1.0.0
 	EndGlobalSection
 EndGlobal

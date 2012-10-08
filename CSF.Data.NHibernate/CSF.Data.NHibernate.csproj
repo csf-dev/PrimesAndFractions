@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>CSF.Data.NHibernate</RootNamespace>
     <AssemblyName>CSF.Data.NHibernate</AssemblyName>
-    <ReleaseVersion>0.1.1</ReleaseVersion>
+    <ReleaseVersion>1.0.0</ReleaseVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -48,6 +48,9 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="MonoNHibernateSqlLiteDriver.cs" />
     <Compile Include="SQLiteConfigurationExtensions.cs" />
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

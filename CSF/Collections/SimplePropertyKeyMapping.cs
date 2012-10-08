@@ -30,16 +30,12 @@ namespace CSF.Collections
   /// property's identifier when making use of a <c>IKeyValueSerializer</c> to serialize/deserialize instances
   /// of an object.
   /// </summary>
-  /// <remarks>
-  /// <para>This type is immutable.</para>
-  /// </remarks>
-  public class PropertyKeyAssociation<TObject>
+  public class SimplePropertyKeyMapping<TObject> : IPropertyKeyMapping<TObject>
   {
     #region fields
     
-    PropertyInfo _property;
-    string _key;
-    bool _mandatory;
+    private PropertyInfo _property;
+    private string _key;
     
     #endregion
     
@@ -54,12 +50,12 @@ namespace CSF.Collections
     /// <exception cref='ArgumentNullException'>
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
     /// </exception>
-    public string Key
+    public virtual string Key
     {
       get {
         return _key;
       }
-      private set {
+      set {
         if(value == null)
         {
           throw new ArgumentNullException ("value");
@@ -75,14 +71,10 @@ namespace CSF.Collections
     /// <value>
     /// <c>true</c> if mandatory; otherwise, <c>false</c>.
     /// </value>
-    public bool Mandatory
+    public virtual bool Mandatory
     {
-      get {
-        return _mandatory;
-      }
-      private set {
-        _mandatory = value;
-      }
+      get;
+      set;
     }
   
     /// <summary>
@@ -94,12 +86,12 @@ namespace CSF.Collections
     /// <exception cref='ArgumentNullException'>
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
     /// </exception>
-    public PropertyInfo Property
+    public virtual PropertyInfo Property
     {
       get {
         return _property;
       }
-      private set {
+      set {
         if(value == null)
         {
           throw new ArgumentNullException ("value");
@@ -114,137 +106,84 @@ namespace CSF.Collections
     }
     
     #endregion
+
+    #region methods
+
+    /// <summary>
+    /// Deserializes a single value for the property associated with the current instance, storing it into the target
+    /// object.
+    /// </summary>
+    /// <param name='target'>
+    /// The target object, upon which to store the deserialized value.
+    /// </param>
+    /// <param name='value'>
+    /// The value to deserialize.
+    /// </param>
+    public virtual void DeserializeValue(TObject target, string value)
+    {
+      this.Property.SetValue(target, Convert.ChangeType(value, this.Property.PropertyType), null);
+    }
+
+    /// <summary>
+    /// Serializes and returns a single value for the property associated with the current instance.
+    /// </summary>
+    /// <returns>
+    /// The string representation of the value.
+    /// </returns>
+    /// <param name='value'>
+    /// The object to serialize.
+    /// </param>
+    public virtual string SerializeValue(TObject value)
+    {
+      object propertyValue = this.Property.GetValue(value, null);
+
+      if(propertyValue == null && this.Mandatory)
+      {
+        string message = String.Format("Received a null value from property '{0}', but this property is marked as " +
+                                       "mandatory.",
+                                       this.Property.Name);
+        throw new InvalidOperationException(message);
+      }
+
+      return (propertyValue != null)? propertyValue.ToString() : null;
+    }
+
+    #endregion
     
     #region constructor
-    
+
+    /// <summary>
+    /// Initializes this instance.
+    /// </summary>
+    protected SimplePropertyKeyMapping()
+    {
+      this.Mandatory = false;
+    }
+
     /// <summary>
     /// Initializes this instance.
     /// </summary>
     /// <param name='property'>
-    /// Property.
+    /// The property that this mapping is for.
     /// </param>
-    public PropertyKeyAssociation(PropertyInfo property)
+    public SimplePropertyKeyMapping(PropertyInfo property) : this()
     {
       this.Property = property;
       this.Key = this.Property.Name;
-      this.Mandatory = false;
     }
-    
-    /// <summary>
-    /// Initializes this instance.
-    /// </summary>
-    /// <param name='expression'>
-    /// Expression.
-    /// </param>
-    public PropertyKeyAssociation(Expression<Func<TObject, object>> expression)
-    {
-      this.Property = StaticReflectionUtility.GetProperty<TObject>(expression);
-      this.Key = this.Property.Name;
-      this.Mandatory = false;
-    }
-    
+
     /// <summary>
     /// Initializes this instance.
     /// </summary>
     /// <param name='property'>
-    /// Property.
+    /// An expression, indicating the property that this mapping is for.
     /// </param>
-    /// <param name='key'>
-    /// Key.
-    /// </param>
-    /// <param name='mandatory'>
-    /// Mandatory.
-    /// </param>
-    public PropertyKeyAssociation(PropertyInfo property, string key, bool mandatory)
+    public SimplePropertyKeyMapping(Expression<Func<TObject, object>> property) : this()
     {
-      this.Property = property;
-      this.Key = key;
-      this.Mandatory = mandatory;
-    }
-    
-    /// <summary>
-    /// Initializes this instance.
-    /// </summary>
-    /// <param name='property'>
-    /// Property.
-    /// </param>
-    /// <param name='key'>
-    /// Key.
-    /// </param>
-    public PropertyKeyAssociation(PropertyInfo property, string key)
-    {
-      this.Property = property;
-      this.Key = key;
-      this.Mandatory = false;
-    }
-    
-    /// <summary>
-    /// Initializes this instance.
-    /// </summary>
-    /// <param name='expression'>
-    /// Expression.
-    /// </param>
-    /// <param name='key'>
-    /// Key.
-    /// </param>
-    /// <param name='mandatory'>
-    /// Mandatory.
-    /// </param>
-    public PropertyKeyAssociation(Expression<Func<TObject, object>> expression, string key, bool mandatory)
-    {
-      this.Property = StaticReflectionUtility.GetProperty<TObject>(expression);
-      this.Key = key;
-      this.Mandatory = mandatory;
-    }
-    
-    /// <summary>
-    /// Initializes this instance.
-    /// </summary>
-    /// <param name='expression'>
-    /// Expression.
-    /// </param>
-    /// <param name='key'>
-    /// Key.
-    /// </param>
-    public PropertyKeyAssociation(Expression<Func<TObject, object>> expression, string key)
-    {
-      this.Property = StaticReflectionUtility.GetProperty<TObject>(expression);
-      this.Key = key;
-      this.Mandatory = false;
-    }
-    
-    /// <summary>
-    /// Initializes this instance.
-    /// </summary>
-    /// <param name='property'>
-    /// Property.
-    /// </param>
-    /// <param name='mandatory'>
-    /// Mandatory.
-    /// </param>
-    public PropertyKeyAssociation(PropertyInfo property, bool mandatory)
-    {
-      this.Property = property;
+      this.Property = StaticReflectionUtility.GetProperty<TObject>(property);
       this.Key = this.Property.Name;
-      this.Mandatory = mandatory;
     }
-    
-    /// <summary>
-    /// Initializes this instance.
-    /// </summary>
-    /// <param name='expression'>
-    /// Expression.
-    /// </param>
-    /// <param name='mandatory'>
-    /// Mandatory.
-    /// </param>
-    public PropertyKeyAssociation(Expression<Func<TObject, object>> expression, bool mandatory)
-    {
-      this.Property = StaticReflectionUtility.GetProperty<TObject>(expression);
-      this.Key = this.Property.Name;
-      this.Mandatory = mandatory;
-    }
-    
+
     #endregion
   }
 }

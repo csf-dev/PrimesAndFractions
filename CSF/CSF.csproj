@@ -10,7 +10,7 @@
     <RootNamespace>CSF</RootNamespace>
     <AssemblyName>CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>0.1.1</ReleaseVersion>
+    <ReleaseVersion>1.0.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -59,7 +59,6 @@
     <Compile Include="Collections\IKeyValueSerializer.cs" />
     <Compile Include="ICalculator.cs" />
     <Compile Include="SimpleCalculator.cs" />
-    <Compile Include="Collections\PropertyKeyAssociation.cs" />
     <Compile Include="Collections\KeyValueSerializer.cs" />
     <Compile Include="Reflection\StaticReflectionUtility.cs" />
     <Compile Include="Validation\IValidator.cs" />
@@ -131,6 +130,13 @@
     <Compile Include="DictionaryEqualityComparer.cs" />
     <Compile Include="Entities\IIdentityUnwrappingService.cs" />
     <Compile Include="Entities\IIdentityExtensions.cs" />
+    <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="Collections\IPropertyKeyMapping.cs" />
+    <Compile Include="Collections\SimplePropertyKeyMapping.cs" />
+    <Compile Include="Collections\CustomPropertyKeyMapping.cs" />
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

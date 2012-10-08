@@ -25,6 +25,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using CSF.Reflection;
 
 namespace CSF.Collections
 {
@@ -35,7 +36,7 @@ namespace CSF.Collections
   {
     #region fields
     
-    private IList<PropertyKeyAssociation<TObject>> _mappings;
+    private IList<IPropertyKeyMapping<TObject>> _mappings;
     private string _listFormat;
     
     #endregion
@@ -51,7 +52,7 @@ namespace CSF.Collections
     /// <exception cref='ArgumentNullException'>
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
     /// </exception>
-    public IList<PropertyKeyAssociation<TObject>> Mappings
+    public IList<IPropertyKeyMapping<TObject>> Mappings
     {
       get {
         return _mappings;
@@ -115,7 +116,7 @@ namespace CSF.Collections
     {
       IList<PropertyInfo> properties = new List<PropertyInfo>();
       
-      foreach(PropertyKeyAssociation<TObject> association in this.Mappings)
+      foreach(SimplePropertyKeyMapping<TObject> association in this.Mappings)
       {
         if(properties.Contains(association.Property))
         {
@@ -275,7 +276,7 @@ namespace CSF.Collections
       
       this.CheckInvariants();
       
-      foreach(PropertyKeyAssociation<TObject> association in this.Mappings)
+      foreach(SimplePropertyKeyMapping<TObject> association in this.Mappings)
       {
         IList<string> instancesFound = this.FindInstances(collection, formatString, association.Key);
         
@@ -319,14 +320,14 @@ namespace CSF.Collections
       TObject output = new TObject();
       bool success = false;
       
-      foreach(PropertyKeyAssociation<TObject> association in this.Mappings)
+      foreach(IPropertyKeyMapping<TObject> association in this.Mappings)
       {
         string key = String.Format(keyMask, association.Key);
         if(collection.ContainsKey(key))
         {
           try
           {
-            this.DeserializeValue(output, collection[key], association.Property);
+            association.DeserializeValue(output, collection[key]);
             success = true;
           }
           catch(Exception)
@@ -347,37 +348,7 @@ namespace CSF.Collections
       
       return success? output : null;
     }
-    
-    /// <summary>
-    /// Deserializes a single <see cref="String"/> value and stores it within the <paramref name="target"/>.
-    /// </summary>
-    /// <param name='target'>
-    /// The target object to receive the value.
-    /// </param>
-    /// <param name='value'>
-    /// The value to deserialize.
-    /// </param>
-    /// <param name='property'>
-    /// The property to deserialize.
-    /// </param>
-    private void DeserializeValue(TObject target, string value, PropertyInfo property)
-    {
-      if (property == null)
-      {
-        throw new ArgumentNullException ("property");
-      }
-      else if (target == null)
-      {
-        throw new ArgumentNullException ("target");
-      }
-      else if (value == null)
-      {
-        throw new ArgumentNullException ("value");
-      }
-      
-      property.SetValue(target, Convert.ChangeType(value, property.PropertyType), null);
-    }
-    
+
     /// <summary>
     /// Finds all of the possible keys within the <paramref name="collection"/> that match the
     /// <paramref name="formatString"/> for the specified <paramref name="propertyKey"/>.
@@ -578,20 +549,15 @@ namespace CSF.Collections
         throw new ArgumentNullException("value");
       }
       
-      foreach(PropertyKeyAssociation<TObject> property in this.Mappings)
+      foreach(IPropertyKeyMapping<TObject> mapping in this.Mappings)
       {
-        object propertyValue = property.Property.GetValue(value, null);
-        string key = String.Format(keyMask, property.Key);
+        string
+          key = String.Format(keyMask, mapping.Key),
+          propValue = mapping.SerializeValue(value);
         
-        if(propertyValue != null)
+        if(propValue != null)
         {
-          collection.Add(key, propertyValue.ToString());
-        }
-        else if(property.Mandatory)
-        {
-          throw new InvalidOperationException(String.Format("Cannot serialize '{0}', the corresponding value is null " +
-                                                            "but this property is marked as mandatory.",
-                                                            key));
+          collection.Add(key, propValue);
         }
       }
     }
@@ -611,7 +577,7 @@ namespace CSF.Collections
     /// </param>
     public IKeyValueSerializer<TObject> Map (Expression<Func<TObject, object>> property)
     {
-      this.Mappings.Add(new PropertyKeyAssociation<TObject>(property));
+      this.Mappings.Add(new SimplePropertyKeyMapping<TObject>(property));
       this.CheckInvariants();
       return this;
     }
@@ -630,7 +596,9 @@ namespace CSF.Collections
     /// </param>
     public IKeyValueSerializer<TObject> Map (Expression<Func<TObject, object>> property, bool mandatory)
     {
-      this.Mappings.Add(new PropertyKeyAssociation<TObject>(property, mandatory));
+      this.Mappings.Add(new SimplePropertyKeyMapping<TObject>(property) {
+        Mandatory = mandatory
+      });
       this.CheckInvariants();
       return this;
     }
@@ -646,7 +614,7 @@ namespace CSF.Collections
     /// </param>
     public IKeyValueSerializer<TObject> Map (PropertyInfo property)
     {
-      this.Mappings.Add(new PropertyKeyAssociation<TObject>(property));
+      this.Mappings.Add(new SimplePropertyKeyMapping<TObject>(property));
       this.CheckInvariants();
       return this;
     }
@@ -665,7 +633,9 @@ namespace CSF.Collections
     /// </param>
     public IKeyValueSerializer<TObject> Map (PropertyInfo property, bool mandatory)
     {
-      this.Mappings.Add(new PropertyKeyAssociation<TObject>(property, mandatory));
+      this.Mappings.Add(new SimplePropertyKeyMapping<TObject>(property) {
+        Mandatory = mandatory
+      });
       this.CheckInvariants();
       return this;
     }
@@ -684,7 +654,9 @@ namespace CSF.Collections
     /// </param>
     public IKeyValueSerializer<TObject> Map (Expression<Func<TObject, object>> property, string key)
     {
-      this.Mappings.Add(new PropertyKeyAssociation<TObject>(property, key));
+      this.Mappings.Add(new SimplePropertyKeyMapping<TObject>(property) {
+        Key = key
+      });
       this.CheckInvariants();
       return this;
     }
@@ -706,7 +678,10 @@ namespace CSF.Collections
     /// </param>
     public IKeyValueSerializer<TObject> Map (Expression<Func<TObject, object>> property, string key, bool mandatory)
     {
-      this.Mappings.Add(new PropertyKeyAssociation<TObject>(property, key, mandatory));
+      this.Mappings.Add(new SimplePropertyKeyMapping<TObject>(property) {
+        Mandatory = mandatory,
+        Key = key
+      });
       this.CheckInvariants();
       return this;
     }
@@ -722,7 +697,9 @@ namespace CSF.Collections
     /// </param>
     public IKeyValueSerializer<TObject> Map (PropertyInfo property, string key)
     {
-      this.Mappings.Add(new PropertyKeyAssociation<TObject>(property, key));
+      this.Mappings.Add(new SimplePropertyKeyMapping<TObject>(property) {
+        Key = key
+      });
       this.CheckInvariants();
       return this;
     }
@@ -744,7 +721,294 @@ namespace CSF.Collections
     /// </param>
     public IKeyValueSerializer<TObject> Map (PropertyInfo property, string key, bool mandatory)
     {
-      this.Mappings.Add(new PropertyKeyAssociation<TObject>(property, key, mandatory));
+      this.Mappings.Add(new SimplePropertyKeyMapping<TObject>(property) {
+        Mandatory = mandatory,
+        Key = key
+      });
+      this.CheckInvariants();
+      return this;
+    }
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A lambda expression or other reference that identifies the property to map.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    public IKeyValueSerializer<TObject> Map<TProperty>(Expression<Func<TObject, TProperty>> property,
+                                                       Func<TObject,string,TProperty> customDeserialization,
+                                                       Func<TObject,TProperty,string> customSerialization)
+    {
+      this.Mappings.Add(new CustomPropertyKeyMapping<TObject,TProperty>(property) {
+        CustomDeserialization = customDeserialization,
+        CustomSerialization = customSerialization
+      });
+      this.CheckInvariants();
+      return this;
+    }
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A <see cref="PropertyInfo"/> that indicates the property to map.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    public IKeyValueSerializer<TObject> Map<TProperty>(PropertyInfo property,
+                                                       Func<TObject,string,TProperty> customDeserialization,
+                                                       Func<TObject,TProperty,string> customSerialization)
+    {
+      this.Mappings.Add(new CustomPropertyKeyMapping<TObject,TProperty>(property) {
+        CustomDeserialization = customDeserialization,
+        CustomSerialization = customSerialization
+      });
+      this.CheckInvariants();
+      return this;
+    }
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A lambda expression or other reference that identifies the property to map.
+    /// </param>
+    /// <param name='key'>
+    /// The string key for this property when serializing or deserializing.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    public IKeyValueSerializer<TObject> Map<TProperty>(Expression<Func<TObject, TProperty>> property,
+                                                       string key,
+                                                       Func<TObject,string,TProperty> customDeserialization,
+                                                       Func<TObject,TProperty,string> customSerialization)
+    {
+      this.Mappings.Add(new CustomPropertyKeyMapping<TObject,TProperty>(property) {
+        CustomDeserialization = customDeserialization,
+        CustomSerialization = customSerialization,
+        Key = key
+      });
+      this.CheckInvariants();
+      return this;
+    }
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A <see cref="PropertyInfo"/> that indicates the property to map.
+    /// </param>
+    /// <param name='key'>
+    /// The string key for this property when serializing or deserializing.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    public IKeyValueSerializer<TObject> Map<TProperty>(PropertyInfo property,
+                                                       string key,
+                                                       Func<TObject,string,TProperty> customDeserialization,
+                                                       Func<TObject,TProperty,string> customSerialization)
+    {
+      this.Mappings.Add(new CustomPropertyKeyMapping<TObject,TProperty>(property) {
+        CustomDeserialization = customDeserialization,
+        CustomSerialization = customSerialization,
+        Key = key
+      });
+      this.CheckInvariants();
+      return this;
+    }
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A lambda expression or other reference that identifies the property to map.
+    /// </param>
+    /// <param name='mandatory'>
+    /// A value indicating whether or not this property is mandatory.  If true then deserialization will be considered
+    /// a failure if no value for this property is found.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    public IKeyValueSerializer<TObject> Map<TProperty>(Expression<Func<TObject, TProperty>> property,
+                                                       bool mandatory,
+                                                       Func<TObject,string,TProperty> customDeserialization,
+                                                       Func<TObject,TProperty,string> customSerialization)
+    {
+      this.Mappings.Add(new CustomPropertyKeyMapping<TObject,TProperty>(property) {
+        CustomDeserialization = customDeserialization,
+        CustomSerialization = customSerialization,
+        Mandatory = mandatory
+      });
+      this.CheckInvariants();
+      return this;
+    }
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A <see cref="PropertyInfo"/> that indicates the property to map.
+    /// </param>
+    /// <param name='mandatory'>
+    /// A value indicating whether or not this property is mandatory.  If true then deserialization will be considered
+    /// a failure if no value for this property is found.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    public IKeyValueSerializer<TObject> Map<TProperty>(PropertyInfo property,
+                                                       bool mandatory,
+                                                       Func<TObject,string,TProperty> customDeserialization,
+                                                       Func<TObject,TProperty,string> customSerialization)
+    {
+      this.Mappings.Add(new CustomPropertyKeyMapping<TObject,TProperty>(property) {
+        CustomDeserialization = customDeserialization,
+        CustomSerialization = customSerialization,
+        Mandatory = mandatory
+      });
+      this.CheckInvariants();
+      return this;
+    }
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A lambda expression or other reference that identifies the property to map.
+    /// </param>
+    /// <param name='key'>
+    /// The string key for this property when serializing or deserializing.
+    /// </param>
+    /// <param name='mandatory'>
+    /// A value indicating whether or not this property is mandatory.  If true then deserialization will be considered
+    /// a failure if no value for this property is found.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    public IKeyValueSerializer<TObject> Map<TProperty>(Expression<Func<TObject, TProperty>> property,
+                                                       string key,
+                                                       bool mandatory,
+                                                       Func<TObject,string,TProperty> customDeserialization,
+                                                       Func<TObject,TProperty,string> customSerialization)
+    {
+      this.Mappings.Add(new CustomPropertyKeyMapping<TObject,TProperty>(property) {
+        CustomDeserialization = customDeserialization,
+        CustomSerialization = customSerialization,
+        Key = key,
+        Mandatory = mandatory
+      });
+      this.CheckInvariants();
+      return this;
+    }
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A <see cref="PropertyInfo"/> that indicates the property to map.
+    /// </param>
+    /// <param name='key'>
+    /// The string key for this property when serializing or deserializing.
+    /// </param>
+    /// <param name='mandatory'>
+    /// A value indicating whether or not this property is mandatory.  If true then deserialization will be considered
+    /// a failure if no value for this property is found.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    public IKeyValueSerializer<TObject> Map<TProperty>(PropertyInfo property,
+                                                       string key,
+                                                       bool mandatory,
+                                                       Func<TObject,string,TProperty> customDeserialization,
+                                                       Func<TObject,TProperty,string> customSerialization)
+    {
+      this.Mappings.Add(new CustomPropertyKeyMapping<TObject,TProperty>(property) {
+        CustomDeserialization = customDeserialization,
+        CustomSerialization = customSerialization,
+        Key = key,
+        Mandatory = mandatory
+      });
       this.CheckInvariants();
       return this;
     }
@@ -773,7 +1037,7 @@ namespace CSF.Collections
     /// </summary>
     public KeyValueSerializer ()
     {
-      this.Mappings = new List<PropertyKeyAssociation<TObject>>();
+      this.Mappings = new List<IPropertyKeyMapping<TObject>>();
       this.ListFormat = "{0}_{1}";
     }
     

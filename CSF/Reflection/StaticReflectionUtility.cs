@@ -105,6 +105,32 @@ namespace CSF.Reflection
     }
     
     /// <summary>
+    /// Gets a <see cref="PropertyInfo"/> from an expression that indicates a member of a specified type.
+    /// </summary>
+    /// <returns>
+    /// The property information.
+    /// </returns>
+    /// <param name='expression'>
+    /// The lambda expression that indicates a type, such as <c>x => x.MyProperty</c>.
+    /// </param>
+    /// <typeparam name='TObject'>
+    /// The type that contains the member which we are interested in.
+    /// </typeparam>
+    /// <typeparam name='TReturn'>
+    /// The return/output type of the member.
+    /// </typeparam>
+    /// <exception cref='ArgumentNullException'>
+    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
+    /// </exception>
+    /// <exception cref='ArgumentException'>
+    /// Is thrown when an argument passed to a method is invalid.
+    /// </exception>
+    public static PropertyInfo GetProperty<TObject,TReturn>(Expression<Func<TObject, TReturn>> expression)
+    {
+      return GetMember<TObject,TReturn>(expression) as PropertyInfo;
+    }
+    
+    /// <summary>
     /// Gets a <see cref="FieldInfo"/> from an expression that indicates a member of a specified type.
     /// </summary>
     /// <returns>

@@ -10,7 +10,7 @@
     <RootNamespace>Test.CSF</RootNamespace>
     <AssemblyName>Test.CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>0.1.1</ReleaseVersion>
+    <ReleaseVersion>1.0.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,7 +46,6 @@
     <Compile Include="IO\TestTabularDataParser.cs" />
     <Compile Include="IO\TestIniDocument.cs" />
     <Compile Include="TestSimpleCalculator.cs" />
-    <Compile Include="Collections\TestPropertyKeyAssociation.cs" />
     <Compile Include="Collections\TestKeyValueSerializer.cs" />
     <Compile Include="Reflection\TestStaticReflectionUtility.cs" />
     <Compile Include="Validation\TestValidator.cs" />
@@ -75,6 +74,11 @@
     <Compile Include="Collections\TestIListExtensions.cs" />
     <Compile Include="Testing\TestCheckClassAttributes.cs" />
     <Compile Include="TestDictionaryEqualityComparer.cs" />
+    <Compile Include="TestDateTimeExtensions.cs" />
+    <Compile Include="Collections\TestSimplePropertyKeyMapping.cs" />
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
