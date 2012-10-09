@@ -79,6 +79,7 @@
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Globalization\TestCultureInfoExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -107,6 +108,7 @@
     <Folder Include="Patterns\IoC\" />
     <Folder Include="Configuration\" />
     <Folder Include="Testing\" />
+    <Folder Include="Globalization\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reflection\TestResource.txt">

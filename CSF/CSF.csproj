@@ -137,6 +137,7 @@
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Globalization\CultureInfoExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -151,6 +152,7 @@
     <Folder Include="Configuration\" />
     <Folder Include="Web\" />
     <Folder Include="Serialization\" />
+    <Folder Include="Globalization\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
