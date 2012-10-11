@@ -48,6 +48,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="MonoNHibernateSqlLiteDriver.cs" />
     <Compile Include="SQLiteConfigurationExtensions.cs" />
+    <Compile Include="NHibernateIdentityUnwrappingService.cs" />
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>

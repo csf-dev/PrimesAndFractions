@@ -20,6 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using CSF.Patterns.IoC;
 
 namespace CSF.Entities
 {
@@ -34,12 +35,12 @@ namespace CSF.Entities
   /// <see cref="Type"/>
   /// </typeparam>
   [Serializable]
-  public struct Identity<T> : IIdentity<T>, IIdentity
+  public struct Identity<TEntity,TIdentifier> : IIdentity<TEntity,TIdentifier>, IIdentity<TEntity>, IIdentity
+                                                where TEntity : IEntity
   {
     #region fields
     
-    private Type _entityType;
-    private T _value;
+    private TIdentifier _value;
     
     #endregion
     
@@ -48,10 +49,20 @@ namespace CSF.Entities
     /// <summary>
     /// <para>Read-only.  A <see cref="System.Type"/> that is associated with this identity instance.</para>
     /// </summary>
-    public Type Type
+    public Type EntityType
     {
       get {
-        return _entityType;
+        return typeof(TEntity);
+      }
+    }
+
+    /// <summary>
+    /// <para>Read-only.  Gets the type of the identifier <see cref="Value"/>.</para>
+    /// </summary>
+    public Type IdentifierType
+    {
+      get {
+        return typeof(TIdentifier);
       }
     }
     
@@ -61,7 +72,7 @@ namespace CSF.Entities
     /// amongst all other entities of the same <see cref="Type"/>.
     /// </para>
     /// </summary>
-    public T Value
+    public TIdentifier Value
     {
       get {
         return _value;
@@ -123,7 +134,7 @@ namespace CSF.Entities
       
       if(identity != null)
       {
-        output = (identity.Type == this.Type
+        output = (identity.EntityType == this.EntityType
                   && identity.Value.Equals(this.Value));
       }
       else
@@ -144,7 +155,7 @@ namespace CSF.Entities
     {
       int typeHash, identityHash;
       
-      typeHash = this.Type.GetHashCode();
+      typeHash = this.EntityType.GetHashCode();
       identityHash = this.Value.GetHashCode();
       
       return (typeHash ^ identityHash);
@@ -158,9 +169,9 @@ namespace CSF.Entities
     /// </returns>
     public override string ToString ()
     {
-      return string.Format ("[{0}: {1}]", this.Type.FullName, this.Value.ToString());
+      return string.Format ("[{0}: {1}]", this.EntityType.FullName, this.Value.ToString());
     }
-    
+
     #endregion
     
     #region constructor
@@ -168,20 +179,11 @@ namespace CSF.Entities
     /// <summary>
     /// <para>Constructs a new identity instance.</para>
     /// </summary>
-    /// <param name="type">
-    /// A <see cref="Type"/>
-    /// </param>
     /// <param name="identity">
     /// An identifir of the appropriate generic type
     /// </param>
-    public Identity(Type type, T identity)
+    public Identity(TIdentifier identity)
     {
-      if(type == null)
-      {
-        throw new ArgumentNullException("type");
-      }
-      
-      _entityType = type;
       _value = identity;
     }
     
@@ -204,7 +206,7 @@ namespace CSF.Entities
     /// <returns>
     /// A <see cref="System.Boolean"/>
     /// </returns>
-    public static bool operator ==(Identity<T> objectA, IIdentity objectB)
+    public static bool operator ==(Identity<TEntity,TIdentifier> objectA, IIdentity objectB)
     {
       return objectA.Equals(objectB);
     }
@@ -224,7 +226,7 @@ namespace CSF.Entities
     /// <returns>
     /// A <see cref="System.Boolean"/>
     /// </returns>
-    public static bool operator !=(Identity<T> objectA, IIdentity objectB)
+    public static bool operator !=(Identity<TEntity,TIdentifier> objectA, IIdentity objectB)
     {
       return !(objectA == objectB);
     }

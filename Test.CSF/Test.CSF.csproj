@@ -79,6 +79,7 @@
     <Compile Include="Testing\TestCheckClassAttributes.cs" />
     <Compile Include="TestDictionaryEqualityComparer.cs" />
     <Compile Include="TestDateTimeExtensions.cs" />
+    <Compile Include="Entities\TestIIdentityExtensions.cs" />
     <Compile Include="Collections\TestSimplePropertyKeyMapping.cs" />
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>

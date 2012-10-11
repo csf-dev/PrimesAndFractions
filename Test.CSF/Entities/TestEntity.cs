@@ -33,7 +33,7 @@ namespace Test.CSF.Entities
     [Test]
     public void TestHasIdentity()
     {
-      Entity<uint> entity = new Entity<uint>();
+      Entity<Person,uint> entity = new Entity<Person,uint>();
       
       Assert.IsFalse(entity.HasIdentity, "Entity has no identity");
       
@@ -68,7 +68,7 @@ namespace Test.CSF.Entities
     [ExpectedException(ExceptionType = typeof(ArgumentException), ExpectedMessage = "Invalid identity value")]
     public void TestSetIdentityInvalid()
     {
-      Entity<uint> entity = new Entity<uint>();
+      Entity<Person,uint> entity = new Entity<Person,uint>();
       entity.SetIdentity(0);
       Assert.Fail("Test should never reach this point");
     }
@@ -215,7 +215,7 @@ namespace Test.CSF.Entities
     
     #region mocks
     
-    public class Person : Entity<uint>
+    public class Person : Entity<Person,uint>
     {
       private IList<Order> _orders, _wrappedOrders;
 
@@ -238,7 +238,7 @@ namespace Test.CSF.Entities
       }
     }
     
-    public class Order : Entity<uint>
+    public class Order : Entity<Order,uint>
     {
       public virtual Person Owner
       {
@@ -247,7 +247,7 @@ namespace Test.CSF.Entities
       }
     }
     
-    public class Product : Entity<uint>
+    public class Product : Entity<Product,uint>
     {}
     
     #endregion

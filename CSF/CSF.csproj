@@ -99,12 +99,8 @@
     <Compile Include="Patterns\IoC\IRegisteredService.cs" />
     <Compile Include="Entities\EntityReader.cs" />
     <Compile Include="Entities\Identity.cs" />
-    <Compile Include="Entities\Identity`T.cs" />
     <Compile Include="Entities\IEntity.cs" />
-    <Compile Include="Entities\IEntity`T.cs" />
     <Compile Include="Entities\IIdentity.cs" />
-    <Compile Include="Entities\IIdentity`T.cs" />
-    <Compile Include="Entities\Entity`T.cs" />
     <Compile Include="ISessionStorage.cs" />
     <Compile Include="AspNetSessionStorage.cs" />
     <Compile Include="MemorySessionStorage.cs" />
@@ -129,8 +125,13 @@
     <Compile Include="Serialization\XmlSerializationContainer.cs" />
     <Compile Include="DictionaryEqualityComparer.cs" />
     <Compile Include="Entities\IIdentityUnwrappingService.cs" />
-    <Compile Include="Entities\IIdentityExtensions.cs" />
     <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="Entities\IIdentity`1.cs" />
+    <Compile Include="Entities\IIdentity`2.cs" />
+    <Compile Include="Entities\Identity`2.cs" />
+    <Compile Include="Entities\IEntity`2.cs" />
+    <Compile Include="Entities\Entity`2.cs" />
+    <Compile Include="Entities\IIdentityExtensions.cs" />
     <Compile Include="Collections\IPropertyKeyMapping.cs" />
     <Compile Include="Collections\SimplePropertyKeyMapping.cs" />
     <Compile Include="Collections\CustomPropertyKeyMapping.cs" />
