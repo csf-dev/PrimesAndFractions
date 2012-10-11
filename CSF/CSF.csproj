@@ -56,10 +56,8 @@
     <Compile Include="IO\IIniSection.cs" />
     <Compile Include="IO\IniDocument.cs" />
     <Compile Include="IO\IniSection.cs" />
-    <Compile Include="Collections\IKeyValueSerializer.cs" />
     <Compile Include="ICalculator.cs" />
     <Compile Include="SimpleCalculator.cs" />
-    <Compile Include="Collections\KeyValueSerializer.cs" />
     <Compile Include="Reflection\StaticReflectionUtility.cs" />
     <Compile Include="Validation\IValidator.cs" />
     <Compile Include="Validation\Validator.cs" />
@@ -132,9 +130,6 @@
     <Compile Include="Entities\IEntity`2.cs" />
     <Compile Include="Entities\Entity`2.cs" />
     <Compile Include="Entities\IIdentityExtensions.cs" />
-    <Compile Include="Collections\IPropertyKeyMapping.cs" />
-    <Compile Include="Collections\SimplePropertyKeyMapping.cs" />
-    <Compile Include="Collections\CustomPropertyKeyMapping.cs" />
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
@@ -149,6 +144,36 @@
     <Compile Include="Patterns\ServiceLayer\RequestDispatchException.cs" />
     <Compile Include="Patterns\ServiceLayer\RequestDispatcherBase.cs" />
     <Compile Include="Patterns\ServiceLayer\LocalRequestDispatcher.cs" />
+    <Compile Include="Collections\Serialization\IKeyValueSerializer`1.cs" />
+    <Compile Include="Collections\Serialization\KeyName.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ICompositeComponentMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ICompositeMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ISimpleMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\IClassMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\IClassMappingHelper`1.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\ICompositeComponentMappingHelper`2.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\ICompositeMappingHelper`2.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\IEntityMappingHelper`3.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\IMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\ISimpleMappingHelper`2.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\IValueTypeCollectionMappingHelper`2.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\IReferenceTypeCollectionMappingHelper`2.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\ICollectionMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\IValueTypeCollectionMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\IReferenceTypeCollectionMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\IMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ClassMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\SimplePropertyMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\IKeyNamingPolicy.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\KeyNamingPolicy.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ICollectionMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\MappingBase.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\CompositePropertyMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\IEndpointMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\CompositePropertyComponentMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ReferenceTypeCollectionMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\CollectionKeyType.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ValueTypeCollectionMapping.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -165,6 +190,9 @@
     <Folder Include="Serialization\" />
     <Folder Include="Globalization\" />
     <Folder Include="Patterns\ServiceLayer\" />
+    <Folder Include="Collections\Serialization\" />
+    <Folder Include="Collections\Serialization\MappingModel\" />
+    <Folder Include="Collections\Serialization\MappingHelpers\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

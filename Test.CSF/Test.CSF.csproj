@@ -50,7 +50,6 @@
     <Compile Include="IO\TestTabularDataParser.cs" />
     <Compile Include="IO\TestIniDocument.cs" />
     <Compile Include="TestSimpleCalculator.cs" />
-    <Compile Include="Collections\TestKeyValueSerializer.cs" />
     <Compile Include="Reflection\TestStaticReflectionUtility.cs" />
     <Compile Include="Validation\TestValidator.cs" />
     <Compile Include="Validation\TestValidationFailureList.cs" />
@@ -80,7 +79,6 @@
     <Compile Include="TestDictionaryEqualityComparer.cs" />
     <Compile Include="TestDateTimeExtensions.cs" />
     <Compile Include="Entities\TestIIdentityExtensions.cs" />
-    <Compile Include="Collections\TestSimplePropertyKeyMapping.cs" />
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
@@ -88,6 +86,10 @@
     <Compile Include="Patterns\ServiceLayer\MockRequestHandlers.cs" />
     <Compile Include="Patterns\ServiceLayer\TestRequestDispatcherBase.cs" />
     <Compile Include="Patterns\ServiceLayer\TestLocalRequestDispatcher.cs" />
+    <Compile Include="Collections\Serialization\TestKeyValueSerializer.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\TestClassMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\TestKeyNamingRule.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\StubTypes.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -118,6 +120,8 @@
     <Folder Include="Testing\" />
     <Folder Include="Globalization\" />
     <Folder Include="Patterns\ServiceLayer\" />
+    <Folder Include="Collections\Serialization\" />
+    <Folder Include="Collections\Serialization\MappingModel\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reflection\TestResource.txt">
