@@ -10,7 +10,7 @@
     <RootNamespace>Test.CSF</RootNamespace>
     <AssemblyName>Test.CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>0.1.1</ReleaseVersion>
+    <ReleaseVersion>1.1.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,7 +50,6 @@
     <Compile Include="IO\TestTabularDataParser.cs" />
     <Compile Include="IO\TestIniDocument.cs" />
     <Compile Include="TestSimpleCalculator.cs" />
-    <Compile Include="Collections\TestPropertyKeyAssociation.cs" />
     <Compile Include="Collections\TestKeyValueSerializer.cs" />
     <Compile Include="Reflection\TestStaticReflectionUtility.cs" />
     <Compile Include="Validation\TestValidator.cs" />
@@ -81,6 +80,14 @@
     <Compile Include="TestDictionaryEqualityComparer.cs" />
     <Compile Include="TestDateTimeExtensions.cs" />
     <Compile Include="Entities\TestIIdentityExtensions.cs" />
+    <Compile Include="Collections\TestSimplePropertyKeyMapping.cs" />
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Globalization\TestCultureInfoExtensions.cs" />
+    <Compile Include="Patterns\ServiceLayer\MockRequestHandlers.cs" />
+    <Compile Include="Patterns\ServiceLayer\TestRequestDispatcherBase.cs" />
+    <Compile Include="Patterns\ServiceLayer\TestLocalRequestDispatcher.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -109,6 +116,8 @@
     <Folder Include="Patterns\IoC\" />
     <Folder Include="Configuration\" />
     <Folder Include="Testing\" />
+    <Folder Include="Globalization\" />
+    <Folder Include="Patterns\ServiceLayer\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reflection\TestResource.txt">

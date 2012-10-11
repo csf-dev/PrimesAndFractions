@@ -54,7 +54,7 @@ namespace CSF.Collections
     /// <value>
     /// The mappings.
     /// </value>
-    IList<PropertyKeyAssociation<TObject>> Mappings { get; }
+    IList<IPropertyKeyMapping<TObject>> Mappings { get; }
     
     #endregion
     
@@ -330,6 +330,218 @@ namespace CSF.Collections
     /// a failure if no value for this property is found.
     /// </param>
     IKeyValueSerializer<TObject> Map(PropertyInfo property, string key, bool mandatory);
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A lambda expression or other reference that identifies the property to map.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    IKeyValueSerializer<TObject> Map<TProperty>(Expression<Func<TObject, TProperty>> property,
+                                                Func<TObject,string,TProperty> customDeserialization,
+                                                Func<TObject,TProperty,string> customSerialization);
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A <see cref="PropertyInfo"/> that indicates the property to map.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    IKeyValueSerializer<TObject> Map<TProperty>(PropertyInfo property,
+                                                Func<TObject,string,TProperty> customDeserialization,
+                                                Func<TObject,TProperty,string> customSerialization);
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A lambda expression or other reference that identifies the property to map.
+    /// </param>
+    /// <param name='key'>
+    /// The string key for this property when serializing or deserializing.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    IKeyValueSerializer<TObject> Map<TProperty>(Expression<Func<TObject, TProperty>> property,
+                                                string key,
+                                                Func<TObject,string,TProperty> customDeserialization,
+                                                Func<TObject,TProperty,string> customSerialization);
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A <see cref="PropertyInfo"/> that indicates the property to map.
+    /// </param>
+    /// <param name='key'>
+    /// The string key for this property when serializing or deserializing.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    IKeyValueSerializer<TObject> Map<TProperty>(PropertyInfo property,
+                                                string key,
+                                                Func<TObject,string,TProperty> customDeserialization,
+                                                Func<TObject,TProperty,string> customSerialization);
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A lambda expression or other reference that identifies the property to map.
+    /// </param>
+    /// <param name='mandatory'>
+    /// A value indicating whether or not this property is mandatory.  If true then deserialization will be considered
+    /// a failure if no value for this property is found.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    IKeyValueSerializer<TObject> Map<TProperty>(Expression<Func<TObject, TProperty>> property,
+                                                bool mandatory,
+                                                Func<TObject,string,TProperty> customDeserialization,
+                                                Func<TObject,TProperty,string> customSerialization);
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A <see cref="PropertyInfo"/> that indicates the property to map.
+    /// </param>
+    /// <param name='mandatory'>
+    /// A value indicating whether or not this property is mandatory.  If true then deserialization will be considered
+    /// a failure if no value for this property is found.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    IKeyValueSerializer<TObject> Map<TProperty>(PropertyInfo property,
+                                                bool mandatory,
+                                                Func<TObject,string,TProperty> customDeserialization,
+                                                Func<TObject,TProperty,string> customSerialization);
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A lambda expression or other reference that identifies the property to map.
+    /// </param>
+    /// <param name='key'>
+    /// The string key for this property when serializing or deserializing.
+    /// </param>
+    /// <param name='mandatory'>
+    /// A value indicating whether or not this property is mandatory.  If true then deserialization will be considered
+    /// a failure if no value for this property is found.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    IKeyValueSerializer<TObject> Map<TProperty>(Expression<Func<TObject, TProperty>> property,
+                                                string key,
+                                                bool mandatory,
+                                                Func<TObject,string,TProperty> customDeserialization,
+                                                Func<TObject,TProperty,string> customSerialization);
+
+    /// <summary>
+    /// Maps a single property for serialization and/or deserialization.
+    /// </summary>
+    /// <returns>
+    /// An instance of the serializer being worked on, such that calls may be chained.
+    /// </returns>
+    /// <param name='property'>
+    /// A <see cref="PropertyInfo"/> that indicates the property to map.
+    /// </param>
+    /// <param name='key'>
+    /// The string key for this property when serializing or deserializing.
+    /// </param>
+    /// <param name='mandatory'>
+    /// A value indicating whether or not this property is mandatory.  If true then deserialization will be considered
+    /// a failure if no value for this property is found.
+    /// </param>
+    /// <param name='customDeserialization'>
+    /// A custom deserialization function that converts a string value to the property value.
+    /// </param>
+    /// <param name='customSerialization'>
+    /// A custom serialization function that converts the property value to a string.
+    /// </param>
+    /// <typeparam name='TProperty'>
+    /// The type of the property to be mapped.
+    /// </typeparam>
+    IKeyValueSerializer<TObject> Map<TProperty>(PropertyInfo property,
+                                                string key,
+                                                bool mandatory,
+                                                Func<TObject,string,TProperty> customDeserialization,
+                                                Func<TObject,TProperty,string> customSerialization);
     
     /// <summary>
     /// Passes a default format for this instance to use when serializing/deserializing collections of object instances.

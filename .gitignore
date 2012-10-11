@@ -1,5 +1,7 @@
 bin/
+obj/
 TestResult.xml
 *.pidb
 *.VisualState.xml
 *.userprefs
+*.orig

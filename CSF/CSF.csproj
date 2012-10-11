@@ -10,7 +10,7 @@
     <RootNamespace>CSF</RootNamespace>
     <AssemblyName>CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>0.1.1</ReleaseVersion>
+    <ReleaseVersion>1.1.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -59,7 +59,6 @@
     <Compile Include="Collections\IKeyValueSerializer.cs" />
     <Compile Include="ICalculator.cs" />
     <Compile Include="SimpleCalculator.cs" />
-    <Compile Include="Collections\PropertyKeyAssociation.cs" />
     <Compile Include="Collections\KeyValueSerializer.cs" />
     <Compile Include="Reflection\StaticReflectionUtility.cs" />
     <Compile Include="Validation\IValidator.cs" />
@@ -133,6 +132,23 @@
     <Compile Include="Entities\IEntity`2.cs" />
     <Compile Include="Entities\Entity`2.cs" />
     <Compile Include="Entities\IIdentityExtensions.cs" />
+    <Compile Include="Collections\IPropertyKeyMapping.cs" />
+    <Compile Include="Collections\SimplePropertyKeyMapping.cs" />
+    <Compile Include="Collections\CustomPropertyKeyMapping.cs" />
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Globalization\CultureInfoExtensions.cs" />
+    <Compile Include="Patterns\ServiceLayer\IRequest.cs" />
+    <Compile Include="Patterns\ServiceLayer\IResponse.cs" />
+    <Compile Include="Patterns\ServiceLayer\IRequestDispatcher.cs" />
+    <Compile Include="Patterns\ServiceLayer\IRequestHandler`2.cs" />
+    <Compile Include="Patterns\ServiceLayer\IRequestHandler.cs" />
+    <Compile Include="Patterns\ServiceLayer\RequestHandlerBase.cs" />
+    <Compile Include="Patterns\ServiceLayer\Response.cs" />
+    <Compile Include="Patterns\ServiceLayer\RequestDispatchException.cs" />
+    <Compile Include="Patterns\ServiceLayer\RequestDispatcherBase.cs" />
+    <Compile Include="Patterns\ServiceLayer\LocalRequestDispatcher.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -147,6 +163,8 @@
     <Folder Include="Configuration\" />
     <Folder Include="Web\" />
     <Folder Include="Serialization\" />
+    <Folder Include="Globalization\" />
+    <Folder Include="Patterns\ServiceLayer\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

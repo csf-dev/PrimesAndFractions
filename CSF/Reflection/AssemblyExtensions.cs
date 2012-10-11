@@ -21,6 +21,8 @@
 using System;
 using System.Reflection;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CSF.Reflection
 {
@@ -29,6 +31,8 @@ namespace CSF.Reflection
   /// </summary>
   public static class AssemblyExtensions
   {
+    #region embedded resources
+
     /// <summary>
     /// Extension method reads a text-based resource stored within an assembly.
     /// </summary>
@@ -98,6 +102,145 @@ namespace CSF.Reflection
 
       return output;
     }
+
+    #endregion
+
+    #region assembly attributes
+    
+    /// <summary>
+    /// Gets a single <see cref="Attribute"/> that decorates the given assembly.
+    /// </summary>
+    /// <returns>
+    /// The attribute present on the assembly, or null if no attribute was present.
+    /// </returns>
+    /// <param name='assembly'>
+    /// An assembly.
+    /// </param>
+    /// <typeparam name='TAttribute'>
+    /// The type of attribute desired.
+    /// </typeparam>
+    public static TAttribute GetAttribute<TAttribute>(this Assembly assembly) where TAttribute : Attribute
+    {
+      return assembly.GetAttribute<TAttribute>(false);
+    }
+    
+    /// <summary>
+    /// Gets a collection of <see cref="Attribute"/> that decorates the given assembly.
+    /// </summary>
+    /// <returns>
+    /// A collection of attributes for the assembly, which may be empty.
+    /// </returns>
+    /// <param name='assembly'>
+    /// An assembly.
+    /// </param>
+    /// <typeparam name='TAttribute'>
+    /// The type of attribute desired.
+    /// </typeparam>
+    public static IList<TAttribute> GetAttributes<TAttribute>(this Assembly assembly) where TAttribute : Attribute
+    {
+      return assembly.GetAttributes<TAttribute>(false);
+    }
+    
+    /// <summary>
+    /// Gets a single <see cref="Attribute"/> that decorates the given assembly.
+    /// </summary>
+    /// <returns>
+    /// The attribute present on the assembly, or null if no attribute was present.
+    /// </returns>
+    /// <param name='assembly'>
+    /// An assembly.
+    /// </param>
+    /// <param name='inherit'>
+    /// Whether or not to use inheritance when searching for the attribute.
+    /// </param>
+    /// <typeparam name='TAttribute'>
+    /// The type of attribute desired.
+    /// </typeparam>
+    /// <exception cref='InvalidOperationException'>
+    /// Is thrown if the assembly is decorated with multiple attributes of the desired type.
+    /// </exception>
+    public static TAttribute GetAttribute<TAttribute>(this Assembly assembly,
+                                                      bool inherit) where TAttribute : Attribute
+    {
+      IList<TAttribute> attributes = assembly.GetAttributes<TAttribute>(inherit);
+      
+      if(attributes.Count > 1)
+      {
+        throw new InvalidOperationException(String.Format("Assembly `{0}' is decorated with `{1}' multiple times.",
+                                                          assembly.GetName().Name,
+                                                          typeof(TAttribute).FullName));
+      }
+      
+      return (attributes.Count != 0)? attributes.First() : (TAttribute) null;
+    }
+    
+    /// <summary>
+    /// Gets a collection of <see cref="Attribute"/> that decorates the given assembly.
+    /// </summary>
+    /// <returns>
+    /// A collection of attributes for the assembly, which may be empty.
+    /// </returns>
+    /// <param name='assembly'>
+    /// An assembly.
+    /// </param>
+    /// <param name='inherit'>
+    /// Whether or not to use inheritance when searching for the attribute.
+    /// </param>
+    /// <typeparam name='TAttribute'>
+    /// The type of attribute desired.
+    /// </typeparam>
+    /// <exception cref='ArgumentNullException'>
+    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" />.
+    /// </exception>
+    public static IList<TAttribute> GetAttributes<TAttribute>(this Assembly assembly,
+                                                              bool inherit) where TAttribute : Attribute
+    {
+      if(assembly == null)
+      {
+        throw new ArgumentNullException ("assembly");
+      }
+      
+      return assembly.GetCustomAttributes(typeof(TAttribute), inherit).Cast<TAttribute>().ToList();
+    }
+
+    /// <summary>
+    /// Determines whether this instance is decorated with the specified attribute.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c> if this instance is decorated with the specified attribute; otherwise, <c>false</c>.
+    /// </returns>
+    /// <param name='assembly'>
+    /// The assembly to inspect.
+    /// </param>
+    /// <typeparam name='TAttribute'>
+    /// The attribute type to look for.
+    /// </typeparam>
+    public static bool HasAttribute<TAttribute>(this Assembly assembly) where TAttribute : Attribute
+    {
+      return assembly.HasAttribute<TAttribute>(false);
+    }
+
+    /// <summary>
+    /// Determines whether this instance is decorated with the specified attribute.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c> if this instance is decorated with the specified attribute; otherwise, <c>false</c>.
+    /// </returns>
+    /// <param name='assembly'>
+    /// The assembly to inspect.
+    /// </param>
+    /// <param name='inherit'>
+    /// Whether or not to search the <paramref name="assembly"/>'s inheritance chain to find the attribute or not.
+    /// </param>
+    /// <typeparam name='TAttribute'>
+    /// The attribute type to look for.
+    /// </typeparam>
+    public static bool HasAttribute<TAttribute>(this Assembly assembly, bool inherit) where TAttribute : Attribute
+    {
+      return (assembly.GetAttributes<TAttribute>(inherit).Count > 0);
+    }
+    
+    #endregion
   }
 }
 
