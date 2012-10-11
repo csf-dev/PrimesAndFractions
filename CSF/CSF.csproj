@@ -138,6 +138,16 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Globalization\CultureInfoExtensions.cs" />
+    <Compile Include="Patterns\ServiceLayer\IRequest.cs" />
+    <Compile Include="Patterns\ServiceLayer\IResponse.cs" />
+    <Compile Include="Patterns\ServiceLayer\IRequestDispatcher.cs" />
+    <Compile Include="Patterns\ServiceLayer\IRequestHandler`2.cs" />
+    <Compile Include="Patterns\ServiceLayer\IRequestHandler.cs" />
+    <Compile Include="Patterns\ServiceLayer\RequestHandlerBase.cs" />
+    <Compile Include="Patterns\ServiceLayer\Response.cs" />
+    <Compile Include="Patterns\ServiceLayer\RequestDispatchException.cs" />
+    <Compile Include="Patterns\ServiceLayer\RequestDispatcherBase.cs" />
+    <Compile Include="Patterns\ServiceLayer\LocalRequestDispatcher.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -153,6 +163,7 @@
     <Folder Include="Web\" />
     <Folder Include="Serialization\" />
     <Folder Include="Globalization\" />
+    <Folder Include="Patterns\ServiceLayer\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

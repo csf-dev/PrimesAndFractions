@@ -38,6 +38,10 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Configuration" />
+    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920">
+      <Private>False</Private>
+      <Package>moq-4.0</Package>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -80,6 +84,9 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Globalization\TestCultureInfoExtensions.cs" />
+    <Compile Include="Patterns\ServiceLayer\MockRequestHandlers.cs" />
+    <Compile Include="Patterns\ServiceLayer\TestRequestDispatcherBase.cs" />
+    <Compile Include="Patterns\ServiceLayer\TestLocalRequestDispatcher.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -109,6 +116,7 @@
     <Folder Include="Configuration\" />
     <Folder Include="Testing\" />
     <Folder Include="Globalization\" />
+    <Folder Include="Patterns\ServiceLayer\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reflection\TestResource.txt">
