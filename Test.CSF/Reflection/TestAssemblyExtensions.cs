@@ -32,6 +32,23 @@ namespace Test.CSF.Reflection
       }
       Assert.Fail("Test should not reach this point");
     }
+
+    [Test]
+    public void TestGetAttribute()
+    {
+      Assembly assembly = Assembly.GetAssembly(typeof(AssemblyExtensions));
+      AssemblyProductAttribute attrib = assembly.GetAttribute<AssemblyProductAttribute>();
+
+      Assert.IsNotNull(attrib);
+      Assert.AreEqual("CSF Software Utilities", attrib.Product);
+    }
+
+    [Test]
+    public void TestHasAttribute()
+    {
+      Assembly assembly = Assembly.GetAssembly(typeof(AssemblyExtensions));
+      Assert.IsTrue(assembly.HasAttribute<AssemblyProductAttribute>());
+    }
   }
 }
 
