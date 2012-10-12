@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7B12E9
 		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.Web.Mvc", "CSF.Web.Mvc\CSF.Web.Mvc.csproj", "{9FC21F73-B7AA-4870-B356-993906947DAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{80484DD4-6FAE-4473-9FF2-E5A68AE7C669}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80484DD4-6FAE-4473-9FF2-E5A68AE7C669}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80484DD4-6FAE-4473-9FF2-E5A68AE7C669}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FC21F73-B7AA-4870-B356-993906947DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FC21F73-B7AA-4870-B356-993906947DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FC21F73-B7AA-4870-B356-993906947DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FC21F73-B7AA-4870-B356-993906947DAD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E563D7BC-1AB1-4AFB-8533-51315437C6E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E563D7BC-1AB1-4AFB-8533-51315437C6E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E563D7BC-1AB1-4AFB-8533-51315437C6E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
