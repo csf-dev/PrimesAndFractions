@@ -18,6 +18,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7B12E9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.Web.Mvc", "CSF.Web.Mvc\CSF.Web.Mvc.csproj", "{9FC21F73-B7AA-4870-B356-993906947DAD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utils", "utils", "{AD355647-E323-4982-9E58-FD308EBFA0BB}"
+	ProjectSection(SolutionItems) = preProject
+		utils\build = utils\build
+		utils\bump-versions = utils\bump-versions
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

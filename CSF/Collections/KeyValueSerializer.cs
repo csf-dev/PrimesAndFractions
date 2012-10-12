@@ -147,7 +147,7 @@ namespace CSF.Collections
       {
         throw new ArgumentNullException ("collection");
       }
-      
+
       foreach(string key in collection.Keys)
       {
         collectionCopy.Add(key, collection[key]);
