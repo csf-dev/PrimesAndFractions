@@ -186,6 +186,8 @@ namespace CSF.Patterns.ServiceLayer
       var handlerTypes = (from type in assembly.GetExportedTypes()
                           where
                             type.ImplementsInterface<IRequestHandler>()
+                            && type.IsClass
+                            && !type.IsAbstract
                             && type.GetConstructor(Type.EmptyTypes) != null
                           select type);
 
@@ -199,8 +201,11 @@ namespace CSF.Patterns.ServiceLayer
 
         if(genericHandlerInterface != null)
         {
-          // The request type associated with a generic handler is the first generic argument
-          returnValue = this.Register(genericHandlerInterface.GetGenericArguments()[0], handlerType);
+          /* We need to know the 'TRequest' from IRequestHandler<TRequest,TResponse> - it's the first generic type
+           * parameter on that interface.
+           */
+          Type requestType = genericHandlerInterface.GetGenericArguments()[0];
+          returnValue = this.Register(requestType, handlerType);
         }
       }
 

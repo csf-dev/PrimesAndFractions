@@ -3,6 +3,27 @@ using CSF.Patterns.ServiceLayer;
 
 namespace Test.CSF.Patterns.ServiceLayer
 {
+  #region requests
+
+  public class MockRequestOne : IRequest {}
+
+  public class MockRequestTwo : IRequest {}
+
+  public class MockRequestThree : IRequest {}
+
+  #endregion
+
+  #region responses
+
+  public class MockResponse : Response
+  {
+    public IRequest Request;
+  }
+
+  #endregion
+
+  #region handlers
+
   public class MockRequestHandlerOne : RequestHandlerBase<MockRequestOne,MockResponse>
   {
     public override MockResponse Handle (MockRequestOne request)
@@ -10,8 +31,6 @@ namespace Test.CSF.Patterns.ServiceLayer
       return new MockResponse() { Request = request };
     }
   }
-
-  public class MockRequestOne : IRequest {}
 
   public class MockRequestHandlerTwo : RequestHandlerBase<MockRequestTwo,MockResponse>
   {
@@ -21,11 +40,14 @@ namespace Test.CSF.Patterns.ServiceLayer
     }
   }
 
-  public class MockRequestTwo : IRequest {}
-
-  public class MockResponse : Response
+  public abstract class MockAbstractRequestHandler : RequestHandlerBase<MockRequestThree,MockResponse>
   {
-    public IRequest Request;
+    public override MockResponse Handle (MockRequestThree request)
+    {
+      return new MockResponse() { Request = request };
+    }
   }
+
+  #endregion
 }
 
