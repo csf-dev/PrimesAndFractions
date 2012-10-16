@@ -150,6 +150,7 @@
     <Compile Include="Patterns\ServiceLayer\RequestDispatcherBase.cs" />
     <Compile Include="Patterns\ServiceLayer\LocalRequestDispatcher.cs" />
     <Compile Include="Collections\NameValueCollectionExtensions.cs" />
+    <Compile Include="Web\HttpRequestExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

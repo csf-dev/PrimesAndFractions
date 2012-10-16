@@ -50,6 +50,7 @@
     <Compile Include="SeeOtherResult.cs" />
     <Compile Include="HttpResponseBaseExtensions.cs" />
     <Compile Include="ControllerExtensions.cs" />
+    <Compile Include="HttpRequestBaseExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
