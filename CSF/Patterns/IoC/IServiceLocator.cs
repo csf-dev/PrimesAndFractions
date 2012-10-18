@@ -39,7 +39,7 @@ namespace CSF.Patterns.IoC
     /// <typeparam name='TInterface'>
     /// An interface for the service that is being registered.
     /// </typeparam>
-    void SelectService<TInterface>(Func<object> factoryFunction) where TInterface : class;
+    IServiceLocator Select<TInterface>(Func<object> factoryFunction) where TInterface : class;
     
     /// <summary>
     /// Registers a service implementation with this locator instance using a factory function.
@@ -53,7 +53,7 @@ namespace CSF.Patterns.IoC
     /// <typeparam name='TInterface'>
     /// An interface for the service that is being registered.
     /// </typeparam>
-    void SelectService<TInterface>(Func<object> factoryFunction, ServiceLifetime lifespan) where TInterface : class;
+    IServiceLocator Select<TInterface>(Func<object> factoryFunction, ServiceLifetime lifespan) where TInterface : class;
     
     /// <summary>
     /// Gets an implementation of the desired service.
