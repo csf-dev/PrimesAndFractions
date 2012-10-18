@@ -125,9 +125,10 @@ namespace CSF.Patterns.IoC
     /// <typeparam name='TInterface'>
     /// An interface for the service that is being registered.
     /// </typeparam>
-    public virtual void SelectService<TInterface> (Func<object> factoryFunction) where TInterface : class
+    public virtual IServiceLocator Select<TInterface> (Func<object> factoryFunction) where TInterface : class
     {
-      this.SelectService<TInterface>(factoryFunction, DefaultLifetime);
+      this.Select<TInterface>(factoryFunction, DefaultLifetime);
+      return this;
     }
 
     /// <summary>
@@ -142,7 +143,7 @@ namespace CSF.Patterns.IoC
     /// <typeparam name='TInterface'>
     /// An interface for the service that is being registered.
     /// </typeparam>
-    public virtual void SelectService<TInterface>(Func<object> factoryFunction,
+    public virtual IServiceLocator Select<TInterface>(Func<object> factoryFunction,
                                                   ServiceLifetime lifespan) where TInterface : class
     {
       Type interfaceType = typeof(TInterface);
@@ -162,6 +163,7 @@ namespace CSF.Patterns.IoC
       }
       
       this.RegisteredServiceFactories[interfaceType] = service;
+      return this;
     }
 
     /// <summary>
@@ -321,37 +323,21 @@ namespace CSF.Patterns.IoC
     #endregion
     
     #region static methods
-    
-    /// <summary>
-    /// Registers a service implementation using a factory function.
-    /// </summary>
-    /// <param name='factoryFunction'>
-    /// A factory function that will instantiate an instance of the service.
-    /// </param>
-    /// <typeparam name='TInterface'>
-    /// An interface for the service that is being registered.
-    /// </typeparam>
-    public static void Select<TInterface>(Func<object> factoryFunction) where TInterface : class
-    {
-      DefaultInstance.SelectService<TInterface>(factoryFunction);
-    }
 
     /// <summary>
-    /// Registers a service implementation using a factory function.
+    /// Registers one or more service selections by using an anonymous method.
     /// </summary>
-    /// <param name='factoryFunction'>
-    /// A factory function that will instantiate an instance of the service.
+    /// <param name='serviceSelections'>
+    /// A method that introduces service selections.
     /// </param>
-    /// <param name='lifespan'>
-    /// A custom lifespan for created implementations.
-    /// </param>
-    /// <typeparam name='TInterface'>
-    /// An interface for the service that is being registered.
-    /// </typeparam>
-    public static void Select<TInterface>(Func<object> factoryFunction,
-                                          ServiceLifetime lifespan) where TInterface : class
+    public static void Select(Action<IServiceLocator> serviceSelections)
     {
-      DefaultInstance.SelectService<TInterface>(factoryFunction, lifespan);
+      if(serviceSelections == null)
+      {
+        throw new ArgumentNullException("serviceSelections");
+      }
+
+      serviceSelections(DefaultInstance);
     }
 
     /// <summary>
