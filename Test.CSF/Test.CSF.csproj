@@ -89,6 +89,7 @@
     <Compile Include="Patterns\ServiceLayer\TestRequestDispatcherBase.cs" />
     <Compile Include="Patterns\ServiceLayer\TestLocalRequestDispatcher.cs" />
     <Compile Include="Collections\TestNameValueCollectionExtensions.cs" />
+    <Compile Include="TestNullableConvert.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
