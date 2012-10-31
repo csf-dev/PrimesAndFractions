@@ -1,7 +1,6 @@
 ﻿<NUnitProject>
   <Settings activeconfig="Debug" />
-  <Config name="Debug" binpathtype="Auto">
-    <assembly path="bin/Debug/Test.CSF.dll" />
+  <Config name="Debug" appbase="bin/Debug" configfile="Test.CSF.dll.config" binpathtype="Auto">
+    <assembly path="Test.CSF.dll" />
   </Config>
-  <Config name="Release" binpathtype="Auto" />
 </NUnitProject>

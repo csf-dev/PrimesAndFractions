@@ -86,6 +86,8 @@
     <Compile Include="Patterns\ServiceLayer\MockRequestHandlers.cs" />
     <Compile Include="Patterns\ServiceLayer\TestRequestDispatcherBase.cs" />
     <Compile Include="Patterns\ServiceLayer\TestLocalRequestDispatcher.cs" />
+    <Compile Include="Collections\TestNameValueCollectionExtensions.cs" />
+    <Compile Include="TestNullableConvert.cs" />
     <Compile Include="Collections\Serialization\TestKeyValueSerializer.cs" />
     <Compile Include="Collections\Serialization\MappingModel\TestClassMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\TestKeyNamingRule.cs" />
@@ -127,5 +129,10 @@
     <EmbeddedResource Include="Reflection\TestResource.txt">
       <LogicalName>TestResource.txt</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Test.CSF.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

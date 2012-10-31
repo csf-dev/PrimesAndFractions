@@ -144,6 +144,9 @@
     <Compile Include="Patterns\ServiceLayer\RequestDispatchException.cs" />
     <Compile Include="Patterns\ServiceLayer\RequestDispatcherBase.cs" />
     <Compile Include="Patterns\ServiceLayer\LocalRequestDispatcher.cs" />
+    <Compile Include="Collections\NameValueCollectionExtensions.cs" />
+    <Compile Include="Web\HttpRequestExtensions.cs" />
+    <Compile Include="NullableConvert.cs" />
     <Compile Include="Collections\Serialization\IKeyValueSerializer`1.cs" />
     <Compile Include="Collections\Serialization\KeyName.cs" />
     <Compile Include="Collections\Serialization\MappingModel\ICompositeComponentMapping.cs" />
