@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using CSF.Entities;
 using CSF.Collections.Serialization;
+using CSF.Collections.Serialization.MappingModel;
 
 
 namespace Test.CSF.Collections.Serialization
@@ -21,12 +22,11 @@ namespace Test.CSF.Collections.Serialization
         x.Simple(p => p.PropertyOne);
 
         x.Simple(p => p.PropertyTwo)
-          .NamingRule(KeyName.Is("property_two"))
+          .NamingPolicy<KeyNamingPolicy>()
           .Deserialize(s => (int) Convert.ChangeType(String.Concat ("1", s), typeof(int)))
           .Serialize(v => (v - 10).ToString());
 
         x.Composite(p => p.PropertyThree)
-          .NamingRule(KeyName.SuffixComponentIdentifier('_'))
           .Component("year", c => {
             c.Serialize(v => v.Year.ToString());
           })
@@ -39,48 +39,42 @@ namespace Test.CSF.Collections.Serialization
           m.Simple(y => y.Name);
           m.Composite(y => y.Birthday)
             .Component(1, c => {
-              c.NamingRule(KeyName.WithSuffix("_year"));
               c.Serialize(v => v.Year.ToString());
             })
             .Component(2, c => {
-              c.NamingRule(KeyName.WithSuffix("_month"));
               c.Serialize(v => v.Month.ToString());
             })
             .Deserialize(c => new DateTime(Int32.Parse(c[1]), Int32.Parse(c[2]), 1));
         });
 
         x.Collection(p => p.CollectionTwo, m => {
-          m.UsingNumericSuffix("_");
+          m.ArrayStyleList();
           m.Simple(y => y.Name)
             .Mandatory();
           m.Simple(y => y.Friends);
         });
 
         x.Collection(p => p.CollectionOne, m => {
-          m.UsingAggregateSeparator(",");
+          m.CommaSeparatedList();
           m.Mandatory();
-          m.Simple()
-            .NamingRule(KeyName.Is("strVal"));
+          m.Simple();
         });
 
         x.ValueCollection(p => p.CollectionThree, m => {
-          m.UsingAggregateSeparator(",");
+          m.CommaSeparatedList();
           m.Composite()
             .Component(1, c => {
-              c.NamingRule(KeyName.WithSuffix("_year"));
               c.Serialize(v => v.Year.ToString());
             })
             .Component(2, c => {
-              c.NamingRule(KeyName.WithSuffix("_month"));
               c.Serialize(v => v.Month.ToString());
             })
             .Deserialize(c => new DateTime(Int32.Parse(c[1]), Int32.Parse(c[2]), 1));
         });
 
         x.Collection(prop => prop.CollectionTwo, m => {
-          m.UsingAggregateSeparator(",");
-          m.Entity<Person,uint>()
-            .NamingRule(KeyName.Is("person_id"));
+          m.CommaSeparatedList();
+          m.Entity<Person,uint>();
         });
 
         x.UsingFactory(() => new MockClass() { PropertyOne = "Beans!" });

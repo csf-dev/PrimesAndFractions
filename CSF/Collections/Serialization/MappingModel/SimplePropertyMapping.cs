@@ -102,6 +102,29 @@ namespace CSF.Collections.Serialization.MappingModel
       this.SerializationFunction = (val => (val != null)? val.ToString() : null);
     }
 
+    /// <summary>
+    /// Initializes a new instance of this simple property-mapping class.
+    /// </summary>
+    /// <param name='property'>
+    /// The property that this instance is associated with.
+    /// </param>
+    /// <param name='parentMapping'>
+    /// The parent mapping.
+    /// </param>
+    /// <param name='classMode'>
+    /// A boolean that indicates whether this instance will operate in 'class mode' or not.
+    /// </param>
+    public SimplePropertyMapping(IMapping parentMapping,
+                                 PropertyInfo property,
+                                 bool classMode) : this(parentMapping, property)
+    {
+      if(classMode)
+      {
+        this.PermitNullParent = true;
+        this.PermitNullProperty = true;
+      }
+    }
+
     #endregion
   }
 }

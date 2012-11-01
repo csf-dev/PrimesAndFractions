@@ -90,8 +90,15 @@
     <Compile Include="TestNullableConvert.cs" />
     <Compile Include="Collections\Serialization\TestKeyValueSerializer.cs" />
     <Compile Include="Collections\Serialization\MappingModel\TestClassMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\TestKeyNamingRule.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\StubTypes.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\TestCompositePropertyComponentMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\TestKeyNamingPolicy.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\TestSimplePropertyMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\TestClassMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\StubTypes.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\TestCompositeMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\TestMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\TestValueTypeCollectionMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\TestReferenceTypeCollectionMappingHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -124,6 +131,7 @@
     <Folder Include="Patterns\ServiceLayer\" />
     <Folder Include="Collections\Serialization\" />
     <Folder Include="Collections\Serialization\MappingModel\" />
+    <Folder Include="Collections\Serialization\MappingHelpers\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reflection\TestResource.txt">

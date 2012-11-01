@@ -32,15 +32,31 @@ namespace CSF.Collections.Serialization.MappingHelpers
     where TObject : class
   {
     /// <summary>
-    /// Specifies a default naming rule for the keys of values that form this composite mapping.
+    /// Facilitates the setting of a key-naming-policy into the associated mapping.
     /// </summary>
     /// <returns>
-    /// A composite mapping helper instance, enabling chaining of mappings.
+    /// The current mapping helper instance, to facilitate chaining of methods.
     /// </returns>
-    /// <param name='keyNamingRule'>
-    /// The default mapping rule.
+    /// <typeparam name='TPolicy'>
+    /// The type of <see cref="IKeyNamingPolicy"/> desired.
+    /// </typeparam>
+    ICompositeMappingHelper<TObject,TValue> NamingPolicy<TPolicy>()
+      where TPolicy : IKeyNamingPolicy;
+
+    /// <summary>
+    /// Facilitates the setting of a key-naming-policy into the associated mapping.
+    /// </summary>
+    /// <returns>
+    /// The current mapping helper instance, to facilitate chaining of methods.
+    /// </returns>
+    /// <param name='factoryMethod'>
+    /// A custom factory method to use when constructing the naming policy.
     /// </param>
-    ICompositeMappingHelper<TObject,TValue> NamingRule(IKeyNamingPolicy keyNamingRule);
+    /// <typeparam name='TPolicy'>
+    /// The type of <see cref="IKeyNamingPolicy"/> desired.
+    /// </typeparam>
+    ICompositeMappingHelper<TObject,TValue> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
+      where TPolicy : IKeyNamingPolicy;
 
     /// <summary>
     /// Specifies a component of this composite mapping, facilitating the mapping of that component.

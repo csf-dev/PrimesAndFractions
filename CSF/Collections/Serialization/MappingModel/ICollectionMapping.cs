@@ -25,7 +25,7 @@ namespace CSF.Collections.Serialization.MappingModel
   /// <summary>
   /// Marker interface for a mapping that relates to a collection.
   /// </summary>
-  public interface ICollectionMapping
+  public interface ICollectionMapping : IMapping
   {
     /// <summary>
     /// Gets the type of collection keying in-use.
@@ -33,7 +33,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// The type of the collection key.
     /// </value>
-    CollectionKeyType CollectionKeyType { get; }
+    CollectionKeyType CollectionKeyType { get; set; }
   }
 }
 

@@ -36,7 +36,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// A method body containing the deserialization function.
     /// </value>
-    Func<string,TValue> DeserializationFunction { get; }
+    Func<string,TValue> DeserializationFunction { get; set; }
 
     /// <summary>
     /// Gets the function used to serialize a string from the property value.
@@ -44,7 +44,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// A method body containing the serialization function.
     /// </value>
-    Func<TValue,string> SerializationFunction { get; }
+    Func<TValue,string> SerializationFunction { get; set; }
 
     #endregion
   }

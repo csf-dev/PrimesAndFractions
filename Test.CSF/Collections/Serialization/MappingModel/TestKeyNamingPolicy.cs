@@ -8,7 +8,7 @@ using System.Reflection;
 namespace Test.CSF.Collections.Serialization.MappingModel
 {
   [TestFixture]
-  public class TestKeyNamingRule
+  public class TestKeyNamingPolicy
   {
     [Test]
     public void TestAssociatedMapping()

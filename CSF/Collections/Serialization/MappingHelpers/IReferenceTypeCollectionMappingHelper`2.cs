@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
+using CSF.Collections.Serialization.MappingModel;
 
 namespace CSF.Collections.Serialization.MappingHelpers
 {
@@ -30,6 +31,32 @@ namespace CSF.Collections.Serialization.MappingHelpers
     where TObject : class
     where TCollectionItem : class
   {
+    /// <summary>
+    /// Facilitates the setting of a key-naming-policy into the associated mapping.
+    /// </summary>
+    /// <returns>
+    /// The current mapping helper instance, to facilitate chaining of methods.
+    /// </returns>
+    /// <typeparam name='TPolicy'>
+    /// The type of <see cref="IKeyNamingPolicy"/> desired.
+    /// </typeparam>
+    new IReferenceTypeCollectionMappingHelper<TObject,TCollectionItem> NamingPolicy<TPolicy>()
+      where TPolicy : IKeyNamingPolicy;
+
+    /// <summary>
+    /// Facilitates the setting of a key-naming-policy into the associated mapping.
+    /// </summary>
+    /// <returns>
+    /// The current mapping helper instance, to facilitate chaining of methods.
+    /// </returns>
+    /// <param name='factoryMethod'>
+    /// A custom factory method to use when constructing the naming policy.
+    /// </param>
+    /// <typeparam name='TPolicy'>
+    /// The type of <see cref="IKeyNamingPolicy"/> desired.
+    /// </typeparam>
+    new IReferenceTypeCollectionMappingHelper<TObject,TCollectionItem> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
+      where TPolicy : IKeyNamingPolicy;
   }
 }
 

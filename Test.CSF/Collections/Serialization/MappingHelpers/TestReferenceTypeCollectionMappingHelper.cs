@@ -1,0 +1,225 @@
+using System;
+using NUnit.Framework;
+using Moq;
+using CSF.Collections.Serialization.MappingHelpers;
+using CSF.Collections.Serialization.MappingModel;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Test.CSF.Collections.Serialization.MappingHelpers
+{
+  [TestFixture]
+  public class TestReferenceTypeCollectionMappingHelper
+  {
+    #region general methods
+
+    [Test]
+    public void TestUsingFactory()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+
+      helper.UsingFactory(() => new Bar("Wibble") { BarProperty = "Test!" });
+
+      mapping.VerifySet(x => x.FactoryMethod = It.IsAny<Func<Bar>>());
+    }
+
+    [Test]
+    public void TestNamingPolicy()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+      mapping.SetupProperty(x => x.KeyNamingPolicy);
+
+      helper.NamingPolicy<TestNamingPolicy>();
+
+      mapping.VerifySet(x => x.KeyNamingPolicy = It.IsAny<TestNamingPolicy>());
+      Assert.IsInstanceOfType(typeof(TestNamingPolicy), mapping.Object.KeyNamingPolicy, "Correct type");
+    }
+
+    [Test]
+    public void TestNamingPolicyWithFactory()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+      mapping.SetupProperty(x => x.KeyNamingPolicy);
+
+      helper.NamingPolicy<TestNamingPolicy>(map => new TestNamingPolicy(map) { TestString = "Test!" });
+
+      mapping.VerifySet(x => x.KeyNamingPolicy = It.IsAny<TestNamingPolicy>());
+      Assert.IsInstanceOfType(typeof(TestNamingPolicy), mapping.Object.KeyNamingPolicy, "Correct type");
+      Assert.AreEqual("Test!", ((TestNamingPolicy) mapping.Object.KeyNamingPolicy).TestString, "Correct string value");
+    }
+
+    #endregion
+
+    #region mapping the type itself
+
+    [Test]
+    public void TestMapAsSimple()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+      mapping.Setup(x => x.ParentMapping);
+      mapping.Setup(x => x.Property);
+      mapping.SetupProperty(x => x.MapAs);
+
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+
+      var simple = helper.Simple();
+
+      Assert.IsNotNull(simple, "Simple mapping helper is not null");
+      Assert.IsNotNull(mapping.Object.MapAs, "Map-as of parent object is not null");
+      Assert.IsTrue(mapping.Object.MapAs is ISimpleMapping<Bar>, "Map-as is of correct type");
+    }
+
+    [Test]
+    public void TestMapAsComposite()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+      mapping.Setup(x => x.ParentMapping);
+      mapping.Setup(x => x.Property);
+      mapping.SetupProperty(x => x.MapAs);
+
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+
+      var composite = helper.Composite();
+
+      Assert.IsNotNull(composite, "Composite mapping helper is not null");
+      Assert.IsNotNull(mapping.Object.MapAs, "Map-as of parent object is not null");
+      Assert.IsTrue(mapping.Object.MapAs is ICompositeMapping<Bar>, "Map-as is of correct type");
+    }
+
+    [Test]
+    public void TestMapAsEntity()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<EntityType>>();
+      mapping.Setup(x => x.ParentMapping);
+      mapping.Setup(x => x.Property);
+      mapping.SetupProperty(x => x.MapAs);
+
+      ReferenceTypeCollectionMappingHelper<Baz,EntityType> helper = new ReferenceTypeCollectionMappingHelper<Baz,EntityType>(mapping.Object);
+
+      var entity = helper.Entity<EntityType,int>();
+
+      Assert.IsNotNull(entity, "Entity mapping helper is not null");
+      Assert.IsNotNull(mapping.Object.MapAs, "Map-as of parent object is not null");
+      Assert.IsTrue(mapping.Object.MapAs is ISimpleMapping<EntityType>, "Map-as is of correct type");
+    }
+
+    #endregion
+
+    #region adding mappings
+
+    [Test]
+    public void TestSimple()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+
+      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+      var simple = helper.Simple(x => x.BarProperty);
+
+      Assert.IsNotNull(simple);
+      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.Mappings.First() is ISimpleMapping<string>, "Mapping is of correct type");
+    }
+
+    [Test]
+    public void TestSimpleTwice()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+
+      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+      var simple = helper.Simple(x => x.BarProperty);
+      var simple2 = helper.Simple(x => x.BarProperty);
+
+      Assert.IsNotNull(simple);
+      Assert.IsNotNull(simple2);
+      Assert.AreEqual(1,
+                      mapping.Object.Mappings.Count,
+                      "Correct count of contained mappings, only one mapping was created.");
+      Assert.IsTrue(mapping.Object.Mappings.First() is ISimpleMapping<string>, "Mapping is of correct type");
+    }
+
+    [Test]
+    public void TestComposite()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+
+      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+      var comp = helper.Composite(x => x.BarProperty);
+
+      Assert.IsNotNull(comp);
+      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.Mappings.First() is ICompositeMapping<string>, "Mapping is of correct type");
+    }
+
+    [Test]
+    public void TestCollection()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+
+      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+      helper.Collection(x => x.BazCollection, m => {});
+
+      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.Mappings.First() is IReferenceTypeCollectionMapping<Baz>,
+                    "Mapping is of correct type");
+    }
+
+    [Test]
+    public void TestValueCollection()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+
+      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+      helper.ValueCollection(x => x.ValueCollection, m => {});
+
+      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.Mappings.First() is IValueTypeCollectionMapping<DateTime>,
+                    "Mapping is of correct type");
+    }
+
+    [Test]
+    public void TestClass()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+
+      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+      helper.Class(x => x.Foo, m => {});
+
+      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.Mappings.First() is IClassMapping<Foo>,
+                    "Mapping is of correct type");
+    }
+
+    [Test]
+    public void TestEntity()
+    {
+      var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+
+      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+      helper.Entity<EntityType,int>(x => x.Entity);
+
+      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.Mappings.First() is ISimpleMapping<EntityType>,
+                    "Mapping is of correct type");
+    }
+
+    #endregion
+  }
+}
+

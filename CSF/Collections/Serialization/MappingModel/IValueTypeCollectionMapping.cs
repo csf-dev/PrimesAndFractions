@@ -34,7 +34,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// The mapping for collection items.
     /// </value>
-    IMapping MapAs { get; }
+    IMapping MapAs { get; set; }
   }
 }
 

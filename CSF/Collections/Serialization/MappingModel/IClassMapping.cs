@@ -37,7 +37,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// The mapping for this entire type.
     /// </value>
-    IMapping MapAs { get; }
+    IMapping MapAs { get; set; }
 
     /// <summary>
     /// Gets a collection of the mappings for this type.
@@ -45,7 +45,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// The mappings.
     /// </value>
-    ICollection<IMapping> Mappings { get; }
+    ICollection<IMapping> Mappings { get; set; }
 
     /// <summary>
     /// Gets the factory method that is used for constructing instances of this type.
@@ -53,7 +53,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// The factory method.
     /// </value>
-    Func<TObject> FactoryMethod { get; }
+    Func<TObject> FactoryMethod { get; set; }
   }
 }
 

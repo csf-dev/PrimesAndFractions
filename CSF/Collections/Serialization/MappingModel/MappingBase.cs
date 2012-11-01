@@ -30,9 +30,8 @@ namespace CSF.Collections.Serialization.MappingModel
   {
     #region fields
 
-    private IMapping _parentMapping;
-    private PropertyInfo _property;
     private IKeyNamingPolicy _namingRule;
+    private bool _permitNullParent, _permitNullProperty;
 
     #endregion
 
@@ -48,7 +47,10 @@ namespace CSF.Collections.Serialization.MappingModel
     protected virtual bool PermitNullParent
     {
       get {
-        return false;
+        return _permitNullParent;
+      }
+      set {
+        _permitNullParent = value;
       }
     }
 
@@ -62,7 +64,10 @@ namespace CSF.Collections.Serialization.MappingModel
     protected virtual bool PermitNullProperty
     {
       get {
-        return false;
+        return _permitNullProperty;
+      }
+      set {
+        _permitNullProperty = value;
       }
     }
 
@@ -96,18 +101,8 @@ namespace CSF.Collections.Serialization.MappingModel
     /// </value>
     public virtual IMapping ParentMapping
     {
-      get {
-        return _parentMapping;
-      }
-      private set {
-        if(value == null
-           && !this.PermitNullParent)
-        {
-          throw new ArgumentNullException("value");
-        }
-
-        _parentMapping = value;
-      }
+      get;
+      private set;
     }
 
     /// <summary>
@@ -118,18 +113,8 @@ namespace CSF.Collections.Serialization.MappingModel
     /// </value>
     public virtual PropertyInfo Property
     {
-      get {
-        return _property;
-      }
-      private set {
-        if(value == null
-           && !this.PermitNullProperty)
-        {
-          throw new ArgumentNullException("value");
-        }
-
-        _property = value;
-      }
+      get;
+      private set;
     }
 
     /// <summary>
@@ -203,6 +188,14 @@ namespace CSF.Collections.Serialization.MappingModel
       {
         throw new InvalidOperationException("A required flag value is specified but not a flag key.  This is invalid.");
       }
+      else if(!this.PermitNullParent && this.ParentMapping == null)
+      {
+        throw new InvalidOperationException("Parent mapping is null but this scenario is not permitted.");
+      }
+      else if(!this.PermitNullProperty && this.Property == null)
+      {
+        throw new InvalidOperationException("Associated property is null but this scenario is not permitted.");
+      }
       else if(this.ParentMapping != null && this.Property == null)
       {
         throw new InvalidOperationException("The current mapping has a parent (IE: it is not the root of the " +
@@ -220,6 +213,9 @@ namespace CSF.Collections.Serialization.MappingModel
     /// </summary>
     public MappingBase(IMapping parentMapping, PropertyInfo property)
     {
+      this.PermitNullParent = false;
+      this.PermitNullProperty = false;
+
       this.ParentMapping = parentMapping;
       this.Property = property;
 

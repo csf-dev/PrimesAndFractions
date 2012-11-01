@@ -35,7 +35,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// The naming rule.
     /// </value>
-    IKeyNamingPolicy KeyNamingPolicy { get; }
+    IKeyNamingPolicy KeyNamingPolicy { get; set; }
 
     /// <summary>
     /// Gets the 'parent' mapping that 'contains' the current mapping.
@@ -78,7 +78,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// <c>true</c> if mandatory; otherwise, <c>false</c>.
     /// </value>
-    bool Mandatory { get; }
+    bool Mandatory { get; set; }
 
     /// <summary>
     /// Gets a value that indicates a flag-key if it is in-use for this mapping.
@@ -100,7 +100,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// The flag key.
     /// </value>
-    string FlagKey { get; }
+    string FlagKey { get; set; }
 
     /// <summary>
     /// Gets a value that is required within <see cref="FlagKey"/> when deserializing, and that is written to
@@ -115,7 +115,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// The flag value.
     /// </value>
-    string FlagValue { get; }
+    string FlagValue { get; set; }
 
     /// <summary>
     /// Validates this mapping instance.

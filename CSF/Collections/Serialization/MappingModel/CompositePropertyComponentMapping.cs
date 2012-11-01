@@ -108,6 +108,25 @@ namespace CSF.Collections.Serialization.MappingModel
     }
 
     #endregion
+
+    #region constructor
+
+    /// <summary>
+    /// Initializes a new instance of the component mapping type.
+    /// </summary>
+    /// <param name='parentMapping'>
+    /// Parent mapping.
+    /// </param>
+    /// <param name='componentIdentifier'>
+    /// Component identifier.
+    /// </param>
+    public CompositePropertyComponentMapping(ICompositeMapping<TValue> parentMapping, object componentIdentifier)
+    {
+      this.ParentMapping = parentMapping;
+      this.ComponentIdentifier = componentIdentifier;
+    }
+
+    #endregion
   }
 }
 

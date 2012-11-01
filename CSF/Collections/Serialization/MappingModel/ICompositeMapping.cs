@@ -38,7 +38,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// A method body containing the deserialization function.
     /// </value>
-    Func<IDictionary<object,string>,TValue> DeserializationFunction { get; }
+    Func<IDictionary<object,string>,TValue> DeserializationFunction { get; set; }
 
     /// <summary>
     /// Gets a collection of the components that make up this mapping and their respective mappings.
@@ -46,7 +46,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// A collection of the components, indexed by their identifiers.
     /// </value>
-    IDictionary<object,ICompositeComponentMapping<TValue>> Components { get; }
+    IDictionary<object,ICompositeComponentMapping<TValue>> Components { get; set; }
 
     #endregion
   }

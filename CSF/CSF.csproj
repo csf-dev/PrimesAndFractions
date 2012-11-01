@@ -148,7 +148,6 @@
     <Compile Include="Web\HttpRequestExtensions.cs" />
     <Compile Include="NullableConvert.cs" />
     <Compile Include="Collections\Serialization\IKeyValueSerializer`1.cs" />
-    <Compile Include="Collections\Serialization\KeyName.cs" />
     <Compile Include="Collections\Serialization\MappingModel\ICompositeComponentMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\ICompositeMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\ISimpleMapping.cs" />
@@ -177,6 +176,16 @@
     <Compile Include="Collections\Serialization\MappingModel\ReferenceTypeCollectionMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\CollectionKeyType.cs" />
     <Compile Include="Collections\Serialization\MappingModel\ValueTypeCollectionMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\ClassMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\SimpleMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\CompositeMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\CompositeComponentMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\ReferenceTypeCollectionMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\ValueTypeCollectionMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\CollectionMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\EntityMappingHelper.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\MappingHelper`1.cs" />
+    <Compile Include="Collections\Serialization\MappingHelpers\MappingHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

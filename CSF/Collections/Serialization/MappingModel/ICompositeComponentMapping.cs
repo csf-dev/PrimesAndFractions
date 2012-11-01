@@ -50,7 +50,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <value>
     /// A method body containing the serialization function.
     /// </value>
-    Func<TValue,string> SerializationFunction { get; }
+    Func<TValue,string> SerializationFunction { get; set; }
   }
 }
 

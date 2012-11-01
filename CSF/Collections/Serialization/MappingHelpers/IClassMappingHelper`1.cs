@@ -22,6 +22,7 @@ using System;
 using System.Linq.Expressions;
 using System.Collections.Generic;
 using CSF.Entities;
+using CSF.Collections.Serialization.MappingModel;
 
 namespace CSF.Collections.Serialization.MappingHelpers
 {
@@ -149,6 +150,33 @@ namespace CSF.Collections.Serialization.MappingHelpers
     #endregion
 
     #region mapping options
+
+    /// <summary>
+    /// Facilitates the setting of a key-naming-policy into the associated mapping.
+    /// </summary>
+    /// <returns>
+    /// The current mapping helper instance, to facilitate chaining of methods.
+    /// </returns>
+    /// <typeparam name='TPolicy'>
+    /// The type of <see cref="IKeyNamingPolicy"/> desired.
+    /// </typeparam>
+    IClassMappingHelper<TObject> NamingPolicy<TPolicy>()
+      where TPolicy : IKeyNamingPolicy;
+
+    /// <summary>
+    /// Facilitates the setting of a key-naming-policy into the associated mapping.
+    /// </summary>
+    /// <returns>
+    /// The current mapping helper instance, to facilitate chaining of methods.
+    /// </returns>
+    /// <param name='factoryMethod'>
+    /// A custom factory method to use when constructing the naming policy.
+    /// </param>
+    /// <typeparam name='TPolicy'>
+    /// The type of <see cref="IKeyNamingPolicy"/> desired.
+    /// </typeparam>
+    IClassMappingHelper<TObject> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
+      where TPolicy : IKeyNamingPolicy;
 
     /// <summary>
     /// Specifies a factory-function to use when creating instances of the mapped class, instead of the default

@@ -40,34 +40,6 @@ namespace CSF.Collections.Serialization.MappingModel
     #region MappingBase overrides
 
     /// <summary>
-    /// Gets a value indicating whether this <see cref="CSF.Collections.Serialization.MappingModel.MappingBase"/>
-    /// permits null parent mappings.
-    /// </summary>
-    /// <value>
-    /// <c>true</c> if null parent mappings are permitted; otherwise, <c>false</c>.
-    /// </value>
-    protected override bool PermitNullParent
-    {
-      get {
-        return true;
-      }
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether this <see cref="CSF.Collections.Serialization.MappingModel.MappingBase"/>
-    /// permits null properties.
-    /// </summary>
-    /// <value>
-    /// <c>true</c> if null properties are permitted; otherwise, <c>false</c>.
-    /// </value>
-    protected override bool PermitNullProperty
-    {
-      get {
-        return true;
-      }
-    }
-
-    /// <summary>
     ///  Validates this mapping instance. 
     /// </summary>
     /// <remarks>
@@ -181,7 +153,11 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <summary>
     /// Initializes a new instance of the the class-mapping type.
     /// </summary>
-    public ClassMapping() : this(null, null) {}
+    public ClassMapping() : this(null, null)
+    {
+      this.PermitNullParent = true;
+      this.PermitNullProperty = true;
+    }
 
     #endregion
   }

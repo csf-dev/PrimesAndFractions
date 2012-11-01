@@ -36,14 +36,6 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// A method body containing the serialization function.
     /// </param>
     void Serialize(Func<TValue,string> serializationFunction);
-
-    /// <summary>
-    /// Facilitates providing a naming rule for this component.
-    /// </summary>
-    /// <param name='keyNamingRule'>
-    /// The component naming rule.
-    /// </param>
-    void NamingRule(IKeyNamingPolicy keyNamingRule);
   }
 }
 

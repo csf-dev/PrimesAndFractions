@@ -1,5 +1,5 @@
 //
-//  ICollectionMappingHelper.cs
+//  CollectionMappingHelper.cs
 //
 //  Author:
 //       Craig Fowler <craig@craigfowler.me.uk>
@@ -19,23 +19,47 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
+using CSF.Collections.Serialization.MappingModel;
 
 namespace CSF.Collections.Serialization.MappingHelpers
 {
   /// <summary>
-  /// Interface for a mapping helper that maps a collection of items.
+  /// Base class for mapping helpers that map collection-type mappings.
   /// </summary>
-  public interface ICollectionMappingHelper : IMappingHelper
+  public abstract class CollectionMappingHelper<TMapping> : MappingHelper<TMapping>, ICollectionMappingHelper
+    where TMapping : ICollectionMapping
   {
+    #region ICollectionMappingHelper implementation
+
     /// <summary>
     /// Indicates that this mapping will use a comma-separated list of many item values within a single string value.
     /// </summary>
-    void CommaSeparatedList();
+    public void CommaSeparatedList()
+    {
+      this.Mapping.CollectionKeyType = CollectionKeyType.Aggregate;
+    }
 
     /// <summary>
     /// Indicates that this mapping will use an array-like notation, storing its separate values in many string values.
     /// </summary>
-    void ArrayStyleList();
+    public void ArrayStyleList()
+    {
+      this.Mapping.CollectionKeyType = CollectionKeyType.Separate;
+    }
+
+    #endregion
+
+    #region constructors
+
+    /// <summary>
+    /// Initializes a new instance of the collection mapping helper type.
+    /// </summary>
+    /// <param name='mapping'>
+    /// Mapping.
+    /// </param>
+    public CollectionMappingHelper(TMapping mapping) : base(mapping) {}
+
+    #endregion
   }
 }
 

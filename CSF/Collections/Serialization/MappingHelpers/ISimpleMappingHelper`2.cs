@@ -46,12 +46,31 @@ namespace CSF.Collections.Serialization.MappingHelpers
     ISimpleMappingHelper<TObject,TValue> Deserialize(Func<string,TValue> deserializationFunction);
 
     /// <summary>
-    /// Facilitates setting the key-naming-rule for this property (or type).
+    /// Facilitates the setting of a key-naming-policy into the associated mapping.
     /// </summary>
-    /// <param name='namingRule'>
-    /// The naming rule.
+    /// <returns>
+    /// The current mapping helper instance, to facilitate chaining of methods.
+    /// </returns>
+    /// <typeparam name='TPolicy'>
+    /// The type of <see cref="IKeyNamingPolicy"/> desired.
+    /// </typeparam>
+    ISimpleMappingHelper<TObject,TValue> NamingPolicy<TPolicy>()
+      where TPolicy : IKeyNamingPolicy;
+
+    /// <summary>
+    /// Facilitates the setting of a key-naming-policy into the associated mapping.
+    /// </summary>
+    /// <returns>
+    /// The current mapping helper instance, to facilitate chaining of methods.
+    /// </returns>
+    /// <param name='factoryMethod'>
+    /// A custom factory method to use when constructing the naming policy.
     /// </param>
-    ISimpleMappingHelper<TObject,TValue> NamingRule(IKeyNamingPolicy namingRule);
+    /// <typeparam name='TPolicy'>
+    /// The type of <see cref="IKeyNamingPolicy"/> desired.
+    /// </typeparam>
+    ISimpleMappingHelper<TObject, TValue> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
+      where TPolicy : IKeyNamingPolicy;
   }
 }
 
