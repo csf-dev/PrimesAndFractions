@@ -47,6 +47,28 @@ namespace CSF.Collections.Serialization.MappingHelpers
       this.Mapping.CollectionKeyType = CollectionKeyType.Separate;
     }
 
+    /// <summary>
+    /// Sets the minimum 'array index' used whilst searching for values to deserialize.
+    /// </summary>
+    /// <param name='index'>
+    /// The index.
+    /// </param>
+    public void DeserializeMinIndex(int index)
+    {
+      this.Mapping.DeserializeMinimumIndex = index;
+    }
+
+    /// <summary>
+    /// Sets the maximum 'array index' used whilst searching for values to deserialize.
+    /// </summary>
+    /// <param name='index'>
+    /// The index.
+    /// </param>
+    public void DeserializeMaxIndex(int index)
+    {
+      this.Mapping.DeserializeMaximumIndex = index;
+    }
+
     #endregion
 
     #region constructors

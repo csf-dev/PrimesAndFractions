@@ -77,6 +77,86 @@ namespace CSF.Collections.Serialization.MappingModel
       }
     }
 
+    /// <summary>
+    ///  Deserialize the specified data as an object instance. 
+    /// </summary>
+    /// <returns>
+    ///  A value that indicates whether deserialization was successful or not. 
+    /// </returns>
+    /// <param name='data'>
+    ///  The dictionary/collection of string data to deserialize from. 
+    /// </param>
+    /// <param name='result'>
+    /// The output/deserialized object instance.  If the return value is false (unsuccessful deserialization) then the
+    /// output value of this parameter is undefined.
+    /// </param>
+    /// <param name='collectionIndices'>
+    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
+    /// </param>
+    public virtual bool Deserialize(IDictionary<string, string> data,
+                                    out TValue result,
+                                    params int[] collectionIndices)
+    {
+      bool output = false;
+
+      result = default(TValue);
+
+      if(this.MayDeserialize(data))
+      {
+        IDictionary<object, string> values = new Dictionary<object, string>();
+
+        foreach(object identifier in this.Components.Keys)
+        {
+          string key = this.Components[identifier].GetKeyName(collectionIndices);
+          if(data.ContainsKey(key))
+          {
+            values.Add(identifier, data[key]);
+          }
+        }
+
+        if(values.Count > 0)
+        {
+          try
+          {
+            result = this.DeserializationFunction(values);
+            output = true;
+          }
+          catch(Exception) { }
+        }
+      }
+
+      if(!output && this.Mandatory)
+      {
+        throw new MandatorySerializationException(this);
+      }
+
+      return output;
+    }
+
+    /// <summary>
+    ///  Deserialize the specified data as an object instance. 
+    /// </summary>
+    /// <returns>
+    ///  A value that indicates whether deserialization was successful or not. 
+    /// </returns>
+    /// <param name='data'>
+    ///  The dictionary/collection of string data to deserialize from. 
+    /// </param>
+    /// <param name='result'>
+    ///  The output/deserialized object instance. If the return value is false (unsuccessful deserialization) then the
+    /// output value of this parameter is undefined. 
+    /// </param>
+    /// <param name='collectionIndices'>
+    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
+    /// </param>
+    public override bool Deserialize(IDictionary<string, string> data, out object result, params int[] collectionIndices)
+    {
+      TValue tempResult;
+      bool output = this.Deserialize(data, out tempResult, collectionIndices);
+      result = tempResult;
+      return output;
+    }
+
     #endregion
 
     #region constructor

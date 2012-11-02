@@ -36,6 +36,22 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// Indicates that this mapping will use an array-like notation, storing its separate values in many string values.
     /// </summary>
     void ArrayStyleList();
+
+    /// <summary>
+    /// Sets the minimum 'array index' used whilst searching for values to deserialize.
+    /// </summary>
+    /// <param name='index'>
+    /// The index.
+    /// </param>
+    void DeserializeMinIndex(int index);
+
+    /// <summary>
+    /// Sets the maximum 'array index' used whilst searching for values to deserialize.
+    /// </summary>
+    /// <param name='index'>
+    /// The index.
+    /// </param>
+    void DeserializeMaxIndex(int index);
   }
 }
 

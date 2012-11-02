@@ -38,7 +38,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ISimpleMappingHelper<TObject, TCollectionItem> Simple ()
     {
-      this.Mapping.MapAs = new SimplePropertyMapping<TCollectionItem>(this.Mapping.ParentMapping, this.Mapping.Property, true);
+      this.Mapping.MapAs = new SimplePropertyMapping<TCollectionItem>(this.Mapping, null, true);
 
       return new SimpleMappingHelper<TObject, TCollectionItem>((ISimpleMapping<TCollectionItem>) this.Mapping.MapAs);
     }
@@ -48,7 +48,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ICompositeMappingHelper<TObject, TCollectionItem> Composite ()
     {
-      this.Mapping.MapAs = new CompositePropertyMapping<TCollectionItem>(this.Mapping.ParentMapping, this.Mapping.Property, true);
+      this.Mapping.MapAs = new CompositePropertyMapping<TCollectionItem>(this.Mapping, null, true);
 
       return new CompositeMappingHelper<TObject, TCollectionItem>((ICompositeMapping<TCollectionItem>) this.Mapping.MapAs);
     }

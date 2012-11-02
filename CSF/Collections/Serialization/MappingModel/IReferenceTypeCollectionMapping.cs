@@ -25,9 +25,16 @@ namespace CSF.Collections.Serialization.MappingModel
   /// <summary>
   /// Interface for a mapping which describes a collection of class-like (reference type) object instances.
   /// </summary>
-  public interface IReferenceTypeCollectionMapping<TCollectionItem> : IClassMapping<TCollectionItem>, ICollectionMapping
+  public interface IReferenceTypeCollectionMapping<TCollectionItem> : ICollectionMapping
     where TCollectionItem : class
   {
+    /// <summary>
+    /// Gets or sets the way that this collection is mapped.
+    /// </summary>
+    /// <value>
+    /// The map-as mapping.
+    /// </value>
+    IClassMapping<TCollectionItem> MapAs { get; set; }
   }
 }
 

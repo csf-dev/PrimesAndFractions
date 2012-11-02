@@ -20,6 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace CSF.Collections.Serialization.MappingModel
 {
@@ -186,22 +187,83 @@ namespace CSF.Collections.Serialization.MappingModel
     {
       if(!String.IsNullOrEmpty(this.FlagValue) && String.IsNullOrEmpty(this.FlagKey))
       {
-        throw new InvalidOperationException("A required flag value is specified but not a flag key.  This is invalid.");
+        throw new InvalidMappingException("A required flag value is specified but not a flag key.  This is invalid.");
       }
       else if(!this.PermitNullParent && this.ParentMapping == null)
       {
-        throw new InvalidOperationException("Parent mapping is null but this scenario is not permitted.");
+        throw new InvalidMappingException("Parent mapping is null but this scenario is not permitted.");
       }
       else if(!this.PermitNullProperty && this.Property == null)
       {
-        throw new InvalidOperationException("Associated property is null but this scenario is not permitted.");
+        throw new InvalidMappingException("Associated property is null but this scenario is not permitted.");
       }
-      else if(this.ParentMapping != null && this.Property == null)
+      else if(this.ParentMapping != null && this.Property == null && !this.PermitNullProperty)
       {
-        throw new InvalidOperationException("The current mapping has a parent (IE: it is not the root of the " +
-                                            "hierarchy) but it does not have an associated property.  This is " +
-                                            "invalid.");
+        throw new InvalidMappingException("The current mapping has a parent (IE: it is not the root of the " +
+                                          "hierarchy) but it does not have an associated property.  This is " +
+                                          "invalid.");
       }
+    }
+
+    /// <summary>
+    ///  Deserialize the specified data as an object instance. 
+    /// </summary>
+    /// <returns>
+    ///  A value that indicates whether deserialization was successful or not. 
+    /// </returns>
+    /// <param name='data'>
+    ///  The dictionary/collection of string data to deserialize from. 
+    /// </param>
+    /// <param name='result'>
+    ///  The output/deserialized object instance. If the return value is false (unsuccessful deserialization) then the
+    /// output value of this parameter is undefined. 
+    /// </param>
+    /// <param name='collectionIndices'>
+    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
+    /// </param>
+    public abstract bool Deserialize(IDictionary<string,string> data, out object result, params int[] collectionIndices);
+
+    #endregion
+
+    #region protected methods
+
+    /// <summary>
+    /// Determines whether or not the current instance may be deserialized.
+    /// </summary>
+    /// <param name='data'>
+    ///  The dictionary/collection of string data to deserialize from. 
+    /// </param>
+    /// <returns>
+    /// The deserialize.
+    /// </returns>
+    protected bool MayDeserialize(IDictionary<string,string> data)
+    {
+      bool output = true;
+
+      if(data == null)
+      {
+        throw new ArgumentNullException("data");
+      }
+
+      this.Validate();
+
+      if(!String.IsNullOrEmpty(this.FlagKey))
+      {
+        if(!data.ContainsKey(this.FlagKey))
+        {
+          output = false;
+        }
+        else if(String.IsNullOrEmpty(this.FlagValue))
+        {
+          output = !String.IsNullOrEmpty(data[this.FlagKey]);
+        }
+        else
+        {
+          output = data[this.FlagKey] == this.FlagValue;
+        }
+      }
+
+      return output;
     }
 
     #endregion

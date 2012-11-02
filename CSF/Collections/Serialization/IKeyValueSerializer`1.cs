@@ -21,6 +21,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using CSF.Collections.Serialization.MappingHelpers;
 
 namespace CSF.Collections.Serialization
@@ -41,7 +42,7 @@ namespace CSF.Collections.Serialization
     /// An action (possibly a pointer to a delegate or an anonymous method) that expresses the mappings to serialize
     /// and/or deserialize objects
     /// </param>
-    IKeyValueSerializer<TObject> Map(Action<IClassMappingHelper<TObject>> mappings);
+    void Map(Action<IClassMappingHelper<TObject>> mappings);
 
     /// <summary>
     /// Adds mappings to this instance for the scenario in which <c>TObject</c> is a collection of
@@ -70,6 +71,22 @@ namespace CSF.Collections.Serialization
     /// </typeparam>
     void ValueTypeCollection<TCollectionItem>(Action<IValueTypeCollectionMappingHelper<TObject,TCollectionItem>> mapping)
       where TCollectionItem : struct;
+
+    /// <summary>
+    /// Deserialize the specified data, returning an object instance.
+    /// </summary>
+    /// <param name='data'>
+    /// The collection of string data to deserialize.
+    /// </param>
+    TObject Deserialize(IDictionary<string,string> data);
+
+    /// <summary>
+    /// Serialize the specified data, returning a dictionary/collection of string data.
+    /// </summary>
+    /// <param name='data'>
+    /// The object instance to serialize.
+    /// </param>
+    IDictionary<string,string> Serialize(TObject data);
   }
 }
 

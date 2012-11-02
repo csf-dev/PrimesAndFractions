@@ -48,7 +48,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </param>
     public void UsingFactory(Func<TCollectionItem> factoryFunction)
     {
-      this.Mapping.FactoryMethod = factoryFunction;
+      this.Mapping.MapAs.FactoryMethod = factoryFunction;
     }
 
     /// <summary>
@@ -96,6 +96,8 @@ namespace CSF.Collections.Serialization.MappingHelpers
       return this.NamingPolicy<TPolicy>(factoryMethod);
     }
 
+
+
     #endregion
 
     #region mapping this instance as something
@@ -105,9 +107,9 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ISimpleMappingHelper<TCollectionItem, TCollectionItem> Simple()
     {
-      this.Mapping.MapAs = new SimplePropertyMapping<TCollectionItem>(this.Mapping.ParentMapping, this.Mapping.Property, true);
+      this.Mapping.MapAs.MapAs = new SimplePropertyMapping<TCollectionItem>(this.Mapping, null, true);
 
-      return new SimpleMappingHelper<TCollectionItem, TCollectionItem>((ISimpleMapping<TCollectionItem>) this.Mapping.MapAs);
+      return new SimpleMappingHelper<TCollectionItem, TCollectionItem>((ISimpleMapping<TCollectionItem>) this.Mapping.MapAs.MapAs);
     }
 
     /// <summary>
@@ -115,9 +117,9 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ICompositeMappingHelper<TCollectionItem, TCollectionItem> Composite()
     {
-      this.Mapping.MapAs = new CompositePropertyMapping<TCollectionItem>(this.Mapping.ParentMapping, this.Mapping.Property, true);
+      this.Mapping.MapAs.MapAs = new CompositePropertyMapping<TCollectionItem>(this.Mapping, null, true);
 
-      return new CompositeMappingHelper<TCollectionItem, TCollectionItem>((ICompositeMapping<TCollectionItem>) this.Mapping.MapAs);
+      return new CompositeMappingHelper<TCollectionItem, TCollectionItem>((ICompositeMapping<TCollectionItem>) this.Mapping.MapAs.MapAs);
     }
 
     /// <summary>
@@ -133,9 +135,9 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public IEntityMappingHelper<TCollectionItem, TEntity, TIdentity> Entity<TEntity, TIdentity>()
       where TEntity : IEntity
     {
-      this.Mapping.MapAs = new SimplePropertyMapping<TEntity>(this.Mapping.ParentMapping, this.Mapping.Property, true);
+      this.Mapping.MapAs.MapAs = new SimplePropertyMapping<TEntity>(this.Mapping, null, true);
 
-      return new EntityMappingHelper<TCollectionItem, TEntity, TIdentity>((ISimpleMapping<TEntity>) this.Mapping.MapAs);
+      return new EntityMappingHelper<TCollectionItem, TEntity, TIdentity>((ISimpleMapping<TEntity>) this.Mapping.MapAs.MapAs);
     }
 
     #endregion
@@ -156,11 +158,11 @@ namespace CSF.Collections.Serialization.MappingHelpers
       ISimpleMapping<TValue> mapping;
       PropertyInfo prop = StaticReflectionUtility.GetProperty<TCollectionItem,TValue>(property);
 
-      mapping = (ISimpleMapping<TValue>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
+      mapping = (ISimpleMapping<TValue>) this.Mapping.MapAs.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(mapping == null)
       {
-        mapping = new SimplePropertyMapping<TValue>(this.Mapping, prop);
-        this.Mapping.Mappings.Add(mapping);
+        mapping = new SimplePropertyMapping<TValue>(this.Mapping.MapAs, prop);
+        this.Mapping.MapAs.Mappings.Add(mapping);
       }
 
       return new SimpleMappingHelper<TCollectionItem, TValue>(mapping);
@@ -180,11 +182,11 @@ namespace CSF.Collections.Serialization.MappingHelpers
       ICompositeMapping<TValue> mapping;
       PropertyInfo prop = StaticReflectionUtility.GetProperty<TCollectionItem,TValue>(property);
 
-      mapping = (ICompositeMapping<TValue>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
+      mapping = (ICompositeMapping<TValue>) this.Mapping.MapAs.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(mapping == null)
       {
-        mapping = new CompositePropertyMapping<TValue>(this.Mapping, prop);
-        this.Mapping.Mappings.Add(mapping);
+        mapping = new CompositePropertyMapping<TValue>(this.Mapping.MapAs, prop);
+        this.Mapping.MapAs.Mappings.Add(mapping);
       }
 
       return new CompositeMappingHelper<TCollectionItem, TValue>(mapping);
@@ -209,11 +211,11 @@ namespace CSF.Collections.Serialization.MappingHelpers
       IReferenceTypeCollectionMapping<TNestedCollectionItem> baseMapping;
       PropertyInfo prop = StaticReflectionUtility.GetProperty<TCollectionItem,ICollection<TNestedCollectionItem>>(property);
 
-      baseMapping = (IReferenceTypeCollectionMapping<TNestedCollectionItem>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
+      baseMapping = (IReferenceTypeCollectionMapping<TNestedCollectionItem>) this.Mapping.MapAs.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(baseMapping == null)
       {
-        baseMapping = new ReferenceTypeCollectionMapping<TNestedCollectionItem>(this.Mapping, prop);
-        this.Mapping.Mappings.Add(baseMapping);
+        baseMapping = new ReferenceTypeCollectionMapping<TNestedCollectionItem>(this.Mapping.MapAs, prop);
+        this.Mapping.MapAs.Mappings.Add(baseMapping);
       }
 
       mapping(new ReferenceTypeCollectionMappingHelper<TCollectionItem, TNestedCollectionItem>(baseMapping));
@@ -238,11 +240,11 @@ namespace CSF.Collections.Serialization.MappingHelpers
       IValueTypeCollectionMapping<TNestedCollectionItem> baseMapping;
       PropertyInfo prop = StaticReflectionUtility.GetProperty<TCollectionItem,ICollection<TNestedCollectionItem>>(property);
 
-      baseMapping = (IValueTypeCollectionMapping<TNestedCollectionItem>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
+      baseMapping = (IValueTypeCollectionMapping<TNestedCollectionItem>) this.Mapping.MapAs.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(baseMapping == null)
       {
-        baseMapping = new ValueTypeCollectionMapping<TNestedCollectionItem>(this.Mapping, prop);
-        this.Mapping.Mappings.Add(baseMapping);
+        baseMapping = new ValueTypeCollectionMapping<TNestedCollectionItem>(this.Mapping.MapAs, prop);
+        this.Mapping.MapAs.Mappings.Add(baseMapping);
       }
 
       mapping(new ValueTypeCollectionMappingHelper<TCollectionItem, TNestedCollectionItem>(baseMapping));
@@ -267,11 +269,11 @@ namespace CSF.Collections.Serialization.MappingHelpers
       IClassMapping<TClass> baseMapping;
       PropertyInfo prop = StaticReflectionUtility.GetProperty<TCollectionItem,TClass>(property);
 
-      baseMapping = (IClassMapping<TClass>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
+      baseMapping = (IClassMapping<TClass>) this.Mapping.MapAs.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(baseMapping == null)
       {
-        baseMapping = new ClassMapping<TClass>(this.Mapping, prop);
-        this.Mapping.Mappings.Add(baseMapping);
+        baseMapping = new ClassMapping<TClass>(this.Mapping.MapAs, prop);
+        this.Mapping.MapAs.Mappings.Add(baseMapping);
       }
 
       mapping(new ClassMappingHelper<TClass>(baseMapping));
@@ -296,18 +298,18 @@ namespace CSF.Collections.Serialization.MappingHelpers
       ISimpleMapping<TEntity> mapping;
       PropertyInfo prop = StaticReflectionUtility.GetProperty<TCollectionItem,IEntity<TEntity, TIdentity>>(property);
 
-      mapping = (ISimpleMapping<TEntity>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
+      mapping = (ISimpleMapping<TEntity>) this.Mapping.MapAs.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(mapping == null)
       {
-        mapping = new SimplePropertyMapping<TEntity>(this.Mapping, prop);
-        this.Mapping.Mappings.Add(mapping);
+        mapping = new SimplePropertyMapping<TEntity>(this.Mapping.MapAs, prop);
+        this.Mapping.MapAs.Mappings.Add(mapping);
       }
 
       return new EntityMappingHelper<TCollectionItem, TEntity, TIdentity>(mapping);
     }
 
     #endregion
-
+    
     #region constructor
 
     /// <summary>
@@ -316,7 +318,10 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <param name='mapping'>
     /// Mapping.
     /// </param>
-    public ReferenceTypeCollectionMappingHelper(IReferenceTypeCollectionMapping<TCollectionItem> mapping) : base(mapping) {}
+    public ReferenceTypeCollectionMappingHelper(IReferenceTypeCollectionMapping<TCollectionItem> mapping) : base(mapping)
+    {
+      mapping.MapAs = new ClassMapping<TCollectionItem>(mapping, null, true);
+    }
 
     #endregion
   }

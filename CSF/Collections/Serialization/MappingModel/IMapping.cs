@@ -21,6 +21,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace CSF.Collections.Serialization.MappingModel
 {
@@ -124,6 +125,24 @@ namespace CSF.Collections.Serialization.MappingModel
     /// Thrown if the mapping is not valid.
     /// </exception>
     void Validate();
+
+    /// <summary>
+    /// Deserialize the specified data as an object instance.
+    /// </summary>
+    /// <returns>
+    /// A value that indicates whether deserialization was successful or not.
+    /// </returns>
+    /// <param name='data'>
+    /// The dictionary/collection of string data to deserialize from.
+    /// </param>
+    /// <param name='result'>
+    /// The output/deserialized object instance.  If the return value is false (unsuccessful deserialization) then the
+    /// output value of this parameter is undefined.
+    /// </param>
+    /// <param name='collectionIndices'>
+    /// A collection of integers, indicating the indices of any collection mappings passed-through during the
+    /// </param>
+    bool Deserialize(IDictionary<string,string> data, out object result, params int[] collectionIndices);
   }
 }
 

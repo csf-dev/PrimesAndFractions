@@ -17,11 +17,15 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
     public void TestUsingFactory()
     {
       var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
+      mapping.SetupProperty(x => x.MapAs);
       ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
 
-      helper.UsingFactory(() => new Bar("Wibble") { BarProperty = "Test!" });
+      Func<Bar> factory = () => new Bar("Wibble") { BarProperty = "Test!" };
+      helper.UsingFactory(factory);
 
-      mapping.VerifySet(x => x.FactoryMethod = It.IsAny<Func<Bar>>());
+      mapping.VerifySet(x => x.MapAs = It.IsAny<IClassMapping<Bar>>());
+      Assert.IsNotNull(mapping.Object.MapAs.FactoryMethod, "Factory method not null");
+      Assert.AreSame(factory, mapping.Object.MapAs.FactoryMethod, "Factory method is correct");
     }
 
     [Test]
@@ -68,8 +72,8 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
       var simple = helper.Simple();
 
       Assert.IsNotNull(simple, "Simple mapping helper is not null");
-      Assert.IsNotNull(mapping.Object.MapAs, "Map-as of parent object is not null");
-      Assert.IsTrue(mapping.Object.MapAs is ISimpleMapping<Bar>, "Map-as is of correct type");
+      Assert.IsNotNull(mapping.Object.MapAs.MapAs, "Map-as of parent object is not null");
+      Assert.IsTrue(mapping.Object.MapAs.MapAs is ISimpleMapping<Bar>, "Map-as is of correct type");
     }
 
     [Test]
@@ -85,8 +89,8 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
       var composite = helper.Composite();
 
       Assert.IsNotNull(composite, "Composite mapping helper is not null");
-      Assert.IsNotNull(mapping.Object.MapAs, "Map-as of parent object is not null");
-      Assert.IsTrue(mapping.Object.MapAs is ICompositeMapping<Bar>, "Map-as is of correct type");
+      Assert.IsNotNull(mapping.Object.MapAs.MapAs, "Map-as of parent object is not null");
+      Assert.IsTrue(mapping.Object.MapAs.MapAs is ICompositeMapping<Bar>, "Map-as is of correct type");
     }
 
     [Test]
@@ -102,8 +106,8 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
       var entity = helper.Entity<EntityType,int>();
 
       Assert.IsNotNull(entity, "Entity mapping helper is not null");
-      Assert.IsNotNull(mapping.Object.MapAs, "Map-as of parent object is not null");
-      Assert.IsTrue(mapping.Object.MapAs is ISimpleMapping<EntityType>, "Map-as is of correct type");
+      Assert.IsNotNull(mapping.Object.MapAs.MapAs, "Map-as of parent object is not null");
+      Assert.IsTrue(mapping.Object.MapAs.MapAs is ISimpleMapping<EntityType>, "Map-as is of correct type");
     }
 
     #endregion
@@ -115,14 +119,14 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
     {
       var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
 
-      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+      mapping.SetupProperty(x => x.MapAs);
 
       ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
       var simple = helper.Simple(x => x.BarProperty);
 
       Assert.IsNotNull(simple);
-      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
-      Assert.IsTrue(mapping.Object.Mappings.First() is ISimpleMapping<string>, "Mapping is of correct type");
+      Assert.AreEqual(1, mapping.Object.MapAs.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.MapAs.Mappings.First() is ISimpleMapping<string>, "Mapping is of correct type");
     }
 
     [Test]
@@ -130,7 +134,7 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
     {
       var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
 
-      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+      mapping.SetupProperty(x => x.MapAs);
 
       ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
       var simple = helper.Simple(x => x.BarProperty);
@@ -139,9 +143,9 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
       Assert.IsNotNull(simple);
       Assert.IsNotNull(simple2);
       Assert.AreEqual(1,
-                      mapping.Object.Mappings.Count,
+                      mapping.Object.MapAs.Mappings.Count,
                       "Correct count of contained mappings, only one mapping was created.");
-      Assert.IsTrue(mapping.Object.Mappings.First() is ISimpleMapping<string>, "Mapping is of correct type");
+      Assert.IsTrue(mapping.Object.MapAs.Mappings.First() is ISimpleMapping<string>, "Mapping is of correct type");
     }
 
     [Test]
@@ -149,14 +153,14 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
     {
       var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
 
-      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+      mapping.SetupProperty(x => x.MapAs);
 
       ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
       var comp = helper.Composite(x => x.BarProperty);
 
       Assert.IsNotNull(comp);
-      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
-      Assert.IsTrue(mapping.Object.Mappings.First() is ICompositeMapping<string>, "Mapping is of correct type");
+      Assert.AreEqual(1, mapping.Object.MapAs.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.MapAs.Mappings.First() is ICompositeMapping<string>, "Mapping is of correct type");
     }
 
     [Test]
@@ -164,13 +168,13 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
     {
       var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
 
-      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+      mapping.SetupProperty(x => x.MapAs);
 
       ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
       helper.Collection(x => x.BazCollection, m => {});
 
-      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
-      Assert.IsTrue(mapping.Object.Mappings.First() is IReferenceTypeCollectionMapping<Baz>,
+      Assert.AreEqual(1, mapping.Object.MapAs.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.MapAs.Mappings.First() is IReferenceTypeCollectionMapping<Baz>,
                     "Mapping is of correct type");
     }
 
@@ -179,13 +183,13 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
     {
       var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
 
-      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+      mapping.SetupProperty(x => x.MapAs);
 
       ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
       helper.ValueCollection(x => x.ValueCollection, m => {});
 
-      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
-      Assert.IsTrue(mapping.Object.Mappings.First() is IValueTypeCollectionMapping<DateTime>,
+      Assert.AreEqual(1, mapping.Object.MapAs.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.MapAs.Mappings.First() is IValueTypeCollectionMapping<DateTime>,
                     "Mapping is of correct type");
     }
 
@@ -194,13 +198,13 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
     {
       var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
 
-      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+      mapping.SetupProperty(x => x.MapAs);
 
       ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
       helper.Class(x => x.Foo, m => {});
 
-      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
-      Assert.IsTrue(mapping.Object.Mappings.First() is IClassMapping<Foo>,
+      Assert.AreEqual(1, mapping.Object.MapAs.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.MapAs.Mappings.First() is IClassMapping<Foo>,
                     "Mapping is of correct type");
     }
 
@@ -209,13 +213,13 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
     {
       var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
 
-      mapping.SetupProperty(x => x.Mappings, new List<IMapping>());
+      mapping.SetupProperty(x => x.MapAs);
 
       ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
       helper.Entity<EntityType,int>(x => x.Entity);
 
-      Assert.AreEqual(1, mapping.Object.Mappings.Count, "Correct count of contained mappings");
-      Assert.IsTrue(mapping.Object.Mappings.First() is ISimpleMapping<EntityType>,
+      Assert.AreEqual(1, mapping.Object.MapAs.Mappings.Count, "Correct count of contained mappings");
+      Assert.IsTrue(mapping.Object.MapAs.Mappings.First() is ISimpleMapping<EntityType>,
                     "Mapping is of correct type");
     }
 

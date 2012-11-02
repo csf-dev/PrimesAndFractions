@@ -1,5 +1,5 @@
 //
-//  ICollectionMapping.cs
+//  SerializationValidationFailureException.cs
 //
 //  Author:
 //       Craig Fowler <craig@craigfowler.me.uk>
@@ -23,33 +23,18 @@ using System;
 namespace CSF.Collections.Serialization.MappingModel
 {
   /// <summary>
-  /// Marker interface for a mapping that relates to a collection.
+  /// An exception type thrown when an attempt to serialize/deserialize data fails because the mappings are invalid.
   /// </summary>
-  public interface ICollectionMapping : IMapping
+  public class InvalidMappingException : InvalidOperationException
   {
     /// <summary>
-    /// Gets the type of collection keying in-use.
+    /// Initializes a new instance of the
+    /// <see cref="CSF.Collections.Serialization.MappingModel.InvalidMappingException"/> class.
     /// </summary>
-    /// <value>
-    /// The type of the collection key.
-    /// </value>
-    CollectionKeyType CollectionKeyType { get; set; }
-
-    /// <summary>
-    /// Gets or sets the minimum 'array index' used whilst searching for values to deserialize.
-    /// </summary>
-    /// <value>
-    /// The minimum 'array index' for deserialization.
-    /// </value>
-    int DeserializeMinimumIndex { get; set; }
-
-    /// <summary>
-    /// Gets or sets the maximum 'array index' used whilst searching for values to deserialize.
-    /// </summary>
-    /// <value>
-    /// The maximum 'array index' for deserialization.
-    /// </value>
-    int DeserializeMaximumIndex { get; set; }
+    /// <param name='message'>
+    /// Message.
+    /// </param>
+    public InvalidMappingException(string message) : base(message) {}
   }
 }
 

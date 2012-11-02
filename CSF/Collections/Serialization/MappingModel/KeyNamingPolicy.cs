@@ -94,21 +94,17 @@ namespace CSF.Collections.Serialization.MappingModel
 
       if(this.AssociatedMapping.ParentMapping != null)
       {
-        if(this.AssociatedMapping.Property == null)
-        {
-          Console.Error.WriteLine("This mapping is: {0}, parent mapping is: {1}",
-                                  this.AssociatedMapping,
-                                  this.AssociatedMapping.ParentMapping);
-          throw new InvalidOperationException("The associated mapping is not the root of the serialization hierarchy " +
-                                              "but it does not have an associated property, this is invalid.");
-        }
-
         string parentKey = this.AssociatedMapping.ParentMapping.KeyNamingPolicy.GetKeyName(collectionIndices,
-                                                                                      ref currentCollectionNumber);
+                                                                                           ref currentCollectionNumber);
         if(!String.IsNullOrEmpty(parentKey))
         {
-          output = String.Concat(parentKey, this.GetPropertySeparator());
+          output = parentKey;
         }
+      }
+
+      if(!String.IsNullOrEmpty(output) && this.AssociatedMapping.Property != null)
+      {
+        output = String.Concat(output, this.GetPropertySeparator());
       }
 
       if((this.AssociatedMapping is ICollectionMapping)

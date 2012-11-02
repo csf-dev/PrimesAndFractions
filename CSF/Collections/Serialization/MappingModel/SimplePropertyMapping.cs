@@ -20,6 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace CSF.Collections.Serialization.MappingModel
 {
@@ -63,8 +64,8 @@ namespace CSF.Collections.Serialization.MappingModel
 
       if(this.DeserializationFunction == null && this.SerializationFunction == null)
       {
-        throw new InvalidOperationException("Property mapping does not have either a serialization or " +
-                                            "deserialization function - this is invalid (a useless mapping).");
+        throw new InvalidMappingException("Property mapping does not have either a serialization or " +
+                                          "deserialization function - this is invalid (a useless mapping).");
       }
     }
 
@@ -81,6 +82,76 @@ namespace CSF.Collections.Serialization.MappingModel
     public virtual string GetKeyName(params int[] collectionIndices)
     {
       return this.KeyNamingPolicy.GetKeyName(collectionIndices);
+    }
+
+    /// <summary>
+    ///  Deserialize the specified data as an object instance. 
+    /// </summary>
+    /// <returns>
+    ///  A value that indicates whether deserialization was successful or not. 
+    /// </returns>
+    /// <param name='data'>
+    ///  The dictionary/collection of string data to deserialize from. 
+    /// </param>
+    /// <param name='result'>
+    /// The output/deserialized object instance.  If the return value is false (unsuccessful deserialization) then the
+    /// output value of this parameter is undefined.
+    /// </param>
+    /// <param name='collectionIndices'>
+    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
+    /// </param>
+    public virtual bool Deserialize(IDictionary<string, string> data,
+                                    out TValue result,
+                                    params int[] collectionIndices)
+    {
+      bool output = false;
+
+      result = default(TValue);
+
+      if(this.MayDeserialize(data))
+      {
+        string keyName = this.GetKeyName(collectionIndices);
+        if(data.ContainsKey(keyName))
+        {
+          try
+          {
+            result = this.DeserializationFunction(data[keyName]);
+            output = true;
+          }
+          catch(Exception) {}
+        }
+      }
+
+      if(!output && this.Mandatory)
+      {
+        throw new MandatorySerializationException(this);
+      }
+
+      return output;
+    }
+
+    /// <summary>
+    ///  Deserialize the specified data as an object instance. 
+    /// </summary>
+    /// <returns>
+    ///  A value that indicates whether deserialization was successful or not. 
+    /// </returns>
+    /// <param name='data'>
+    ///  The dictionary/collection of string data to deserialize from. 
+    /// </param>
+    /// <param name='result'>
+    ///  The output/deserialized object instance. If the return value is false (unsuccessful deserialization) then the
+    /// output value of this parameter is undefined. 
+    /// </param>
+    /// <param name='collectionIndices'>
+    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
+    /// </param>
+    public override bool Deserialize(IDictionary<string, string> data, out object result, params int[] collectionIndices)
+    {
+      TValue tempResult;
+      bool output = this.Deserialize(data, out tempResult, collectionIndices);
+      result = tempResult;
+      return output;
     }
 
     #endregion

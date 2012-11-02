@@ -186,6 +186,9 @@
     <Compile Include="Collections\Serialization\MappingHelpers\EntityMappingHelper.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\MappingHelper`1.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\MappingHelper.cs" />
+    <Compile Include="Collections\Serialization\KeyValueSerializer.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\InvalidMappingException.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\MandatorySerializationException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

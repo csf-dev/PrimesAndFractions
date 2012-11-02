@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
 namespace CSF.Collections.Serialization.MappingModel
 {
@@ -58,8 +59,128 @@ namespace CSF.Collections.Serialization.MappingModel
         string message = String.Format("Mapping for type `{0}' is invalid.  Cannot combine property mappings with a " +
                                        "mapping for the whole type.",
                                        targetType.FullName);
-        throw new InvalidOperationException(message);
+        throw new InvalidMappingException(message);
       }
+    }
+
+    /// <summary>
+    ///  Deserialize the specified data as an object instance. 
+    /// </summary>
+    /// <returns>
+    ///  A value that indicates whether deserialization was successful or not. 
+    /// </returns>
+    /// <param name='data'>
+    ///  The dictionary/collection of string data to deserialize from. 
+    /// </param>
+    /// <param name='result'>
+    /// The output/deserialized object instance.  If the return value is false (unsuccessful deserialization) then the
+    /// output value of this parameter is undefined.
+    /// </param>
+    /// <param name='collectionIndices'>
+    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
+    /// </param>
+    public virtual bool Deserialize(IDictionary<string, string> data,
+                                    out TObject result,
+                                    params int[] collectionIndices)
+    {
+      bool output = false;
+
+      result = default(TObject);
+
+      if(this.MayDeserialize(data))
+      {
+        if(this.MapAs != null)
+        {
+          try
+          {
+            object tempResult;
+            if(this.MapAs.Deserialize(data, out tempResult, collectionIndices))
+            {
+              result = (TObject) tempResult;
+              output = true;
+            }
+          }
+          catch(Exception) {}
+        }
+        else
+        {
+          bool failed = false;
+
+          try
+          {
+            result = this.FactoryMethod();
+          }
+          catch(Exception)
+          {
+            failed = true;
+          }
+
+          if(!failed)
+          {
+            foreach(IMapping mapping in this.Mappings.Where(x => x.Property != null))
+            {
+              try
+              {
+                object tempResult;
+                if(mapping.Deserialize(data, out tempResult, collectionIndices))
+                {
+                  mapping.Property.SetValue(result, tempResult, null);
+                }
+              }
+              catch(MandatorySerializationException)
+              {
+                failed = true;
+              }
+              catch(Exception) {}
+
+              if(failed)
+              {
+                break;
+              }
+            }
+          }
+
+          if(failed)
+          {
+            result = default(TObject);
+          }
+          else
+          {
+            output = true;
+          }
+        }
+      }
+
+      if(!output && this.Mandatory)
+      {
+        throw new MandatorySerializationException(this);
+      }
+
+      return output;
+    }
+
+    /// <summary>
+    ///  Deserialize the specified data as an object instance. 
+    /// </summary>
+    /// <returns>
+    ///  A value that indicates whether deserialization was successful or not. 
+    /// </returns>
+    /// <param name='data'>
+    ///  The dictionary/collection of string data to deserialize from. 
+    /// </param>
+    /// <param name='result'>
+    ///  The output/deserialized object instance. If the return value is false (unsuccessful deserialization) then the
+    /// output value of this parameter is undefined. 
+    /// </param>
+    /// <param name='collectionIndices'>
+    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
+    /// </param>
+    public override bool Deserialize(IDictionary<string, string> data, out object result, params int[] collectionIndices)
+    {
+      TObject tempResult;
+      bool output = this.Deserialize(data, out tempResult, collectionIndices);
+      result = tempResult;
+      return output;
     }
 
     #endregion
@@ -128,7 +249,33 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <summary>
     /// Initializes a new instance of the the class-mapping type.
     /// </summary>
-    public ClassMapping(IMapping parentMapping, PropertyInfo property) : base(parentMapping, property)
+    /// <param name='parentMapping'>
+    /// The 'parent' mapping.
+    /// </param>
+    /// <param name='property'>
+    /// The associated property.
+    /// </param>
+    public ClassMapping(IMapping parentMapping, PropertyInfo property) : this(parentMapping, property, false) {}
+
+    /// <summary>
+    /// Initializes a new instance of the the class-mapping type.
+    /// </summary>
+    public ClassMapping() : this(null, null, true) {}
+
+    /// <summary>
+    /// Initializes a new instance of the the class-mapping type.
+    /// </summary>
+    /// <param name='parentMapping'>
+    /// The 'parent' mapping.
+    /// </param>
+    /// <param name='property'>
+    /// The associated property.
+    /// </param>
+    /// <param name='rootMode'>
+    /// A value that indicates whether or not we are in 'root mode' (in which case null parent mappings and properties
+    /// are permitted).
+    /// </param>
+    public ClassMapping(IMapping parentMapping, PropertyInfo property, bool rootMode) : base(parentMapping, property)
     {
       this.MapAs = null;
       this.Mappings = new List<IMapping>();
@@ -148,15 +295,12 @@ namespace CSF.Collections.Serialization.MappingModel
 
         return (TObject) constructor.Invoke(null);
       };
-    }
 
-    /// <summary>
-    /// Initializes a new instance of the the class-mapping type.
-    /// </summary>
-    public ClassMapping() : this(null, null)
-    {
-      this.PermitNullParent = true;
-      this.PermitNullProperty = true;
+      if(rootMode)
+      {
+        this.PermitNullParent = true;
+        this.PermitNullProperty = true;
+      }
     }
 
     #endregion
