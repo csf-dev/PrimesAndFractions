@@ -121,7 +121,7 @@ namespace CSF.Collections.Serialization.MappingModel
             result = this.DeserializationFunction(values);
             output = true;
           }
-          catch(Exception) { }
+          catch(Exception) {}
         }
       }
 
@@ -157,6 +157,56 @@ namespace CSF.Collections.Serialization.MappingModel
       return output;
     }
 
+    /// <summary>
+    /// Serialize the specified data, exposing the result as an output parameter.
+    /// </summary>
+    /// <param name='data'>
+    /// The object (or object graph) to serialize.
+    /// </param>
+    /// <param name='result'>
+    /// The dictionary of string values to contain the serialized data.
+    /// </param>
+    /// <param name='collectionIndices'>
+    /// A collection of integers, indicating the indices of any collection mappings passed-through during the
+    /// </param>
+    /// <typeparam name='TInput'>
+    /// The type of data to serialize.
+    /// </typeparam>
+    public override void Serialize(object data, ref IDictionary<string,string> result, int[] collectionIndices)
+    {
+      if(result == null)
+      {
+        throw new ArgumentNullException("result");
+      }
+
+      foreach(ICompositeComponentMapping<TValue> component in this.Components.Values)
+      {
+        result.Add(component.GetKeyName(collectionIndices), component.SerializationFunction((TValue) data));
+      }
+    }
+
+    /// <summary>
+    /// Gets the name of the 'key' that is used for the current mapping.
+    /// </summary>
+    /// <returns>
+    /// The key name.
+    /// </returns>
+    /// <param name='componentIdentifier'>
+    /// The identifier for a component of a composite mapping.
+    /// </param>
+    /// <param name='collectionIndices'>
+    /// A collection of integer 'collection indices' for any collection-type mappings that have been passed-through.
+    /// </param>
+    public override string GetKeyName (object componentIdentifier, params int[] collectionIndices)
+    {
+      if(!this.Components.ContainsKey(componentIdentifier))
+      {
+        throw new ArgumentException("This composite mapping does not contain the specified component.");
+      }
+
+      return this.Components[componentIdentifier].GetKeyName(collectionIndices);
+    }
+
     #endregion
 
     #region constructor
@@ -174,29 +224,6 @@ namespace CSF.Collections.Serialization.MappingModel
     {
       this.DeserializationFunction = null;
       this.Components = new Dictionary<object, ICompositeComponentMapping<TValue>>();
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the composite property mapping class.
-    /// </summary>
-    /// <param name='property'>
-    /// The property that this instance is associated with.
-    /// </param>
-    /// <param name='parentMapping'>
-    /// The parent mapping.
-    /// </param>
-    /// <param name='classMode'>
-    /// A boolean that indicates whether this instance will operate in 'class mode' or not.
-    /// </param>
-    public CompositePropertyMapping(IMapping parentMapping,
-                                    PropertyInfo property,
-                                    bool classMode) : this(parentMapping, property)
-    {
-      if(classMode)
-      {
-        this.PermitNullParent = true;
-        this.PermitNullProperty = true;
-      }
     }
 
     #endregion

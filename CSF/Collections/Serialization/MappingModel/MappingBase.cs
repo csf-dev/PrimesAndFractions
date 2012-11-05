@@ -21,6 +21,7 @@
 using System;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace CSF.Collections.Serialization.MappingModel
 {
@@ -32,45 +33,6 @@ namespace CSF.Collections.Serialization.MappingModel
     #region fields
 
     private IKeyNamingPolicy _namingRule;
-    private bool _permitNullParent, _permitNullProperty;
-
-    #endregion
-
-    #region protected properties
-
-    /// <summary>
-    /// Gets a value indicating whether this <see cref="CSF.Collections.Serialization.MappingModel.MappingBase"/>
-    /// permits null parent mappings.
-    /// </summary>
-    /// <value>
-    /// <c>true</c> if null parent mappings are permitted; otherwise, <c>false</c>.
-    /// </value>
-    protected virtual bool PermitNullParent
-    {
-      get {
-        return _permitNullParent;
-      }
-      set {
-        _permitNullParent = value;
-      }
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether this <see cref="CSF.Collections.Serialization.MappingModel.MappingBase"/>
-    /// permits null properties.
-    /// </summary>
-    /// <value>
-    /// <c>true</c> if null properties are permitted; otherwise, <c>false</c>.
-    /// </value>
-    protected virtual bool PermitNullProperty
-    {
-      get {
-        return _permitNullProperty;
-      }
-      set {
-        _permitNullProperty = value;
-      }
-    }
 
     #endregion
 
@@ -157,6 +119,18 @@ namespace CSF.Collections.Serialization.MappingModel
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether this instance is the root mapping.
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if this instance is the root mapping; otherwise, <c>false</c>.
+    /// </value>
+    public virtual bool IsRootMapping
+    {
+      get;
+      private set;
+    }
+
+    /// <summary>
     ///  Gets a value that indicates a flag-key if it is in-use for this mapping. 
     /// </summary>
     /// <value>
@@ -189,19 +163,10 @@ namespace CSF.Collections.Serialization.MappingModel
       {
         throw new InvalidMappingException("A required flag value is specified but not a flag key.  This is invalid.");
       }
-      else if(!this.PermitNullParent && this.ParentMapping == null)
+      else if(!this.IsRootMapping && this.ParentMapping == null)
       {
-        throw new InvalidMappingException("Parent mapping is null but this scenario is not permitted.");
-      }
-      else if(!this.PermitNullProperty && this.Property == null)
-      {
-        throw new InvalidMappingException("Associated property is null but this scenario is not permitted.");
-      }
-      else if(this.ParentMapping != null && this.Property == null && !this.PermitNullProperty)
-      {
-        throw new InvalidMappingException("The current mapping has a parent (IE: it is not the root of the " +
-                                          "hierarchy) but it does not have an associated property.  This is " +
-                                          "invalid.");
+        throw new InvalidMappingException("This mapping is not marked as the root mapping but it does not have a " +
+                                          "parent mapping; this is not permitted.");
       }
     }
 
@@ -221,7 +186,83 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <param name='collectionIndices'>
     ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
     /// </param>
-    public abstract bool Deserialize(IDictionary<string,string> data, out object result, params int[] collectionIndices);
+    public abstract bool Deserialize(IDictionary<string,string> data, out object result, int[] collectionIndices);
+
+    /// <summary>
+    /// Serialize the specified data, exposing the result as an output parameter.
+    /// </summary>
+    /// <param name='data'>
+    /// The object (or object graph) to serialize.
+    /// </param>
+    /// <param name='result'>
+    /// The dictionary of string values to contain the serialized data.
+    /// </param>
+    /// <param name='collectionIndices'>
+    /// A collection of integers, indicating the indices of any collection mappings passed-through during the
+    /// </param>
+    /// <typeparam name='TInput'>
+    /// The type of data to serialize.
+    /// </typeparam>
+    public abstract void Serialize(object data, ref IDictionary<string,string> result, int[] collectionIndices);
+
+    /// <summary>
+    /// Gets the mapping for the current item (the map-as).
+    /// </summary>
+    /// <returns>
+    /// The mapping.
+    /// </returns>
+    public virtual IMapping GetMapping()
+    {
+      throw new NotSupportedException("This current mapping type does not support a parameterless GetMapping method.");
+    }
+
+    /// <summary>
+    /// Gets the mapping for the given property.
+    /// </summary>
+    /// <returns>
+    /// The mapping.
+    /// </returns>
+    /// <param name='property'>
+    /// An expression that indicates the property to retrieve the mapping for.
+    /// </param>
+    /// <typeparam name='TObject'>
+    /// The type associated with the current mapping (the type that 'hosts' the property).
+    /// </typeparam>
+    public virtual IMapping GetMapping<TObject>(Expression<Func<TObject, object>> property)
+    {
+      throw new NotSupportedException("This current mapping type does not support the property-based GetMapping method.");
+    }
+
+    /// <summary>
+    /// Gets the name of the 'key' that is used for the current mapping.
+    /// </summary>
+    /// <returns>
+    /// The key name.
+    /// </returns>
+    /// <param name='collectionIndices'>
+    /// A collection of integer 'collection indices' for any collection-type mappings that have been passed-through.
+    /// </param>
+    public virtual string GetKeyName(params int[] collectionIndices)
+    {
+      throw new NotSupportedException("This current mapping type does not support the getting of a key-name (did you mean to use a component identifier?).");
+    }
+
+    /// <summary>
+    /// Gets the name of the 'key' that is used for the current mapping.
+    /// </summary>
+    /// <returns>
+    /// The key name.
+    /// </returns>
+    /// <param name='componentIdentifier'>
+    /// The identifier for a component of a composite mapping.
+    /// </param>
+    /// <param name='collectionIndices'>
+    /// A collection of integer 'collection indices' for any collection-type mappings that have been passed-through.
+    /// </param>
+    public virtual string GetKeyName(object componentIdentifier, params int[] collectionIndices)
+    {
+      throw new NotSupportedException("This current mapping type does not support the getting of a key-name with a component identifier.");
+    }
 
     #endregion
 
@@ -273,15 +314,45 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <summary>
     /// Initializes a new instance of the <see cref="CSF.Collections.Serialization.MappingModel.MappingBase"/> class.
     /// </summary>
-    public MappingBase(IMapping parentMapping, PropertyInfo property)
-    {
-      this.PermitNullParent = false;
-      this.PermitNullProperty = false;
+    /// <param name='parentMapping'>
+    /// A reference to the parent mapping instance.
+    /// </param>
+    /// <param name='property'>
+    /// An optional reference to the property that is passed through in this mapping.
+    /// </param>
+    protected MappingBase (IMapping parentMapping, PropertyInfo property) : this(parentMapping, property, false) {}
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CSF.Collections.Serialization.MappingModel.MappingBase"/> class.
+    /// </summary>
+    /// <param name='parentMapping'>
+    /// A reference to the parent mapping instance.
+    /// </param>
+    /// <param name='property'>
+    /// An optional reference to the property that is passed through in this mapping.
+    /// </param>
+    /// <param name='isRootMapping'>
+    /// A value that indicates whether the current instance represents the root of the mapping hierarchy.
+    /// </param>
+    protected MappingBase(IMapping parentMapping, PropertyInfo property, bool isRootMapping)
+    {
+      if(isRootMapping
+         && (parentMapping != null || property != null))
+      {
+        throw new ArgumentException("If root mapping is true then both the parent mapping and property should be null.",
+                                    "isRootMapping");
+      }
+      else if(!isRootMapping && parentMapping == null)
+      {
+        throw new ArgumentException("If root mapping is false then the parent mapping must not be null.",
+                                    "isRootMapping");
+      }
+
+      this.IsRootMapping = isRootMapping;
       this.ParentMapping = parentMapping;
       this.Property = property;
 
-      this.KeyNamingPolicy = new KeyNamingPolicy(this);
+      this.KeyNamingPolicy = new DefaultKeyNamingPolicy(this);
       this.Mandatory = false;
       this.FlagKey = null;
       this.FlagValue = null;

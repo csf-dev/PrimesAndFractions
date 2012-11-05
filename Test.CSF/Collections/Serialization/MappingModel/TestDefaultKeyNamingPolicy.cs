@@ -8,13 +8,13 @@ using System.Reflection;
 namespace Test.CSF.Collections.Serialization.MappingModel
 {
   [TestFixture]
-  public class TestKeyNamingPolicy
+  public class TestDefaultKeyNamingPolicy
   {
     [Test]
     public void TestAssociatedMapping()
     {
       var rootMapping = new Mock<IClassMapping<Foo>>();
-      KeyNamingPolicy rule = new KeyNamingPolicy(rootMapping.Object);
+      DefaultKeyNamingPolicy rule = new DefaultKeyNamingPolicy(rootMapping.Object);
 
       rootMapping.Setup(x => x.KeyNamingPolicy)
         .Returns(rule);
@@ -26,7 +26,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
     public void TestGetKeyNameEmpty()
     {
       var rootMapping = new Mock<IClassMapping<Foo>>();
-      KeyNamingPolicy rule = new KeyNamingPolicy(rootMapping.Object);
+      DefaultKeyNamingPolicy rule = new DefaultKeyNamingPolicy(rootMapping.Object);
 
       rootMapping.Setup(x => x.KeyNamingPolicy)
         .Returns(rule);
@@ -48,9 +48,9 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       propertyMapping.Setup(x => x.ParentMapping)
         .Returns(rootMapping.Object);
 
-      KeyNamingPolicy
-        rootRule = new KeyNamingPolicy(rootMapping.Object),
-        propRule = new KeyNamingPolicy(propertyMapping.Object);
+      DefaultKeyNamingPolicy
+        rootRule = new DefaultKeyNamingPolicy(rootMapping.Object),
+        propRule = new DefaultKeyNamingPolicy(propertyMapping.Object);
 
       rootMapping.Setup(x => x.KeyNamingPolicy)
         .Returns(rootRule);
@@ -75,17 +75,17 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       rootMapping.Setup(x => x.ToString()).Returns("Root mapping");
       rootMapping.SetupGet(x => x.Property).Returns((PropertyInfo) null);
       rootMapping.SetupGet(x => x.ParentMapping).Returns((IMapping) null);
-      rootMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(rootMapping.Object));
+      rootMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(rootMapping.Object));
 
       propertyMapping.Setup(x => x.ToString()).Returns("Property mapping");
       propertyMapping.SetupGet(x => x.Property).Returns(prop);
       propertyMapping.SetupGet(x => x.ParentMapping).Returns(rootMapping.Object);
-      propertyMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(propertyMapping.Object));
+      propertyMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(propertyMapping.Object));
 
       nestedMapping.Setup(x => x.ToString()).Returns("Nested mapping");
       nestedMapping.SetupGet(x => x.Property).Returns(nestedProp);
       nestedMapping.SetupGet(x => x.ParentMapping).Returns(propertyMapping.Object);
-      nestedMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(nestedMapping.Object));
+      nestedMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(nestedMapping.Object));
 
       Assert.IsNotNull(nestedProp, "Testing-the-test: Nested property not null");
       Assert.IsNotNull(prop, "Testing-the-test: Property not null");
@@ -108,18 +108,18 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       rootMapping.Setup(x => x.ToString()).Returns("Root mapping");
       rootMapping.SetupGet(x => x.Property).Returns((PropertyInfo) null);
       rootMapping.SetupGet(x => x.ParentMapping).Returns((IMapping) null);
-      rootMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(rootMapping.Object));
+      rootMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(rootMapping.Object));
 
-      collectionMapping.As<ICollectionMapping>();
+      collectionMapping.As<ICollectionMapping>().SetupGet(x => x.CollectionKeyType).Returns(CollectionKeyType.Separate);
       collectionMapping.Setup(x => x.ToString()).Returns("Property (collection) mapping");
       collectionMapping.SetupGet(x => x.Property).Returns(collectionProperty);
       collectionMapping.SetupGet(x => x.ParentMapping).Returns(rootMapping.Object);
-      collectionMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(collectionMapping.Object));
+      collectionMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(collectionMapping.Object));
 
       nestedMapping.Setup(x => x.ToString()).Returns("Nested mapping");
       nestedMapping.SetupGet(x => x.Property).Returns(nestedProp);
       nestedMapping.SetupGet(x => x.ParentMapping).Returns(collectionMapping.Object);
-      nestedMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(nestedMapping.Object));
+      nestedMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(nestedMapping.Object));
 
       Assert.IsNotNull(nestedProp, "Testing-the-test: Nested property not null");
       Assert.IsNotNull(collectionProperty, "Testing-the-test: Property not null");
@@ -137,16 +137,16 @@ namespace Test.CSF.Collections.Serialization.MappingModel
 
       var nestedProp = StaticReflectionUtility.GetProperty<Bar>(x => x.BarProperty);
 
-      collectionMapping.As<ICollectionMapping>();
+      collectionMapping.As<ICollectionMapping>().SetupGet(x => x.CollectionKeyType).Returns(CollectionKeyType.Separate);
       collectionMapping.Setup(x => x.ToString()).Returns("Property (collection) mapping");
       collectionMapping.SetupGet(x => x.Property).Returns((PropertyInfo) null);
       collectionMapping.SetupGet(x => x.ParentMapping).Returns((IMapping) null);
-      collectionMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(collectionMapping.Object));
+      collectionMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(collectionMapping.Object));
 
       nestedMapping.Setup(x => x.ToString()).Returns("Nested mapping");
       nestedMapping.SetupGet(x => x.Property).Returns(nestedProp);
       nestedMapping.SetupGet(x => x.ParentMapping).Returns(collectionMapping.Object);
-      nestedMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(nestedMapping.Object));
+      nestedMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(nestedMapping.Object));
 
       Assert.IsNotNull(nestedProp, "Testing-the-test: Nested property not null");
 
@@ -172,29 +172,29 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       rootMapping.Setup(x => x.ToString()).Returns("Root mapping");
       rootMapping.SetupGet(x => x.Property).Returns((PropertyInfo) null);
       rootMapping.SetupGet(x => x.ParentMapping).Returns((IMapping) null);
-      rootMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(rootMapping.Object));
+      rootMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(rootMapping.Object));
 
-      collectionMapping.As<ICollectionMapping>();
+      collectionMapping.As<ICollectionMapping>().SetupGet(x => x.CollectionKeyType).Returns(CollectionKeyType.Separate);
       collectionMapping.Setup(x => x.ToString()).Returns("Property (collection 1) mapping");
       collectionMapping.SetupGet(x => x.Property).Returns(collection1Property);
       collectionMapping.SetupGet(x => x.ParentMapping).Returns(rootMapping.Object);
-      collectionMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(collectionMapping.Object));
+      collectionMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(collectionMapping.Object));
 
       nestedMapping.Setup(x => x.ToString()).Returns("Nested mapping");
       nestedMapping.SetupGet(x => x.Property).Returns(nestedProp);
       nestedMapping.SetupGet(x => x.ParentMapping).Returns(collectionMapping.Object);
-      nestedMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(nestedMapping.Object));
+      nestedMapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(nestedMapping.Object));
 
-      collection2Mapping.As<ICollectionMapping>();
+      collection2Mapping.As<ICollectionMapping>().SetupGet(x => x.CollectionKeyType).Returns(CollectionKeyType.Separate);
       collection2Mapping.Setup(x => x.ToString()).Returns("Property (collection 2) mapping");
       collection2Mapping.SetupGet(x => x.Property).Returns(collection2Property);
       collection2Mapping.SetupGet(x => x.ParentMapping).Returns(nestedMapping.Object);
-      collection2Mapping.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(collection2Mapping.Object));
+      collection2Mapping.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(collection2Mapping.Object));
 
       nestedMapping2.Setup(x => x.ToString()).Returns("Nested mapping 2");
       nestedMapping2.SetupGet(x => x.Property).Returns(nestedProp2);
       nestedMapping2.SetupGet(x => x.ParentMapping).Returns(collection2Mapping.Object);
-      nestedMapping2.SetupGet(x => x.KeyNamingPolicy).Returns(new KeyNamingPolicy(nestedMapping2.Object));
+      nestedMapping2.SetupGet(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(nestedMapping2.Object));
 
       string name = nestedMapping2.Object.KeyNamingPolicy.GetKeyName(5, 3);
       Assert.IsNotNull(name);

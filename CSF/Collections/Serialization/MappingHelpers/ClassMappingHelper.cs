@@ -93,7 +93,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ISimpleMappingHelper<TObject, TObject> Simple()
     {
-      this.Mapping.MapAs = new SimplePropertyMapping<TObject>(this.Mapping.ParentMapping, this.Mapping.Property, true);
+      this.Mapping.MapAs = new SimplePropertyMapping<TObject>(this.Mapping, null);
 
       return new SimpleMappingHelper<TObject, TObject>((ISimpleMapping<TObject>) this.Mapping.MapAs);
     }
@@ -103,7 +103,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ICompositeMappingHelper<TObject, TObject> Composite()
     {
-      this.Mapping.MapAs = new CompositePropertyMapping<TObject>(this.Mapping.ParentMapping, this.Mapping.Property, true);
+      this.Mapping.MapAs = new CompositePropertyMapping<TObject>(this.Mapping, null);
 
       return new CompositeMappingHelper<TObject, TObject>((ICompositeMapping<TObject>) this.Mapping.MapAs);
     }
@@ -121,7 +121,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public IEntityMappingHelper<TObject, TEntity, TIdentity> Entity<TEntity, TIdentity>()
       where TEntity : IEntity
     {
-      this.Mapping.MapAs = new SimplePropertyMapping<TEntity>(this.Mapping.ParentMapping, this.Mapping.Property, true);
+      this.Mapping.MapAs = new SimplePropertyMapping<TEntity>(this.Mapping, null);
 
       return new EntityMappingHelper<TObject, TEntity, TIdentity>((ISimpleMapping<TEntity>) this.Mapping.MapAs);
     }

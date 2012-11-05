@@ -75,43 +75,6 @@ namespace CSF.Entities
                            .Invoke(new object[] { identifier });
     }
 
-    /// <summary>
-    /// Convenience method creates an identity instance and then immediately unwraps it, yielding an entity.
-    /// </summary>
-    /// <param name='identifier'>
-    /// The identifier for the entity.
-    /// </param>
-    /// <typeparam name='TEntity'>
-    /// The entity type expected.
-    /// </typeparam>
-    public static TEntity Unwrap<TEntity>(object identifier) where TEntity : IEntity
-    {
-      IIdentityUnwrappingService service = ServiceLocator.Get<IIdentityUnwrappingService>();
-      IIdentity<TEntity> identity = new Identity<TEntity,object>(identifier);
-
-      return service.Unwrap<TEntity>(identity);
-    }
-
-    /// <summary>
-    /// Convenience method creates an identity instance and then immediately unwraps it, yielding an entity.
-    /// </summary>
-    /// <param name='identifier'>
-    /// The identifier for the entity.
-    /// </param>
-    /// <typeparam name='TEntity'>
-    /// The entity type expected.
-    /// </typeparam>
-    /// <typeparam name='TIdentifier'>
-    /// The type of the identifier, usually unneeded.
-    /// </typeparam>
-    public static TEntity Unwrap<TEntity,TIdentifier>(TIdentifier identifier) where TEntity : IEntity
-    {
-      IIdentityUnwrappingService service = ServiceLocator.Get<IIdentityUnwrappingService>();
-      IIdentity<TEntity> identity = new Identity<TEntity,TIdentifier>(identifier);
-
-      return service.Unwrap<TEntity>(identity);
-    }
-
     #endregion
   }
 }

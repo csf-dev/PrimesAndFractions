@@ -49,7 +49,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TPolicy'>
     /// The type of <see cref="IKeyNamingPolicy"/> desired.
     /// </typeparam>
-    IValueTypeCollectionMappingHelper<TObject,TCollectionItem> NamingPolicy<TPolicy>()
+    IValueTypeCollectionMappingHelper<TObject,TCollectionItem> CollectionNamingPolicy<TPolicy>()
       where TPolicy : IKeyNamingPolicy;
 
     /// <summary>
@@ -64,7 +64,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TPolicy'>
     /// The type of <see cref="IKeyNamingPolicy"/> desired.
     /// </typeparam>
-    IValueTypeCollectionMappingHelper<TObject,TCollectionItem> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
+    IValueTypeCollectionMappingHelper<TObject,TCollectionItem> CollectionNamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
       where TPolicy : IKeyNamingPolicy;
   }
 }

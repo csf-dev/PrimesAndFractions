@@ -29,26 +29,28 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
     }
 
     [Test]
-    public void TestNamingPolicy()
+    public void TestCollectionNamingPolicy()
     {
       var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
-      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+      mapping.SetupProperty(x => x.MapAs);
       mapping.SetupProperty(x => x.KeyNamingPolicy);
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
 
-      helper.NamingPolicy<TestNamingPolicy>();
+      helper.CollectionNamingPolicy<TestNamingPolicy>();
 
       mapping.VerifySet(x => x.KeyNamingPolicy = It.IsAny<TestNamingPolicy>());
       Assert.IsInstanceOfType(typeof(TestNamingPolicy), mapping.Object.KeyNamingPolicy, "Correct type");
     }
 
     [Test]
-    public void TestNamingPolicyWithFactory()
+    public void TestCollectionNamingPolicyWithFactory()
     {
       var mapping = new Mock<IReferenceTypeCollectionMapping<Bar>>();
-      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
+      mapping.SetupProperty(x => x.MapAs);
       mapping.SetupProperty(x => x.KeyNamingPolicy);
+      ReferenceTypeCollectionMappingHelper<Baz,Bar> helper = new ReferenceTypeCollectionMappingHelper<Baz,Bar>(mapping.Object);
 
-      helper.NamingPolicy<TestNamingPolicy>(map => new TestNamingPolicy(map) { TestString = "Test!" });
+      helper.CollectionNamingPolicy<TestNamingPolicy>(map => new TestNamingPolicy(map) { TestString = "Test!" });
 
       mapping.VerifySet(x => x.KeyNamingPolicy = It.IsAny<TestNamingPolicy>());
       Assert.IsInstanceOfType(typeof(TestNamingPolicy), mapping.Object.KeyNamingPolicy, "Correct type");

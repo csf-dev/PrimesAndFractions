@@ -39,7 +39,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <param name='serializationFunction'>
     ///  A method body for serializing values. 
     /// </param>
-    public ISimpleMappingHelper<TObject, TValue> Serialize(Func<TValue, string> serializationFunction)
+    public virtual ISimpleMappingHelper<TObject, TValue> Serialize(Func<TValue, string> serializationFunction)
     {
       this.Mapping.SerializationFunction = serializationFunction;
       return this;
@@ -51,7 +51,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <param name='deserializationFunction'>
     ///  A method body for deserializing values. 
     /// </param>
-    public ISimpleMappingHelper<TObject, TValue> Deserialize(Func<string, TValue> deserializationFunction)
+    public virtual ISimpleMappingHelper<TObject, TValue> Deserialize(Func<string, TValue> deserializationFunction)
     {
       this.Mapping.DeserializationFunction = deserializationFunction;
       return this;
@@ -66,7 +66,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TPolicy'>
     /// The type of <see cref="IKeyNamingPolicy"/> desired.
     /// </typeparam>
-    public ISimpleMappingHelper<TObject, TValue> NamingPolicy<TPolicy>()
+    public virtual ISimpleMappingHelper<TObject, TValue> NamingPolicy<TPolicy>()
       where TPolicy : IKeyNamingPolicy
     {
       this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping);
@@ -85,7 +85,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TPolicy'>
     /// The type of <see cref="IKeyNamingPolicy"/> desired.
     /// </typeparam>
-    public ISimpleMappingHelper<TObject, TValue> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
+    public virtual ISimpleMappingHelper<TObject, TValue> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
       where TPolicy : IKeyNamingPolicy
     {
       this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping, factoryMethod);

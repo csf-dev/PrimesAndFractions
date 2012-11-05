@@ -122,14 +122,12 @@
     <Compile Include="Serialization\ISerializationContainer.cs" />
     <Compile Include="Serialization\XmlSerializationContainer.cs" />
     <Compile Include="DictionaryEqualityComparer.cs" />
-    <Compile Include="Entities\IIdentityUnwrappingService.cs" />
     <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="Entities\IIdentity`1.cs" />
     <Compile Include="Entities\IIdentity`2.cs" />
     <Compile Include="Entities\Identity`2.cs" />
     <Compile Include="Entities\IEntity`2.cs" />
     <Compile Include="Entities\Entity`2.cs" />
-    <Compile Include="Entities\IIdentityExtensions.cs" />
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
@@ -146,11 +144,8 @@
     <Compile Include="Patterns\ServiceLayer\LocalRequestDispatcher.cs" />
     <Compile Include="Collections\NameValueCollectionExtensions.cs" />
     <Compile Include="Web\HttpRequestExtensions.cs" />
-    <Compile Include="NullableConvert.cs" />
-    <Compile Include="Collections\Serialization\IKeyValueSerializer`1.cs" />
     <Compile Include="Collections\Serialization\MappingModel\ICompositeComponentMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\ICompositeMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\ISimpleMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\IClassMapping.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\IClassMappingHelper`1.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\ICompositeComponentMappingHelper`2.cs" />
@@ -167,7 +162,6 @@
     <Compile Include="Collections\Serialization\MappingModel\ClassMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\SimplePropertyMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\IKeyNamingPolicy.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\KeyNamingPolicy.cs" />
     <Compile Include="Collections\Serialization\MappingModel\ICollectionMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\MappingBase.cs" />
     <Compile Include="Collections\Serialization\MappingModel\CompositePropertyMapping.cs" />
@@ -186,9 +180,20 @@
     <Compile Include="Collections\Serialization\MappingHelpers\EntityMappingHelper.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\MappingHelper`1.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\MappingHelper.cs" />
-    <Compile Include="Collections\Serialization\KeyValueSerializer.cs" />
     <Compile Include="Collections\Serialization\MappingModel\InvalidMappingException.cs" />
     <Compile Include="Collections\Serialization\MappingModel\MandatorySerializationException.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\DefaultKeyNamingPolicy.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ISimpleMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ISimpleMapping.cs" />
+    <Compile Include="Collections\Serialization\IKeyValueSerializer.cs" />
+    <Compile Include="Collections\Serialization\IClassKeyValueSerializer`1.cs" />
+    <Compile Include="Collections\Serialization\ICollectionKeyValueSerializer.cs" />
+    <Compile Include="Collections\Serialization\IValueTypeCollectionKeyValueSerializer.cs" />
+    <Compile Include="Collections\Serialization\KeyValueSerializerBase.cs" />
+    <Compile Include="Collections\Serialization\ClassKeyValueSerializer.cs" />
+    <Compile Include="Collections\Serialization\CollectionKeyValueSerializer.cs" />
+    <Compile Include="Collections\Serialization\ValueTypeCollectionKeyValueSerializer.cs" />
+    <Compile Include="NullSafe.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

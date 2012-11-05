@@ -1,5 +1,5 @@
 //
-//  IIdentityUnwrappingService.cs
+//  ISimpleMapping.cs
 //
 //  Author:
 //       Craig Fowler <craig@craigfowler.me.uk>
@@ -19,33 +19,34 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
+using System.Reflection;
 
-namespace CSF.Entities
+namespace CSF.Collections.Serialization.MappingModel
 {
   /// <summary>
-  /// Interface for a service that is able to 'unwrap' an <see cref="IIdentity"/> into its original entity, using some
-  /// kind of retreival mechanism.
+  /// Interface for a mapping which describes a simple value-to-property mapping using a single collection value.
   /// </summary>
-  public interface IIdentityUnwrappingService
+  public interface ISimpleMapping<TValue> : IMapping, IEndpointMapping, ISimpleMapping
   {
-    /// <summary>
-    /// Unwrap the specified identity returning the entity that the identity represents.
-    /// </summary>
-    /// <param name='identity'>
-    /// An <see cref="IIdentity"/> instance.
-    /// </param>
-    /// <typeparam name='TEntity'>
-    /// The type of entity expected by the unwrapping action.
-    /// </typeparam>
-    TEntity Unwrap<TEntity>(IIdentity<TEntity> identity) where TEntity : IEntity;
+    #region properties
 
     /// <summary>
-    /// Unwrap the specified identity returning the entity that the identity represents.
+    /// Gets the function used to deserialize the property value from a string.
     /// </summary>
-    /// <param name='identity'>
-    /// An <see cref="IIdentity"/> instance.
-    /// </param>
-    IEntity Unwrap(IIdentity identity);
+    /// <value>
+    /// A method body containing the deserialization function.
+    /// </value>
+    Func<string,TValue> DeserializationFunction { get; set; }
+
+    /// <summary>
+    /// Gets the function used to serialize a string from the property value.
+    /// </summary>
+    /// <value>
+    /// A method body containing the serialization function.
+    /// </value>
+    Func<TValue,string> SerializationFunction { get; set; }
+
+    #endregion
   }
 }
 

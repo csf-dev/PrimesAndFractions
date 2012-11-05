@@ -79,7 +79,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <returns>
     ///  The collection key. 
     /// </returns>
-    public virtual string GetKeyName(params int[] collectionIndices)
+    public override string GetKeyName(params int[] collectionIndices)
     {
       return this.KeyNamingPolicy.GetKeyName(collectionIndices);
     }
@@ -154,6 +154,31 @@ namespace CSF.Collections.Serialization.MappingModel
       return output;
     }
 
+    /// <summary>
+    /// Serialize the specified data, exposing the result as an output parameter.
+    /// </summary>
+    /// <param name='data'>
+    /// The object (or object graph) to serialize.
+    /// </param>
+    /// <param name='result'>
+    /// The dictionary of string values to contain the serialized data.
+    /// </param>
+    /// <param name='collectionIndices'>
+    /// A collection of integers, indicating the indices of any collection mappings passed-through during the
+    /// </param>
+    /// <typeparam name='TInput'>
+    /// The type of data to serialize.
+    /// </typeparam>
+    public override void Serialize(object data, ref IDictionary<string,string> result, int[] collectionIndices)
+    {
+      if(result == null)
+      {
+        throw new ArgumentNullException("result");
+      }
+
+      result.Add(this.GetKeyName(collectionIndices), this.SerializationFunction((TValue) data));
+    }
+
     #endregion
 
     #region constructor
@@ -171,29 +196,6 @@ namespace CSF.Collections.Serialization.MappingModel
     {
       this.DeserializationFunction = (strVal => (TValue) Convert.ChangeType(strVal, typeof(TValue)));
       this.SerializationFunction = (val => (val != null)? val.ToString() : null);
-    }
-
-    /// <summary>
-    /// Initializes a new instance of this simple property-mapping class.
-    /// </summary>
-    /// <param name='property'>
-    /// The property that this instance is associated with.
-    /// </param>
-    /// <param name='parentMapping'>
-    /// The parent mapping.
-    /// </param>
-    /// <param name='classMode'>
-    /// A boolean that indicates whether this instance will operate in 'class mode' or not.
-    /// </param>
-    public SimplePropertyMapping(IMapping parentMapping,
-                                 PropertyInfo property,
-                                 bool classMode) : this(parentMapping, property)
-    {
-      if(classMode)
-      {
-        this.PermitNullParent = true;
-        this.PermitNullProperty = true;
-      }
     }
 
     #endregion

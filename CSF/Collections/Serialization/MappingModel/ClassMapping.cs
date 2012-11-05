@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using CSF.Reflection;
+using System.Linq.Expressions;
 
 namespace CSF.Collections.Serialization.MappingModel
 {
@@ -81,7 +83,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// </param>
     public virtual bool Deserialize(IDictionary<string, string> data,
                                     out TObject result,
-                                    params int[] collectionIndices)
+                                    int[] collectionIndices)
     {
       bool output = false;
 
@@ -100,11 +102,12 @@ namespace CSF.Collections.Serialization.MappingModel
               output = true;
             }
           }
-          catch(Exception) {}
+          catch(InvalidMappingException) { throw; }
+          catch(Exception) { }
         }
         else
         {
-          bool failed = false;
+          bool failed = false, iterationPass = false;
 
           try
           {
@@ -125,8 +128,10 @@ namespace CSF.Collections.Serialization.MappingModel
                 if(mapping.Deserialize(data, out tempResult, collectionIndices))
                 {
                   mapping.Property.SetValue(result, tempResult, null);
+                  iterationPass = true;
                 }
               }
+              catch(InvalidMappingException) { throw; }
               catch(MandatorySerializationException)
               {
                 failed = true;
@@ -140,7 +145,7 @@ namespace CSF.Collections.Serialization.MappingModel
             }
           }
 
-          if(failed)
+          if(failed || !iterationPass)
           {
             result = default(TObject);
           }
@@ -175,11 +180,128 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <param name='collectionIndices'>
     ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
     /// </param>
-    public override bool Deserialize(IDictionary<string, string> data, out object result, params int[] collectionIndices)
+    public override bool Deserialize(IDictionary<string, string> data, out object result, int[] collectionIndices)
     {
       TObject tempResult;
       bool output = this.Deserialize(data, out tempResult, collectionIndices);
       result = tempResult;
+      return output;
+    }
+
+    /// <summary>
+    /// Serialize the specified data, exposing the result as an output parameter.
+    /// </summary>
+    /// <param name='data'>
+    /// The object (or object graph) to serialize.
+    /// </param>
+    /// <param name='result'>
+    /// The dictionary of string values to contain the serialized data.
+    /// </param>
+    /// <param name='collectionIndices'>
+    /// A collection of integers, indicating the indices of any collection mappings passed-through during the
+    /// </param>
+    /// <typeparam name='TInput'>
+    /// The type of data to serialize.
+    /// </typeparam>
+    public override void Serialize(object data, ref IDictionary<string,string> result, int[] collectionIndices)
+    {
+      if(result == null)
+      {
+        throw new ArgumentNullException("result");
+      }
+
+      if(this.MapAs != null)
+      {
+        this.MapAs.Serialize(data, ref result, collectionIndices);
+      }
+      else
+      {
+        foreach(IMapping mapping in this.Mappings)
+        {
+          object propertyValue = mapping.Property.GetValue(data, null);
+
+          if(propertyValue != null)
+          {
+            mapping.Serialize(propertyValue, ref result, collectionIndices);
+          }
+        }
+      }
+    }
+
+    /// <summary>
+    /// The default factory method used to create object instances when deserializing.
+    /// </summary>
+    /// <returns>
+    /// An instance of the generic type that this mapping represents.
+    /// </returns>
+    protected virtual TObject DefaultFactoryMethod()
+    {
+      Type targetType = typeof(TObject);
+      ConstructorInfo constructor = targetType.GetConstructor(Type.EmptyTypes);
+
+      if(constructor == null)
+      {
+        string message = String.Format("Cannot construct an instance of type `{0}' as it does not have a public " +
+                                       "parameterless constructor.  Did you mean to use a custom factory method for " +
+                                       "creating instances of this type?",
+                                       targetType.FullName);
+        throw new InvalidOperationException(message);
+      }
+
+      return (TObject) constructor.Invoke(null);
+    }
+
+    /// <summary>
+    /// Gets the mapping for the current item (the map-as).
+    /// </summary>
+    /// <returns>
+    /// The mapping.
+    /// </returns>
+    public override IMapping GetMapping()
+    {
+      if(this.MapAs == null)
+      {
+        throw new InvalidOperationException("This class-like mapping is not mapped as another mapping.  Did you mean " +
+                                            "to use the GetMapping overload that uses a property identifier?");
+      }
+
+      return this.MapAs;
+    }
+
+    /// <summary>
+    /// Gets the mapping for the given property.
+    /// </summary>
+    /// <returns>
+    /// The mapping.
+    /// </returns>
+    /// <param name='property'>
+    /// An expression that indicates the property to retrieve the mapping for.
+    /// </param>
+    /// <typeparam name='TOuterObject'>
+    /// The type associated with the current mapping (the type that 'hosts' the property).
+    /// </typeparam>
+    public override IMapping GetMapping<TOuterObject>(Expression<Func<TOuterObject, object>> property)
+    {
+      if(this.MapAs != null)
+      {
+        throw new InvalidOperationException("This class-like mapping is as another mapping.  Did you mean " +
+                                            "to use the parameterless GetMapping overload?");
+      }
+
+      PropertyInfo propInfo = StaticReflectionUtility.GetProperty<TOuterObject>(property);
+
+      if(propInfo == null)
+      {
+        throw new ArgumentException("The property expression given does not indicate a valid property.");
+      }
+
+      IMapping output = this.Mappings.Where(x => x.Property == propInfo).FirstOrDefault();
+
+      if(output == null)
+      {
+        throw new InvalidOperationException("This class-mapping does not contain a mapping for the given property.");
+      }
+
       return output;
     }
 
@@ -271,36 +393,16 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <param name='property'>
     /// The associated property.
     /// </param>
-    /// <param name='rootMode'>
-    /// A value that indicates whether or not we are in 'root mode' (in which case null parent mappings and properties
-    /// are permitted).
+    /// <param name='isRootMapping'>
+    /// A value that indicates whether or not this mapping is the root of the hierarchy.
     /// </param>
-    public ClassMapping(IMapping parentMapping, PropertyInfo property, bool rootMode) : base(parentMapping, property)
+    protected ClassMapping(IMapping parentMapping,
+                           PropertyInfo property,
+                           bool isRootMapping) : base(parentMapping, property, isRootMapping)
     {
       this.MapAs = null;
       this.Mappings = new List<IMapping>();
-
-      this.FactoryMethod = () => {
-        Type targetType = typeof(TObject);
-        ConstructorInfo constructor = targetType.GetConstructor(Type.EmptyTypes);
-
-        if(constructor == null)
-        {
-          string message = String.Format("Cannot construct an instance of type `{0}' as it does not have a public " +
-                                         "parameterless constructor.  Did you mean to use a custom factory method for " +
-                                         "creating instances of this type?",
-                                         targetType.FullName);
-          throw new InvalidOperationException(message);
-        }
-
-        return (TObject) constructor.Invoke(null);
-      };
-
-      if(rootMode)
-      {
-        this.PermitNullParent = true;
-        this.PermitNullProperty = true;
-      }
+      this.FactoryMethod = DefaultFactoryMethod;
     }
 
     #endregion

@@ -44,6 +44,8 @@ namespace Test.CSF.Collections.Serialization
 
     public ICollection<EntityType> EntityCollection { get; set; }
 
+    public DateTime BazProperty { get; set; }
+
     public Baz()
     {
       this.TestCollection = new List<Bar>();
@@ -52,11 +54,39 @@ namespace Test.CSF.Collections.Serialization
 
   public class EntityType : Entity<EntityType,int> {}
 
-  public class TestNamingPolicy : KeyNamingPolicy
+  public class TestNamingPolicy : DefaultKeyNamingPolicy
   {
     public string TestString { get; set; }
 
     public TestNamingPolicy(IMapping mapping) : base(mapping) {}
+  }
+
+  public class MockClass
+  {
+    public string PropertyOne { get; set; }
+
+    public int PropertyTwo { get; set; }
+
+    public DateTime PropertyThree { get; set; }
+
+    public Person PropertyFour { get; set; }
+
+    public MockClass NestedClass { get; set; }
+
+    public IList<string> CollectionOne { get; set; }
+
+    public IList<Person> CollectionTwo { get; set; }
+
+    public IList<DateTime> CollectionThree { get; set; }
+  }
+
+  public class Person : Entity<Person,uint>
+  {
+    public string Name { get; set; }
+
+    public DateTime Birthday { get; set; }
+
+    public int Friends { get; set; }
   }
 }
 

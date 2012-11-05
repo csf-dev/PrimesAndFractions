@@ -38,9 +38,9 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ISimpleMappingHelper<TObject, TCollectionItem> Simple ()
     {
-      this.Mapping.MapAs = new SimplePropertyMapping<TCollectionItem>(this.Mapping, null, true);
-
-      return new SimpleMappingHelper<TObject, TCollectionItem>((ISimpleMapping<TCollectionItem>) this.Mapping.MapAs);
+      var mapAs = new SimplePropertyMapping<TCollectionItem>(this.Mapping, null);
+      this.Mapping.MapAs = mapAs;
+      return new SimpleMappingHelper<TObject, TCollectionItem>(mapAs);
     }
     
     /// <summary>
@@ -48,9 +48,9 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ICompositeMappingHelper<TObject, TCollectionItem> Composite ()
     {
-      this.Mapping.MapAs = new CompositePropertyMapping<TCollectionItem>(this.Mapping, null, true);
-
-      return new CompositeMappingHelper<TObject, TCollectionItem>((ICompositeMapping<TCollectionItem>) this.Mapping.MapAs);
+      var mapAs = new CompositePropertyMapping<TCollectionItem>(this.Mapping, null);
+      this.Mapping.MapAs = mapAs;
+      return new CompositeMappingHelper<TObject, TCollectionItem>(mapAs);
     }
     
     /// <summary>
@@ -62,7 +62,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TPolicy'>
     /// The type of <see cref="IKeyNamingPolicy"/> desired.
     /// </typeparam>
-    public IValueTypeCollectionMappingHelper<TObject,TCollectionItem> NamingPolicy<TPolicy>()
+    public IValueTypeCollectionMappingHelper<TObject,TCollectionItem> CollectionNamingPolicy<TPolicy>()
       where TPolicy : IKeyNamingPolicy
     {
       this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping);
@@ -81,7 +81,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TPolicy'>
     /// The type of <see cref="IKeyNamingPolicy"/> desired.
     /// </typeparam>
-    public IValueTypeCollectionMappingHelper<TObject,TCollectionItem> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
+    public IValueTypeCollectionMappingHelper<TObject,TCollectionItem> CollectionNamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
       where TPolicy : IKeyNamingPolicy
     {
       this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping, factoryMethod);

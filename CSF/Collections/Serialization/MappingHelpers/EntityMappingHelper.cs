@@ -79,7 +79,11 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <param name='mapping'>
     /// Mapping.
     /// </param>
-    public EntityMappingHelper(ISimpleMapping<TEntity> mapping) : base(mapping) {}
+    public EntityMappingHelper(ISimpleMapping<TEntity> mapping) : base(mapping) 
+    {
+      this.Mapping.DeserializationFunction = null;
+      this.Mapping.SerializationFunction = x => x.GetIdentity().Value.ToString();
+    }
 
     #endregion
   }

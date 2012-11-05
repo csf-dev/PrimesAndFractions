@@ -1,5 +1,5 @@
 //
-//  ISimpleMapping.cs
+//  IKeyValueSerializer.cs
 //
 //  Author:
 //       Craig Fowler <craig@craigfowler.me.uk>
@@ -19,14 +19,30 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
+using System.Collections.Generic;
 
-namespace CSF.Collections.Serialization.MappingModel
+namespace CSF.Collections.Serialization
 {
   /// <summary>
-  /// Interface for a simple mapping.
+  /// Interface for a key/value serializer
   /// </summary>
-  public interface ISimpleMapping
+  public interface IKeyValueSerializer<TOutput>
   {
+    /// <summary>
+    /// Deserialize the specified data, returning an object instance.
+    /// </summary>
+    /// <param name='data'>
+    /// The collection of string data to deserialize.
+    /// </param>
+    TOutput Deserialize(IDictionary<string,string> data);
+
+    /// <summary>
+    /// Serialize the specified data, returning a dictionary/collection of string data.
+    /// </summary>
+    /// <param name='data'>
+    /// The object instance to serialize.
+    /// </param>
+    IDictionary<string,string> Serialize(TOutput data);
   }
 }
 

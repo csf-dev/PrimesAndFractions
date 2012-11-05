@@ -27,7 +27,7 @@ namespace CSF.Collections.Serialization.MappingModel
   /// A default/no-op key-naming policy that provides no options and always formats key names using a hard-coded
   /// default policy.
   /// </summary>
-  public class KeyNamingPolicy : IKeyNamingPolicy
+  public class DefaultKeyNamingPolicy : IKeyNamingPolicy
   {
     #region fields
 
@@ -108,15 +108,19 @@ namespace CSF.Collections.Serialization.MappingModel
       }
 
       if((this.AssociatedMapping is ICollectionMapping)
-         && this.AssociatedMapping.Property != null)
+         && ((ICollectionMapping) this.AssociatedMapping).CollectionKeyType == CollectionKeyType.Separate)
+
       {
-        output = String.Concat(output,
-                               this.FormatProperty(this.AssociatedMapping.Property,
-                                                   collectionIndices[currentCollectionNumber++]));
-      }
-      else if(this.AssociatedMapping is ICollectionMapping)
-      {
-        output = String.Concat(output, this.FormatProperty(collectionIndices[currentCollectionNumber++]));
+        if(this.AssociatedMapping.Property != null)
+        {
+          output = String.Concat(output,
+                                 this.FormatProperty(this.AssociatedMapping.Property,
+                                                     collectionIndices[currentCollectionNumber++]));
+        }
+        else
+        {
+          output = String.Concat(output, this.FormatProperty(collectionIndices[currentCollectionNumber++]));
+        }
       }
       else if(this.AssociatedMapping.Property != null)
       {
@@ -141,6 +145,11 @@ namespace CSF.Collections.Serialization.MappingModel
     /// </param>
     protected virtual string FormatProperty(PropertyInfo property)
     {
+      if(property == null)
+      {
+        throw new ArgumentNullException("property");
+      }
+
       return property.Name;
     }
 
@@ -158,12 +167,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// </param>
     protected virtual string FormatProperty(PropertyInfo property, int index)
     {
-      if(property == null)
-      {
-        throw new ArgumentNullException("property");
-      }
-
-      return String.Format("{0}[{1}]", this.FormatProperty(property), index);
+      return String.Concat(this.FormatProperty(property), this.FormatProperty(index));
     }
 
     /// <summary>
@@ -196,13 +200,13 @@ namespace CSF.Collections.Serialization.MappingModel
     #region constructor
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CSF.Collections.Serialization.MappingModel.KeyNamingPolicy"/>
+    /// Initializes a new instance of the <see cref="CSF.Collections.Serialization.MappingModel.DefaultKeyNamingPolicy"/>
     /// class.
     /// </summary>
     /// <param name='associatedMapping'>
     /// Associated mapping.
     /// </param>
-    public KeyNamingPolicy(IMapping associatedMapping)
+    public DefaultKeyNamingPolicy(IMapping associatedMapping)
     {
       this.AssociatedMapping = associatedMapping;
     }
