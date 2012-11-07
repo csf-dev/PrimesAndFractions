@@ -27,7 +27,7 @@ namespace CSF.Collections.Serialization.MappingModel
   /// <summary>
   /// Represents a simple value-to-property mapping.
   /// </summary>
-  public class SimplePropertyMapping<TValue> : MappingBase, ISimpleMapping<TValue>
+  public class SimpleMapping<TValue> : MappingBase<TValue>, ISimpleMapping<TValue>
   {
     #region ISimpleMapping implementation
 
@@ -58,7 +58,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <summary>
     ///  Validates this mapping instance. 
     /// </summary>
-    public override void Validate ()
+    public override void Validate()
     {
       base.Validate();
 
@@ -100,7 +100,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <param name='collectionIndices'>
     ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
     /// </param>
-    public virtual bool Deserialize(IDictionary<string, string> data,
+    public override bool Deserialize(IDictionary<string, string> data,
                                     out TValue result,
                                     params int[] collectionIndices)
     {
@@ -108,7 +108,9 @@ namespace CSF.Collections.Serialization.MappingModel
 
       result = default(TValue);
 
-      if(this.MayDeserialize(data))
+      this.Validate();
+
+      if(this.SatisfiesFlag(data))
       {
         string keyName = this.GetKeyName(collectionIndices);
         if(data.ContainsKey(keyName))
@@ -131,52 +133,46 @@ namespace CSF.Collections.Serialization.MappingModel
     }
 
     /// <summary>
-    ///  Deserialize the specified data as an object instance. 
+    ///  Serialize the specified data, exposing the serialized results as an output parameter. 
     /// </summary>
+    /// <param name='data'>
+    ///  The object graph to serialize, the root of which should be an object instance that corresponds to the current
+    /// mapping. 
+    /// </param>
+    /// <param name='result'>
+    ///  The dictionary of string values containing the serialized data that is created from the current mapping
+    /// instance. 
+    /// </param>
+    /// <param name='collectionIndices'>
+    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the
+    /// serialization process. 
+    /// </param>
     /// <returns>
-    ///  A value that indicates whether deserialization was successful or not. 
+    ///  A value that indicates whether or not the serialization was successful. 
     /// </returns>
-    /// <param name='data'>
-    ///  The dictionary/collection of string data to deserialize from. 
-    /// </param>
-    /// <param name='result'>
-    ///  The output/deserialized object instance. If the return value is false (unsuccessful deserialization) then the
-    /// output value of this parameter is undefined. 
-    /// </param>
-    /// <param name='collectionIndices'>
-    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
-    /// </param>
-    public override bool Deserialize(IDictionary<string, string> data, out object result, params int[] collectionIndices)
+    public override bool Serialize(TValue data, out IDictionary<string,string> result, int[] collectionIndices)
     {
-      TValue tempResult;
-      bool output = this.Deserialize(data, out tempResult, collectionIndices);
-      result = tempResult;
-      return output;
-    }
+      bool output = false;
+      result = null;
+      string serialized = null;
 
-    /// <summary>
-    /// Serialize the specified data, exposing the result as an output parameter.
-    /// </summary>
-    /// <param name='data'>
-    /// The object (or object graph) to serialize.
-    /// </param>
-    /// <param name='result'>
-    /// The dictionary of string values to contain the serialized data.
-    /// </param>
-    /// <param name='collectionIndices'>
-    /// A collection of integers, indicating the indices of any collection mappings passed-through during the
-    /// </param>
-    /// <typeparam name='TInput'>
-    /// The type of data to serialize.
-    /// </typeparam>
-    public override void Serialize(object data, ref IDictionary<string,string> result, int[] collectionIndices)
-    {
-      if(result == null)
+      try
       {
-        throw new ArgumentNullException("result");
+        serialized = this.SerializationFunction(data);
+        if(serialized != null)
+        {
+          output = true;
+        }
+      }
+      catch(Exception) {}
+
+      if(output)
+      {
+        result = new Dictionary<string, string>();
+        result.Add(this.GetKeyName(collectionIndices), serialized);
       }
 
-      result.Add(this.GetKeyName(collectionIndices), this.SerializationFunction((TValue) data));
+      return output;
     }
 
     #endregion
@@ -192,7 +188,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <param name='parentMapping'>
     /// The parent mapping.
     /// </param>
-    public SimplePropertyMapping(IMapping parentMapping, PropertyInfo property) : base(parentMapping, property)
+    public SimpleMapping(IMapping parentMapping, PropertyInfo property) : base(parentMapping, property, false)
     {
       this.DeserializationFunction = (strVal => (TValue) Convert.ChangeType(strVal, typeof(TValue)));
       this.SerializationFunction = (val => (val != null)? val.ToString() : null);

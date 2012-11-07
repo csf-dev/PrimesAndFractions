@@ -25,7 +25,7 @@ namespace CSF.Collections.Serialization.MappingModel
   /// <summary>
   /// Implementation of a mapping for a composite component.
   /// </summary>
-  public class CompositePropertyComponentMapping<TValue> : ICompositeComponentMapping<TValue>
+  public class CompositeComponentMapping<TValue> : ICompositeComponentMapping<TValue>
   {
     #region fields
 
@@ -34,7 +34,7 @@ namespace CSF.Collections.Serialization.MappingModel
 
     #endregion
 
-    #region ICompositeComponentMapping implementation
+    #region properties
 
     /// <summary>
     ///  Gets the 'parent' composite mapping. 
@@ -91,6 +91,10 @@ namespace CSF.Collections.Serialization.MappingModel
       set;
     }
 
+    #endregion
+
+    #region methpds
+
     /// <summary>
     /// Gets the collection key that corresponds to the data for this component. 
     /// </summary>
@@ -120,7 +124,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <param name='componentIdentifier'>
     /// Component identifier.
     /// </param>
-    public CompositePropertyComponentMapping(ICompositeMapping<TValue> parentMapping, object componentIdentifier)
+    public CompositeComponentMapping(ICompositeMapping<TValue> parentMapping, object componentIdentifier)
     {
       this.ParentMapping = parentMapping;
       this.ComponentIdentifier = componentIdentifier;

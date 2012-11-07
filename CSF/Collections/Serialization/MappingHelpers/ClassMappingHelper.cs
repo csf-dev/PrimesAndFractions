@@ -61,7 +61,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public IClassMappingHelper<TObject> NamingPolicy<TPolicy>()
       where TPolicy : IKeyNamingPolicy
     {
-      this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping);
+      this.Mapping.AttachKeyNamingPolicy<TPolicy>();
       return this;
     }
 
@@ -80,7 +80,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public IClassMappingHelper<TObject> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
       where TPolicy : IKeyNamingPolicy
     {
-      this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping, factoryMethod);
+      this.Mapping.AttachKeyNamingPolicy<TPolicy>(factoryMethod);
       return this;
     }
 
@@ -93,7 +93,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ISimpleMappingHelper<TObject, TObject> Simple()
     {
-      this.Mapping.MapAs = new SimplePropertyMapping<TObject>(this.Mapping, null);
+      this.Mapping.MapAs = new SimpleMapping<TObject>(this.Mapping, null);
 
       return new SimpleMappingHelper<TObject, TObject>((ISimpleMapping<TObject>) this.Mapping.MapAs);
     }
@@ -103,7 +103,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ICompositeMappingHelper<TObject, TObject> Composite()
     {
-      this.Mapping.MapAs = new CompositePropertyMapping<TObject>(this.Mapping, null);
+      this.Mapping.MapAs = new CompositeMapping<TObject>(this.Mapping, null);
 
       return new CompositeMappingHelper<TObject, TObject>((ICompositeMapping<TObject>) this.Mapping.MapAs);
     }
@@ -121,7 +121,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public IEntityMappingHelper<TObject, TEntity, TIdentity> Entity<TEntity, TIdentity>()
       where TEntity : IEntity
     {
-      this.Mapping.MapAs = new SimplePropertyMapping<TEntity>(this.Mapping, null);
+      this.Mapping.MapAs = new SimpleMapping<TEntity>(this.Mapping, null);
 
       return new EntityMappingHelper<TObject, TEntity, TIdentity>((ISimpleMapping<TEntity>) this.Mapping.MapAs);
     }
@@ -147,7 +147,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
       mapping = (ISimpleMapping<TValue>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(mapping == null)
       {
-        mapping = new SimplePropertyMapping<TValue>(this.Mapping, prop);
+        mapping = new SimpleMapping<TValue>(this.Mapping, prop);
         this.Mapping.Mappings.Add(mapping);
       }
 
@@ -171,7 +171,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
       mapping = (ICompositeMapping<TValue>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(mapping == null)
       {
-        mapping = new CompositePropertyMapping<TValue>(this.Mapping, prop);
+        mapping = new CompositeMapping<TValue>(this.Mapping, prop);
         this.Mapping.Mappings.Add(mapping);
       }
 
@@ -287,7 +287,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
       mapping = (ISimpleMapping<TEntity>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(mapping == null)
       {
-        mapping = new SimplePropertyMapping<TEntity>(this.Mapping, prop);
+        mapping = new SimpleMapping<TEntity>(this.Mapping, prop);
         this.Mapping.Mappings.Add(mapping);
       }
 

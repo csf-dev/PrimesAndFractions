@@ -29,12 +29,11 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
     {
       var mapping = new Mock<IClassMapping<Foo>>();
       ClassMappingHelper<Foo> helper = new ClassMappingHelper<Foo>(mapping.Object);
-      mapping.SetupProperty(x => x.KeyNamingPolicy);
+      mapping.Setup(x => x.AttachKeyNamingPolicy<TestNamingPolicy>());
 
       helper.NamingPolicy<TestNamingPolicy>();
 
-      mapping.VerifySet(x => x.KeyNamingPolicy = It.IsAny<TestNamingPolicy>());
-      Assert.IsInstanceOfType(typeof(TestNamingPolicy), mapping.Object.KeyNamingPolicy, "Correct type");
+      mapping.Verify(x => x.AttachKeyNamingPolicy<TestNamingPolicy>());
     }
 
     [Test]
@@ -42,13 +41,11 @@ namespace Test.CSF.Collections.Serialization.MappingHelpers
     {
       var mapping = new Mock<IClassMapping<Foo>>();
       ClassMappingHelper<Foo> helper = new ClassMappingHelper<Foo>(mapping.Object);
-      mapping.SetupProperty(x => x.KeyNamingPolicy);
+      mapping.Setup(x => x.AttachKeyNamingPolicy<TestNamingPolicy>(It.IsAny<Func<IMapping,TestNamingPolicy>>()));
 
       helper.NamingPolicy<TestNamingPolicy>(map => new TestNamingPolicy(map) { TestString = "Test!" });
 
-      mapping.VerifySet(x => x.KeyNamingPolicy = It.IsAny<TestNamingPolicy>());
-      Assert.IsInstanceOfType(typeof(TestNamingPolicy), mapping.Object.KeyNamingPolicy, "Correct type");
-      Assert.AreEqual("Test!", ((TestNamingPolicy) mapping.Object.KeyNamingPolicy).TestString, "Correct string value");
+      mapping.Verify(x => x.AttachKeyNamingPolicy<TestNamingPolicy>(It.IsAny<Func<IMapping,TestNamingPolicy>>()));
     }
 
     #endregion

@@ -30,25 +30,88 @@ namespace CSF.Collections.Serialization.MappingModel
   /// <summary>
   /// Default implementation of a class mapping.
   /// </summary>
-  public class ClassMapping<TObject> : MappingBase, IClassMapping<TObject>
-    where TObject : class
+  public class ClassMapping<TValue> : MappingBase<TValue>, IClassMapping<TValue>
+    where TValue : class
   {
     #region fields
 
     private ICollection<IMapping> _mappings;
-    private Func<TObject> _factoryMethod;
+    private Func<TValue> _factoryMethod;
 
     #endregion
 
-    #region MappingBase overrides
+    #region properties
 
     /// <summary>
-    ///  Validates this mapping instance. 
+    ///  If non-null then this entire object is mapped for serialization/deserialization using a single mapping
+    /// instance. 
+    /// </summary>
+    /// <value>
+    ///  The mapping for this entire type. 
+    /// </value>
+    public virtual IMapping MapAs
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    ///  Gets a collection of the mappings for this type. 
+    /// </summary>
+    /// <value>
+    ///  The mappings. 
+    /// </value>
+    public virtual ICollection<IMapping> Mappings
+    {
+      get {
+        return _mappings;
+      }
+      set {
+        if(value == null)
+        {
+          throw new ArgumentNullException("value");
+        }
+
+        _mappings = value;
+      }
+    }
+
+    /// <summary>
+    ///  Gets the factory method that is used for constructing instances of this type. 
+    /// </summary>
+    /// <value>
+    ///  The factory method. 
+    /// </value>
+    public virtual Func<TValue> FactoryMethod
+    {
+      get {
+        return _factoryMethod;
+      }
+      set {
+        if(value == null)
+        {
+          throw new ArgumentNullException("value");
+        }
+
+        _factoryMethod = value;
+      }
+    }
+
+    #endregion
+
+    #region methods
+
+    /// <summary>
+    /// Validates this mapping instance. 
     /// </summary>
     /// <remarks>
     /// <para>
-    /// A class mapping instance is invalid if both <see cref="MapAs"/> is non-null and <see cref="Mappings"/> is not
-    /// empty.  These two properties are mutually exclusive.
+    /// A class mapping instance is valid if EITHER <see cref="MapAs"/> contains a mapping OR if <see cref="Mappings"/>
+    /// contains one or more property mappings.  It is not valid if either both of these properties are null/empty or if
+    /// both contain data; these two properties are mutually exclusive.
+    /// </para>
+    /// <para>
+    /// This method also executes the validation method of the base type.
     /// </para>
     /// </remarks>
     public override void Validate()
@@ -57,198 +120,20 @@ namespace CSF.Collections.Serialization.MappingModel
 
       if(this.Mappings.Count > 0 && this.MapAs != null)
       {
-        Type targetType = typeof(TObject);
+        Type targetType = typeof(TValue);
         string message = String.Format("Mapping for type `{0}' is invalid.  Cannot combine property mappings with a " +
                                        "mapping for the whole type.",
                                        targetType.FullName);
         throw new InvalidMappingException(message);
       }
-    }
-
-    /// <summary>
-    ///  Deserialize the specified data as an object instance. 
-    /// </summary>
-    /// <returns>
-    ///  A value that indicates whether deserialization was successful or not. 
-    /// </returns>
-    /// <param name='data'>
-    ///  The dictionary/collection of string data to deserialize from. 
-    /// </param>
-    /// <param name='result'>
-    /// The output/deserialized object instance.  If the return value is false (unsuccessful deserialization) then the
-    /// output value of this parameter is undefined.
-    /// </param>
-    /// <param name='collectionIndices'>
-    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
-    /// </param>
-    public virtual bool Deserialize(IDictionary<string, string> data,
-                                    out TObject result,
-                                    int[] collectionIndices)
-    {
-      bool output = false;
-
-      result = default(TObject);
-
-      if(this.MayDeserialize(data))
+      else if(this.Mappings.Count == 0 && this.MapAs == null)
       {
-        if(this.MapAs != null)
-        {
-          try
-          {
-            object tempResult;
-            if(this.MapAs.Deserialize(data, out tempResult, collectionIndices))
-            {
-              result = (TObject) tempResult;
-              output = true;
-            }
-          }
-          catch(InvalidMappingException) { throw; }
-          catch(Exception) { }
-        }
-        else
-        {
-          bool failed = false, iterationPass = false;
-
-          try
-          {
-            result = this.FactoryMethod();
-          }
-          catch(Exception)
-          {
-            failed = true;
-          }
-
-          if(!failed)
-          {
-            foreach(IMapping mapping in this.Mappings.Where(x => x.Property != null))
-            {
-              try
-              {
-                object tempResult;
-                if(mapping.Deserialize(data, out tempResult, collectionIndices))
-                {
-                  mapping.Property.SetValue(result, tempResult, null);
-                  iterationPass = true;
-                }
-              }
-              catch(InvalidMappingException) { throw; }
-              catch(MandatorySerializationException)
-              {
-                failed = true;
-              }
-              catch(Exception) {}
-
-              if(failed)
-              {
-                break;
-              }
-            }
-          }
-
-          if(failed || !iterationPass)
-          {
-            result = default(TObject);
-          }
-          else
-          {
-            output = true;
-          }
-        }
-      }
-
-      if(!output && this.Mandatory)
-      {
-        throw new MandatorySerializationException(this);
-      }
-
-      return output;
-    }
-
-    /// <summary>
-    ///  Deserialize the specified data as an object instance. 
-    /// </summary>
-    /// <returns>
-    ///  A value that indicates whether deserialization was successful or not. 
-    /// </returns>
-    /// <param name='data'>
-    ///  The dictionary/collection of string data to deserialize from. 
-    /// </param>
-    /// <param name='result'>
-    ///  The output/deserialized object instance. If the return value is false (unsuccessful deserialization) then the
-    /// output value of this parameter is undefined. 
-    /// </param>
-    /// <param name='collectionIndices'>
-    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
-    /// </param>
-    public override bool Deserialize(IDictionary<string, string> data, out object result, int[] collectionIndices)
-    {
-      TObject tempResult;
-      bool output = this.Deserialize(data, out tempResult, collectionIndices);
-      result = tempResult;
-      return output;
-    }
-
-    /// <summary>
-    /// Serialize the specified data, exposing the result as an output parameter.
-    /// </summary>
-    /// <param name='data'>
-    /// The object (or object graph) to serialize.
-    /// </param>
-    /// <param name='result'>
-    /// The dictionary of string values to contain the serialized data.
-    /// </param>
-    /// <param name='collectionIndices'>
-    /// A collection of integers, indicating the indices of any collection mappings passed-through during the
-    /// </param>
-    /// <typeparam name='TInput'>
-    /// The type of data to serialize.
-    /// </typeparam>
-    public override void Serialize(object data, ref IDictionary<string,string> result, int[] collectionIndices)
-    {
-      if(result == null)
-      {
-        throw new ArgumentNullException("result");
-      }
-
-      if(this.MapAs != null)
-      {
-        this.MapAs.Serialize(data, ref result, collectionIndices);
-      }
-      else
-      {
-        foreach(IMapping mapping in this.Mappings)
-        {
-          object propertyValue = mapping.Property.GetValue(data, null);
-
-          if(propertyValue != null)
-          {
-            mapping.Serialize(propertyValue, ref result, collectionIndices);
-          }
-        }
-      }
-    }
-
-    /// <summary>
-    /// The default factory method used to create object instances when deserializing.
-    /// </summary>
-    /// <returns>
-    /// An instance of the generic type that this mapping represents.
-    /// </returns>
-    protected virtual TObject DefaultFactoryMethod()
-    {
-      Type targetType = typeof(TObject);
-      ConstructorInfo constructor = targetType.GetConstructor(Type.EmptyTypes);
-
-      if(constructor == null)
-      {
-        string message = String.Format("Cannot construct an instance of type `{0}' as it does not have a public " +
-                                       "parameterless constructor.  Did you mean to use a custom factory method for " +
-                                       "creating instances of this type?",
+        Type targetType = typeof(TValue);
+        string message = String.Format("Mapping for type `{0}' is invalid.  Mapping must contain at least one child " +
+                                       "mapping.",
                                        targetType.FullName);
-        throw new InvalidOperationException(message);
+        throw new InvalidMappingException(message);
       }
-
-      return (TObject) constructor.Invoke(null);
     }
 
     /// <summary>
@@ -305,63 +190,188 @@ namespace CSF.Collections.Serialization.MappingModel
       return output;
     }
 
-    #endregion
+    /// <summary>
+    ///  Deserialize the specified data as an object instance. 
+    /// </summary>
+    /// <returns>
+    ///  A value that indicates whether deserialization was successful or not. 
+    /// </returns>
+    /// <param name='data'>
+    ///  The dictionary/collection of string data to deserialize from. 
+    /// </param>
+    /// <param name='result'>
+    /// The output/deserialized object instance.  If the return value is false (unsuccessful deserialization) then the
+    /// output value of this parameter is undefined.
+    /// </param>
+    /// <param name='collectionIndices'>
+    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
+    /// </param>
+    public override bool Deserialize(IDictionary<string, string> data,
+                                     out TValue result,
+                                     int[] collectionIndices)
+    {
+      bool output = false;
 
-    #region IClassMapping implementation
+      result = default(TValue);
+
+      this.Validate();
+
+      if(this.SatisfiesFlag(data))
+      {
+        if(this.MapAs != null)
+        {
+          try
+          {
+            object tempResult;
+            if(this.MapAs.Deserialize(data, out tempResult, collectionIndices))
+            {
+              result = (TValue) tempResult;
+              output = true;
+            }
+          }
+          catch(InvalidMappingException) { throw; }
+          catch(Exception) { }
+        }
+        else
+        {
+          bool failed = false, iterationPass = false;
+
+          try
+          {
+            result = this.FactoryMethod();
+          }
+          catch(Exception)
+          {
+            failed = true;
+          }
+
+          if(!failed)
+          {
+            foreach(IMapping mapping in this.Mappings.Where(x => x.Property != null))
+            {
+              try
+              {
+                object tempResult;
+                if(mapping.Deserialize(data, out tempResult, collectionIndices))
+                {
+                  mapping.Property.SetValue(result, tempResult, null);
+                  iterationPass = true;
+                }
+              }
+              catch(InvalidMappingException) { throw; }
+              catch(MandatorySerializationException)
+              {
+                failed = true;
+              }
+              catch(Exception) {}
+
+              if(failed)
+              {
+                break;
+              }
+            }
+          }
+
+          if(failed || !iterationPass)
+          {
+            result = default(TValue);
+          }
+          else
+          {
+            output = true;
+          }
+        }
+      }
+
+      if(!output && this.Mandatory)
+      {
+        throw new MandatorySerializationException(this);
+      }
+
+      return output;
+    }
 
     /// <summary>
-    ///  If non-null then this entire object is mapped for serialization/deserialization using a single mapping
+    ///  Serialize the specified data, exposing the serialized results as an output parameter. 
+    /// </summary>
+    /// <param name='data'>
+    ///  The object graph to serialize, the root of which should be an object instance that corresponds to the current
+    /// mapping. 
+    /// </param>
+    /// <param name='result'>
+    ///  The dictionary of string values containing the serialized data that is created from the current mapping
     /// instance. 
-    /// </summary>
-    /// <value>
-    ///  The mapping for this entire type. 
-    /// </value>
-    public virtual IMapping MapAs
+    /// </param>
+    /// <param name='collectionIndices'>
+    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the
+    /// serialization process. 
+    /// </param>
+    /// <returns>
+    ///  A value that indicates whether or not the serialization was successful. 
+    /// </returns>
+    public override bool Serialize(TValue data, out IDictionary<string,string> result, int[] collectionIndices)
     {
-      get;
-      set;
+      result = new Dictionary<string, string>();
+      bool output;
+
+      if(this.MapAs != null)
+      {
+        output = this.MapAs.Serialize(data, out result, collectionIndices);
+      }
+      else
+      {
+        output = false;
+
+        foreach(IMapping mapping in this.Mappings)
+        {
+          object propertyValue = mapping.Property.GetValue(data, null);
+
+          if(propertyValue != null)
+          {
+            IDictionary<string,string> propertySerialization;
+            bool propertySuccess = mapping.Serialize(propertyValue, out propertySerialization, collectionIndices);
+
+            if(propertySuccess)
+            {
+              foreach(string key in propertySerialization.Keys)
+              {
+                result.Add(key, propertySerialization[key]);
+              }
+              output = true;
+            }
+          }
+        }
+      }
+
+      if(!output)
+      {
+        result = null;
+      }
+
+      return output;
     }
 
     /// <summary>
-    ///  Gets a collection of the mappings for this type. 
+    /// The default factory method used to populate <see cref="FactoryMethod"/>.
     /// </summary>
-    /// <value>
-    ///  The mappings. 
-    /// </value>
-    public virtual ICollection<IMapping> Mappings
+    /// <returns>
+    /// An instance of the generic type that this mapping represents.
+    /// </returns>
+    protected virtual TValue DefaultFactoryMethod()
     {
-      get {
-        return _mappings;
-      }
-      set {
-        if(value == null)
-        {
-          throw new ArgumentNullException("value");
-        }
+      Type targetType = typeof(TValue);
+      ConstructorInfo constructor = targetType.GetConstructor(Type.EmptyTypes);
 
-        _mappings = value;
+      if(constructor == null)
+      {
+        string message = String.Format("Cannot construct an instance of type `{0}' as it does not have a public " +
+                                       "parameterless constructor.  Did you mean to use a custom factory method for " +
+                                       "creating instances of this type?",
+                                       targetType.FullName);
+        throw new InvalidOperationException(message);
       }
-    }
 
-    /// <summary>
-    ///  Gets the factory method that is used for constructing instances of this type. 
-    /// </summary>
-    /// <value>
-    ///  The factory method. 
-    /// </value>
-    public virtual Func<TObject> FactoryMethod
-    {
-      get {
-        return _factoryMethod;
-      }
-      set {
-        if(value == null)
-        {
-          throw new ArgumentNullException("value");
-        }
-
-        _factoryMethod = value;
-      }
+      return (TValue) constructor.Invoke(null);
     }
 
     #endregion

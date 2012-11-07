@@ -46,7 +46,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public new IEntityMappingHelper<TObject,TEntity,TIdentity> NamingPolicy<TPolicy>()
       where TPolicy : IKeyNamingPolicy
     {
-      this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping);
+      this.Mapping.AttachKeyNamingPolicy<TPolicy>();
       return this;
     }
 
@@ -65,7 +65,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public new IEntityMappingHelper<TObject,TEntity,TIdentity> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
       where TPolicy : IKeyNamingPolicy
     {
-      this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping, factoryMethod);
+      this.Mapping.AttachKeyNamingPolicy<TPolicy>(factoryMethod);
       return this;
     }
 

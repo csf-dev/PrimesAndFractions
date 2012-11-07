@@ -11,7 +11,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
   public class TestDefaultKeyNamingPolicy
   {
     [Test]
-    public void TestAssociatedMapping()
+    public void TestConstructor()
     {
       var rootMapping = new Mock<IClassMapping<Foo>>();
       DefaultKeyNamingPolicy rule = new DefaultKeyNamingPolicy(rootMapping.Object);

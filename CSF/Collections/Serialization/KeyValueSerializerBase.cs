@@ -105,9 +105,10 @@ namespace CSF.Collections.Serialization
         throw new InvalidOperationException("This serializer instance does not yet have a root mapping.");
       }
 
-      IDictionary<string,string> output = new Dictionary<string, string>();
-      this.RootMapping.Serialize(data, ref output, new int[0]);
-      return output;
+      IDictionary<string,string> output;
+      bool success = this.RootMapping.Serialize(data, out output, new int[0]);
+
+      return success? output : null;
     }
 
     #endregion

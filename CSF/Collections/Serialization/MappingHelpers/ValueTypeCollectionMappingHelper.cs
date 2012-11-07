@@ -38,7 +38,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ISimpleMappingHelper<TObject, TCollectionItem> Simple ()
     {
-      var mapAs = new SimplePropertyMapping<TCollectionItem>(this.Mapping, null);
+      var mapAs = new SimpleMapping<TCollectionItem>(this.Mapping, null);
       this.Mapping.MapAs = mapAs;
       return new SimpleMappingHelper<TObject, TCollectionItem>(mapAs);
     }
@@ -48,7 +48,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// </summary>
     public ICompositeMappingHelper<TObject, TCollectionItem> Composite ()
     {
-      var mapAs = new CompositePropertyMapping<TCollectionItem>(this.Mapping, null);
+      var mapAs = new CompositeMapping<TCollectionItem>(this.Mapping, null);
       this.Mapping.MapAs = mapAs;
       return new CompositeMappingHelper<TObject, TCollectionItem>(mapAs);
     }
@@ -65,7 +65,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public IValueTypeCollectionMappingHelper<TObject,TCollectionItem> CollectionNamingPolicy<TPolicy>()
       where TPolicy : IKeyNamingPolicy
     {
-      this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping);
+      this.Mapping.AttachKeyNamingPolicy<TPolicy>();
       return this;
     }
 
@@ -84,7 +84,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public IValueTypeCollectionMappingHelper<TObject,TCollectionItem> CollectionNamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
       where TPolicy : IKeyNamingPolicy
     {
-      this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping, factoryMethod);
+      this.Mapping.AttachKeyNamingPolicy<TPolicy>(factoryMethod);
       return this;
     }
 

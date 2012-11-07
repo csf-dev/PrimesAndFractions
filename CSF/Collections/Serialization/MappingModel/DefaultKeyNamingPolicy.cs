@@ -35,7 +35,7 @@ namespace CSF.Collections.Serialization.MappingModel
 
     #endregion
 
-    #region IKeyNamingRule implementation
+    #region properties
 
     /// <summary>
     /// Gets the associated mapping.
@@ -57,6 +57,10 @@ namespace CSF.Collections.Serialization.MappingModel
         _associatedMapping = value;
       }
     }
+
+    #endregion
+
+    #region methods
 
     /// <summary>
     /// Resolves and returns the name of the key for the <see cref="AssociatedMapping"/>.
@@ -129,10 +133,6 @@ namespace CSF.Collections.Serialization.MappingModel
 
       return output;
     }
-
-    #endregion
-
-    #region protected methods
 
     /// <summary>
     /// Formats a key name fragment using a singular property name.

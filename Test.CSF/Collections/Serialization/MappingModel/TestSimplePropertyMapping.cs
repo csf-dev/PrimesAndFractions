@@ -15,10 +15,31 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       var parent = new Mock<IMapping>();
       var property = StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger);
 
-      SimplePropertyMapping<int> mapping = new SimplePropertyMapping<int>(parent.Object, property);
+      SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object, property);
 
       Assert.AreEqual(5, mapping.DeserializationFunction("5"), "Deserialize");
       Assert.AreEqual("-56", mapping.SerializationFunction(-56), "Serialize");
+    }
+
+    [Test]
+    [Ignore("This test is not written yet")]
+    public void TestValidate()
+    {
+
+    }
+
+    [Test]
+    [Ignore("This test is not written yet")]
+    public void TestSerialize()
+    {
+
+    }
+
+    [Test]
+    [Ignore("This test is not written yet")]
+    public void TestDeserialize()
+    {
+
     }
   }
 }

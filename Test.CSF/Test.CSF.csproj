@@ -91,18 +91,20 @@
     <Compile Include="Patterns\ServiceLayer\TestLocalRequestDispatcher.cs" />
     <Compile Include="Collections\TestNameValueCollectionExtensions.cs" />
     <Compile Include="Collections\Serialization\MappingModel\TestClassMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\TestCompositePropertyComponentMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\TestSimplePropertyMapping.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\TestClassMappingHelper.cs" />
     <Compile Include="Collections\Serialization\StubTypes.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\TestCompositeMappingHelper.cs" />
-    <Compile Include="Collections\Serialization\MappingHelpers\TestMappingHelper.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\TestValueTypeCollectionMappingHelper.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\TestReferenceTypeCollectionMappingHelper.cs" />
     <Compile Include="Collections\Serialization\MappingModel\TestDefaultKeyNamingPolicy.cs" />
     <Compile Include="Collections\Serialization\TestClassKeyValueSerializer.cs" />
     <Compile Include="Collections\Serialization\TestValueTypeCollectionKeyValueSerializer.cs" />
     <Compile Include="TestNullSafe.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\TestMappingBase.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\TestCollectionMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\TestCompositeComponentMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\TestCompositeMapping.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -32,10 +32,10 @@ namespace CSF.Collections.Serialization.MappingHelpers
   /// <summary>
   /// Mapping helper type for a collection of reference-type items.
   /// </summary>
-  public class ReferenceTypeCollectionMappingHelper<TObject,TCollectionItem>
-    : CollectionMappingHelper<IReferenceTypeCollectionMapping<TCollectionItem>>, IReferenceTypeCollectionMappingHelper<TObject,TCollectionItem>
+  public class ReferenceTypeCollectionMappingHelper<TObject,TItem>
+    : CollectionMappingHelper<IReferenceTypeCollectionMapping<TItem>>, IReferenceTypeCollectionMappingHelper<TObject,TItem>
     where TObject : class
-    where TCollectionItem : class
+    where TItem : class
   {
     #region properties
     
@@ -45,7 +45,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <value>
     /// The child helper.
     /// </value>
-    protected virtual IClassMappingHelper<TCollectionItem> ChildHelper
+    protected virtual IClassMappingHelper<TItem> ChildHelper
     {
       get;
       private set;
@@ -62,7 +62,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <param name='factoryFunction'>
     ///  The factory method/function. 
     /// </param>
-    public void UsingFactory(Func<TCollectionItem> factoryFunction)
+    public void UsingFactory(Func<TItem> factoryFunction)
     {
       this.ChildHelper.UsingFactory(factoryFunction);
     }
@@ -76,10 +76,10 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TPolicy'>
     /// The type of <see cref="IKeyNamingPolicy"/> desired.
     /// </typeparam>
-    public IReferenceTypeCollectionMappingHelper<TObject,TCollectionItem> CollectionNamingPolicy<TPolicy>()
+    public IReferenceTypeCollectionMappingHelper<TObject,TItem> CollectionNamingPolicy<TPolicy>()
       where TPolicy : IKeyNamingPolicy
     {
-      this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping);
+      this.Mapping.AttachKeyNamingPolicy<TPolicy>();
       return this;
     }
 
@@ -95,10 +95,10 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TPolicy'>
     /// The type of <see cref="IKeyNamingPolicy"/> desired.
     /// </typeparam>
-    public IReferenceTypeCollectionMappingHelper<TObject,TCollectionItem> CollectionNamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
+    public IReferenceTypeCollectionMappingHelper<TObject,TItem> CollectionNamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
       where TPolicy : IKeyNamingPolicy
     {
-      this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping, factoryMethod);
+      this.Mapping.AttachKeyNamingPolicy<TPolicy>(factoryMethod);
       return this;
     }
 
@@ -111,7 +111,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TPolicy'>
     /// The 1st type parameter.
     /// </typeparam>
-    public IClassMappingHelper<TCollectionItem> NamingPolicy<TPolicy>()
+    public IClassMappingHelper<TItem> NamingPolicy<TPolicy>()
       where TPolicy : IKeyNamingPolicy
     {
       return this.ChildHelper.NamingPolicy<TPolicy>();
@@ -129,7 +129,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TPolicy'>
     /// The 1st type parameter.
     /// </typeparam>
-    public IClassMappingHelper<TCollectionItem> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
+    public IClassMappingHelper<TItem> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
       where TPolicy : IKeyNamingPolicy
     {
       return this.ChildHelper.NamingPolicy<TPolicy>(factoryMethod);
@@ -142,7 +142,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <summary>
     ///  Maps the class using an association with a single value within the collection. 
     /// </summary>
-    public ISimpleMappingHelper<TCollectionItem, TCollectionItem> Simple()
+    public ISimpleMappingHelper<TItem, TItem> Simple()
     {
       return this.ChildHelper.Simple();
     }
@@ -150,7 +150,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <summary>
     ///  Maps the class using an association with multiple values within the collection. 
     /// </summary>
-    public ICompositeMappingHelper<TCollectionItem, TCollectionItem> Composite()
+    public ICompositeMappingHelper<TItem, TItem> Composite()
     {
       return this.ChildHelper.Composite();
     }
@@ -165,7 +165,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TIdentity'>
     /// The identity-type for the current instance.
     /// </typeparam>
-    public IEntityMappingHelper<TCollectionItem, TEntity, TIdentity> Entity<TEntity, TIdentity>()
+    public IEntityMappingHelper<TItem, TEntity, TIdentity> Entity<TEntity, TIdentity>()
       where TEntity : IEntity
     {
       return this.ChildHelper.Entity<TEntity,TIdentity>();
@@ -184,7 +184,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TValue'>
     ///  The type of the property's value. 
     /// </typeparam>
-    public ISimpleMappingHelper<TCollectionItem, TValue> Simple<TValue>(Expression<Func<TCollectionItem, TValue>> property)
+    public ISimpleMappingHelper<TItem, TValue> Simple<TValue>(Expression<Func<TItem, TValue>> property)
     {
       return this.ChildHelper.Simple<TValue>(property);
     }
@@ -198,7 +198,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TValue'>
     ///  The type of the property's value. 
     /// </typeparam>
-    public ICompositeMappingHelper<TCollectionItem, TValue> Composite<TValue>(Expression<Func<TCollectionItem, TValue>> property)
+    public ICompositeMappingHelper<TItem, TValue> Composite<TValue>(Expression<Func<TItem, TValue>> property)
     {
       return this.ChildHelper.Composite<TValue>(property);
     }
@@ -212,14 +212,14 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <param name='mapping'>
     ///  A method body that contains the mapping definition for each item within the collection. 
     /// </param>
-    /// <typeparam name='TCollectionItem'>
+    /// <typeparam name='TItem'>
     ///  The type of the items within the collection. 
     /// </typeparam>
-    public void Collection<TNestedCollectionItem>(Expression<Func<TCollectionItem,ICollection<TNestedCollectionItem>>> property,
-                                                  Action<IReferenceTypeCollectionMappingHelper<TCollectionItem, TNestedCollectionItem>> mapping)
-      where TNestedCollectionItem : class
+    public void Collection<TNested>(Expression<Func<TItem,ICollection<TNested>>> property,
+                                    Action<IReferenceTypeCollectionMappingHelper<TItem, TNested>> mapping)
+      where TNested : class
     {
-      this.ChildHelper.Collection<TNestedCollectionItem>(property, mapping);
+      this.ChildHelper.Collection<TNested>(property, mapping);
     }
 
     /// <summary>
@@ -231,14 +231,14 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <param name='mapping'>
     ///  A method body that contains the mapping definition for each item within the collection. 
     /// </param>
-    /// <typeparam name='TCollectionItem'>
+    /// <typeparam name='TItem'>
     ///  The type of the items within the collection. 
     /// </typeparam>
-    public void ValueCollection<TNestedCollectionItem>(Expression<Func<TCollectionItem,ICollection<TNestedCollectionItem>>> property,
-                                                       Action<IValueTypeCollectionMappingHelper<TCollectionItem, TNestedCollectionItem>> mapping)
-      where TNestedCollectionItem : struct
+    public void ValueCollection<TNested>(Expression<Func<TItem, ICollection<TNested>>> property,
+                                         Action<IValueTypeCollectionMappingHelper<TItem, TNested>> mapping)
+      where TNested : struct
     {
-      this.ChildHelper.ValueCollection<TNestedCollectionItem>(property, mapping);
+      this.ChildHelper.ValueCollection<TNested>(property, mapping);
     }
 
     /// <summary>
@@ -253,7 +253,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TClass'>
     ///  The type of the property that the new mappings will match to. 
     /// </typeparam>
-    public void Class<TClass>(Expression<Func<TCollectionItem, TClass>> property,
+    public void Class<TClass>(Expression<Func<TItem, TClass>> property,
                               Action<IClassMappingHelper<TClass>> mapping)
       where TClass : class
     {
@@ -273,10 +273,10 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <typeparam name='TIdentity'>
     /// The identity-type for the current instance.
     /// </typeparam>
-    public IEntityMappingHelper<TCollectionItem, TEntity, TIdentity> Entity<TEntity, TIdentity>(Expression<Func<TCollectionItem, IEntity<TEntity, TIdentity>>> property)
+    public IEntityMappingHelper<TItem, TEntity, TIdentity> Entity<TEntity, TIdentity>(Expression<Func<TItem, IEntity<TEntity, TIdentity>>> property)
       where TEntity : IEntity
     {
-      return this.ChildHelper.Entity<TEntity,TIdentity>(property);
+      return this.ChildHelper.Entity<TEntity, TIdentity>(property);
     }
 
     #endregion
@@ -289,10 +289,10 @@ namespace CSF.Collections.Serialization.MappingHelpers
     /// <param name='mapping'>
     /// Mapping.
     /// </param>
-    public ReferenceTypeCollectionMappingHelper(IReferenceTypeCollectionMapping<TCollectionItem> mapping) : base(mapping)
+    public ReferenceTypeCollectionMappingHelper(IReferenceTypeCollectionMapping<TItem> mapping) : base(mapping)
     {
-      mapping.MapAs = new ClassMapping<TCollectionItem>(mapping, null);
-      this.ChildHelper = new ClassMappingHelper<TCollectionItem>(mapping.MapAs);
+      mapping.MapAs = new ClassMapping<TItem>(mapping, null);
+      this.ChildHelper = new ClassMappingHelper<TItem>(mapping.MapAs);
     }
 
     #endregion

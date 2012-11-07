@@ -25,15 +25,15 @@ using System.Reflection;
 namespace CSF.Collections.Serialization.MappingModel
 {
   /// <summary>
-  /// Implementation of a composite property mapping.
+  /// Implementation of a composite mapping.
   /// </summary>
   /// <remarks>
   /// <para>
-  /// In a composite property mapping, the property value is created from values found within multiple keys.  Each of
-  /// these keys used is called a 'component'.
+  /// In a composite property mapping, the actual object/value being mapped is created from values found within
+  /// multiple keys.  Each of these pieces used is called a 'component'.
   /// </para>
   /// </remarks>
-  public class CompositePropertyMapping<TValue> : MappingBase, ICompositeMapping<TValue>
+  public class CompositeMapping<TValue> : MappingBase<TValue>, ICompositeMapping<TValue>
   {
     #region fields
 
@@ -41,7 +41,7 @@ namespace CSF.Collections.Serialization.MappingModel
 
     #endregion
 
-    #region ICompositeMapping implementation
+    #region properties
 
     /// <summary>
     /// Gets or sets the function used to deserialize the property value from a dictionary of string values, indexed by
@@ -77,6 +77,10 @@ namespace CSF.Collections.Serialization.MappingModel
       }
     }
 
+    #endregion
+
+    #region methods
+
     /// <summary>
     ///  Deserialize the specified data as an object instance. 
     /// </summary>
@@ -93,15 +97,17 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <param name='collectionIndices'>
     ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
     /// </param>
-    public virtual bool Deserialize(IDictionary<string, string> data,
-                                    out TValue result,
-                                    params int[] collectionIndices)
+    public override bool Deserialize(IDictionary<string, string> data,
+                                     out TValue result,
+                                     params int[] collectionIndices)
     {
       bool output = false;
 
       result = default(TValue);
 
-      if(this.MayDeserialize(data))
+      this.Validate();
+
+      if(this.SatisfiesFlag(data))
       {
         IDictionary<object, string> values = new Dictionary<object, string>();
 
@@ -134,55 +140,58 @@ namespace CSF.Collections.Serialization.MappingModel
     }
 
     /// <summary>
-    ///  Deserialize the specified data as an object instance. 
+    ///  Serialize the specified data, exposing the serialized results as an output parameter. 
     /// </summary>
+    /// <param name='data'>
+    ///  The object graph to serialize, the root of which should be an object instance that corresponds to the current
+    /// mapping. 
+    /// </param>
+    /// <param name='result'>
+    ///  The dictionary of string values containing the serialized data that is created from the current mapping
+    /// instance. 
+    /// </param>
+    /// <param name='collectionIndices'>
+    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the
+    /// serialization process. 
+    /// </param>
     /// <returns>
-    ///  A value that indicates whether deserialization was successful or not. 
+    ///  A value that indicates whether or not the serialization was successful. 
     /// </returns>
-    /// <param name='data'>
-    ///  The dictionary/collection of string data to deserialize from. 
-    /// </param>
-    /// <param name='result'>
-    ///  The output/deserialized object instance. If the return value is false (unsuccessful deserialization) then the
-    /// output value of this parameter is undefined. 
-    /// </param>
-    /// <param name='collectionIndices'>
-    ///  A collection of integers, indicating the indices of any collection mappings passed-through during the 
-    /// </param>
-    public override bool Deserialize(IDictionary<string, string> data, out object result, params int[] collectionIndices)
+    public override bool Serialize(TValue data, out IDictionary<string,string> result, int[] collectionIndices)
     {
-      TValue tempResult;
-      bool output = this.Deserialize(data, out tempResult, collectionIndices);
-      result = tempResult;
-      return output;
-    }
-
-    /// <summary>
-    /// Serialize the specified data, exposing the result as an output parameter.
-    /// </summary>
-    /// <param name='data'>
-    /// The object (or object graph) to serialize.
-    /// </param>
-    /// <param name='result'>
-    /// The dictionary of string values to contain the serialized data.
-    /// </param>
-    /// <param name='collectionIndices'>
-    /// A collection of integers, indicating the indices of any collection mappings passed-through during the
-    /// </param>
-    /// <typeparam name='TInput'>
-    /// The type of data to serialize.
-    /// </typeparam>
-    public override void Serialize(object data, ref IDictionary<string,string> result, int[] collectionIndices)
-    {
-      if(result == null)
-      {
-        throw new ArgumentNullException("result");
-      }
+      bool output = true;
+      result = new Dictionary<string, string>();
 
       foreach(ICompositeComponentMapping<TValue> component in this.Components.Values)
       {
-        result.Add(component.GetKeyName(collectionIndices), component.SerializationFunction((TValue) data));
+        string serialized = null;
+
+        try
+        {
+          serialized = component.SerializationFunction(data);
+          if(serialized == null)
+          {
+            output = false;
+          }
+        }
+        catch(Exception) { output = false; }
+
+        if(output)
+        {
+          result.Add(this.GetKeyName(component.ComponentIdentifier, collectionIndices), serialized);
+        }
+        else
+        {
+          break;
+        }
       }
+
+      if(!output)
+      {
+        result = null;
+      }
+
+      return output;
     }
 
     /// <summary>
@@ -207,6 +216,16 @@ namespace CSF.Collections.Serialization.MappingModel
       return this.Components[componentIdentifier].GetKeyName(collectionIndices);
     }
 
+    /// <summary>
+    /// Validates this mapping instance. 
+    /// </summary>
+    public override void Validate ()
+    {
+      base.Validate ();
+
+      // There is more to do here!
+    }
+
     #endregion
 
     #region constructor
@@ -220,7 +239,7 @@ namespace CSF.Collections.Serialization.MappingModel
     /// <param name='property'>
     /// Property.
     /// </param>
-    public CompositePropertyMapping(IMapping parentMapping, PropertyInfo property) : base(parentMapping, property)
+    public CompositeMapping(IMapping parentMapping, PropertyInfo property) : base(parentMapping, property, false)
     {
       this.DeserializationFunction = null;
       this.Components = new Dictionary<object, ICompositeComponentMapping<TValue>>();

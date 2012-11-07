@@ -144,9 +144,6 @@
     <Compile Include="Patterns\ServiceLayer\LocalRequestDispatcher.cs" />
     <Compile Include="Collections\NameValueCollectionExtensions.cs" />
     <Compile Include="Web\HttpRequestExtensions.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\ICompositeComponentMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\ICompositeMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\IClassMapping.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\IClassMappingHelper`1.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\ICompositeComponentMappingHelper`2.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\ICompositeMappingHelper`2.cs" />
@@ -156,20 +153,12 @@
     <Compile Include="Collections\Serialization\MappingHelpers\IValueTypeCollectionMappingHelper`2.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\IReferenceTypeCollectionMappingHelper`2.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\ICollectionMappingHelper.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\IValueTypeCollectionMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\IReferenceTypeCollectionMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\IMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\ClassMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\SimplePropertyMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\IKeyNamingPolicy.cs" />
     <Compile Include="Collections\Serialization\MappingModel\ICollectionMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\MappingBase.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\CompositePropertyMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\IEndpointMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\CompositePropertyComponentMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\ReferenceTypeCollectionMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\CollectionKeyType.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\ValueTypeCollectionMapping.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\ClassMappingHelper.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\SimpleMappingHelper.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\CompositeMappingHelper.cs" />
@@ -179,12 +168,10 @@
     <Compile Include="Collections\Serialization\MappingHelpers\CollectionMappingHelper.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\EntityMappingHelper.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\MappingHelper`1.cs" />
-    <Compile Include="Collections\Serialization\MappingHelpers\MappingHelper.cs" />
     <Compile Include="Collections\Serialization\MappingModel\InvalidMappingException.cs" />
     <Compile Include="Collections\Serialization\MappingModel\MandatorySerializationException.cs" />
     <Compile Include="Collections\Serialization\MappingModel\DefaultKeyNamingPolicy.cs" />
     <Compile Include="Collections\Serialization\MappingModel\ISimpleMapping`1.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\ISimpleMapping.cs" />
     <Compile Include="Collections\Serialization\IKeyValueSerializer.cs" />
     <Compile Include="Collections\Serialization\IClassKeyValueSerializer`1.cs" />
     <Compile Include="Collections\Serialization\ICollectionKeyValueSerializer.cs" />
@@ -194,6 +181,18 @@
     <Compile Include="Collections\Serialization\CollectionKeyValueSerializer.cs" />
     <Compile Include="Collections\Serialization\ValueTypeCollectionKeyValueSerializer.cs" />
     <Compile Include="NullSafe.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ClassMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\CollectionMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\CompositeMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\CompositeComponentMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\IClassMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ICompositeComponentMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ICompositeMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\IReferenceTypeCollectionMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\IValueTypeCollectionMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ReferenceTypeCollectionMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\SimpleMapping`1.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\ValueTypeCollectionMapping`1.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -45,7 +45,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public ICompositeMappingHelper<TObject,TValue> NamingPolicy<TPolicy>()
       where TPolicy : IKeyNamingPolicy
     {
-      this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping);
+      this.Mapping.AttachKeyNamingPolicy<TPolicy>();
       return this;
     }
 
@@ -64,7 +64,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public ICompositeMappingHelper<TObject,TValue> NamingPolicy<TPolicy>(Func<IMapping,TPolicy> factoryMethod)
       where TPolicy : IKeyNamingPolicy
     {
-      this.Mapping.KeyNamingPolicy = MappingHelper.CreateNamingPolicy<TPolicy>(this.Mapping, factoryMethod);
+      this.Mapping.AttachKeyNamingPolicy<TPolicy>(factoryMethod);
       return this;
     }
 
@@ -83,7 +83,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     {
       if(!this.Mapping.Components.ContainsKey(identifier))
       {
-        this.Mapping.Components[identifier] = new CompositePropertyComponentMapping<TValue>(this.Mapping, identifier);
+        this.Mapping.Components[identifier] = new CompositeComponentMapping<TValue>(this.Mapping, identifier);
       }
 
       ICompositeComponentMappingHelper<TObject,TValue> helper;
