@@ -192,59 +192,102 @@ namespace CSF.Collections.Serialization.MappingModel
         Array.Copy(collectionIndices, 0, indices, 0, collectionIndices.Length);
       }
 
-      switch(this.CollectionKeyType)
+      if(data != null)
       {
-      case CollectionKeyType.Separate:
-        for(int currentIndex = 0; currentIndex < data.Count; currentIndex++)
+        switch(this.CollectionKeyType)
         {
-          IDictionary<string,string> thisItem;
-
-          indices[indices.Length - 1] = currentIndex;
-          bool thisSuccess = this.BaseMapAs.Serialize(data.Skip(currentIndex).Take(1).First(),
-                                                      out thisItem,
-                                                      indices);
-
-          if(thisSuccess)
+        case CollectionKeyType.Separate:
+          for(int currentIndex = 0; currentIndex < data.Count; currentIndex++)
           {
-            foreach(string serializationKey in thisItem.Keys)
+            IDictionary<string,string> thisItem;
+            bool thisSuccess;
+
+            indices[indices.Length - 1] = currentIndex;
+            try
             {
-              result.Add(serializationKey, thisItem[serializationKey]);
+              thisSuccess = this.BaseMapAs.Serialize(data.Skip(currentIndex).Take(1).First(), out thisItem, indices);
             }
+            catch(MandatorySerializationException)
+            {
+              output = false;
+              break;
+            }
+
+            if(thisSuccess)
+            {
+              foreach(string serializationKey in thisItem.Keys)
+              {
+                result.Add(serializationKey, thisItem[serializationKey]);
+              }
+              output = true;
+            }
+          }
+          break;
+
+        case CollectionKeyType.Aggregate:
+          if(indices.Length != 1)
+          {
+            throw new InvalidOperationException("When collection type is aggregate (comma-separated) then only one " +
+                                                "collection is permitted in the serialization hierarchy.");
+          }
+
+          string key = this.KeyNamingPolicy.GetKeyName(null);
+          string aggregate = String.Empty;
+          bool mandatoryFail = false;
+          ISimpleMapping<TItem> mapAs = (ISimpleMapping<TItem>) this.GetAggregateMapAs();
+
+          for(int currentIndex = 0; currentIndex < data.Count; currentIndex++)
+          {
+            string value;
+
+            try
+            {
+              value = mapAs.SerializationFunction(data.Skip(currentIndex).Take(1).First());
+            }
+            catch(Exception)
+            {
+              if(mapAs.Mandatory)
+              {
+                mandatoryFail = true;
+              }
+              continue;
+            }
+
+            if(value == null)
+            {
+              if(mapAs.Mandatory)
+              {
+                mandatoryFail = true;
+              }
+              continue;
+            }
+            else
+            {
+              string separator = !String.IsNullOrEmpty(aggregate)? "," : String.Empty;
+              aggregate = String.Concat(aggregate, separator, value);
+            }
+          }
+
+          if(!mandatoryFail)
+          {
+            result.Add(key, aggregate);
             output = true;
           }
+
+          break;
+
+        default:
+          throw new InvalidOperationException("Unsupported collection-key type.");
         }
-        break;
-
-      case CollectionKeyType.Aggregate:
-        if(indices.Length != 1)
-        {
-          throw new InvalidOperationException("When collection type is aggregate (comma-separated) then only one " +
-                                              "collection is permitted in the serialization hierarchy.");
-        }
-
-        string key = this.KeyNamingPolicy.GetKeyName(null);
-        string aggregate = String.Empty;
-        ISimpleMapping<TItem> mapAs = (ISimpleMapping<TItem>) this.GetAggregateMapAs();
-
-        for(int currentIndex = 0; currentIndex < data.Count; currentIndex++)
-        {
-          string value = mapAs.SerializationFunction(data.Skip(currentIndex).Take(1).First());
-          string separator = (currentIndex > 0)? "," : String.Empty;
-          aggregate = String.Concat(aggregate, separator, value);
-        }
-
-        result.Add(key, aggregate);
-        output = true;
-
-        break;
-
-      default:
-        throw new InvalidOperationException("Unsupported collection-key type.");
       }
 
       if(!output)
       {
         result = null;
+      }
+      else
+      {
+        this.WriteFlag(result);
       }
 
       return output;
@@ -306,6 +349,11 @@ namespace CSF.Collections.Serialization.MappingModel
               success = this.BaseMapAs.Deserialize(data, out tempResult, indices);
             }
             catch(InvalidMappingException) { throw; }
+            catch(MandatorySerializationException)
+            {
+              output = false;
+              break;
+            }
             catch(Exception) {}
 
             if(success)
@@ -334,11 +382,17 @@ namespace CSF.Collections.Serialization.MappingModel
               tempData.Clear();
               tempData.Add(key, value);
               tempResult = null;
+              success = false;
               try
               {
                 success = this.BaseMapAs.Deserialize(tempData, out tempResult, null);
               }
               catch(InvalidMappingException) { throw; }
+              catch(MandatorySerializationException)
+              {
+                output = false;
+                break;
+              }
               catch(Exception) {}
 
               if(success)
@@ -359,6 +413,10 @@ namespace CSF.Collections.Serialization.MappingModel
       if(!output && this.Mandatory)
       {
         throw new MandatorySerializationException(this);
+      }
+      else if(!output)
+      {
+        result = null;
       }
 
       return output;

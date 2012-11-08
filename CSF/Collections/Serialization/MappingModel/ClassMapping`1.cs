@@ -314,7 +314,11 @@ namespace CSF.Collections.Serialization.MappingModel
       result = new Dictionary<string, string>();
       bool output;
 
-      if(this.MapAs != null)
+      if(data == null)
+      {
+        output = false;
+      }
+      else if(this.MapAs != null)
       {
         output = this.MapAs.Serialize(data, out result, collectionIndices);
       }
@@ -325,20 +329,26 @@ namespace CSF.Collections.Serialization.MappingModel
         foreach(IMapping mapping in this.Mappings)
         {
           object propertyValue = mapping.Property.GetValue(data, null);
+          IDictionary<string,string> propertySerialization;
+          bool propertySuccess;
 
-          if(propertyValue != null)
+          try
           {
-            IDictionary<string,string> propertySerialization;
-            bool propertySuccess = mapping.Serialize(propertyValue, out propertySerialization, collectionIndices);
+            propertySuccess = mapping.Serialize(propertyValue, out propertySerialization, collectionIndices);
+          }
+          catch(MandatorySerializationException)
+          {
+            output = false;
+            break;
+          }
 
-            if(propertySuccess)
+          if(propertySuccess)
+          {
+            foreach(string key in propertySerialization.Keys)
             {
-              foreach(string key in propertySerialization.Keys)
-              {
-                result.Add(key, propertySerialization[key]);
-              }
-              output = true;
+              result.Add(key, propertySerialization[key]);
             }
+            output = true;
           }
         }
       }
@@ -346,6 +356,10 @@ namespace CSF.Collections.Serialization.MappingModel
       if(!output)
       {
         result = null;
+      }
+      else
+      {
+        this.WriteFlag(result);
       }
 
       return output;

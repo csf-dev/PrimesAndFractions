@@ -156,6 +156,11 @@ namespace CSF.Collections.Serialization.MappingModel
       result = null;
       string serialized = null;
 
+      if(this.SerializationFunction == null)
+      {
+        throw new InvalidOperationException("Cannot deserialize - this simple mapping does not provide a serialization function.");
+      }
+
       try
       {
         serialized = this.SerializationFunction(data);
@@ -170,6 +175,11 @@ namespace CSF.Collections.Serialization.MappingModel
       {
         result = new Dictionary<string, string>();
         result.Add(this.GetKeyName(collectionIndices), serialized);
+        this.WriteFlag(result);
+      }
+      else if(this.Mandatory)
+      {
+        throw new MandatorySerializationException(this);
       }
 
       return output;

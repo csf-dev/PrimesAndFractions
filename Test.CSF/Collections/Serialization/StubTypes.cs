@@ -12,6 +12,8 @@ namespace Test.CSF.Collections.Serialization
     public DateTime TestDateTime { get; set; }
 
     public int TestInteger { get; set; }
+
+    public string TestPropertyTwo { get; set; }
   }
 
   public class Bar

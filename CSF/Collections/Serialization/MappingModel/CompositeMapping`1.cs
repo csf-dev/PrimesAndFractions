@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
 namespace CSF.Collections.Serialization.MappingModel
 {
@@ -162,6 +163,8 @@ namespace CSF.Collections.Serialization.MappingModel
       bool output = true;
       result = new Dictionary<string, string>();
 
+      this.Validate();
+
       foreach(ICompositeComponentMapping<TValue> component in this.Components.Values)
       {
         string serialized = null;
@@ -190,6 +193,10 @@ namespace CSF.Collections.Serialization.MappingModel
       {
         result = null;
       }
+      else
+      {
+        this.WriteFlag(result);
+      }
 
       return output;
     }
@@ -210,7 +217,8 @@ namespace CSF.Collections.Serialization.MappingModel
     {
       if(!this.Components.ContainsKey(componentIdentifier))
       {
-        throw new ArgumentException("This composite mapping does not contain the specified component.");
+        throw new ArgumentException("This composite mapping does not contain the specified component.",
+                                    "componentIdentifier");
       }
 
       return this.Components[componentIdentifier].GetKeyName(collectionIndices);
@@ -222,6 +230,18 @@ namespace CSF.Collections.Serialization.MappingModel
     public override void Validate ()
     {
       base.Validate ();
+
+      if(this.Components.Count == 0)
+      {
+        throw new InvalidMappingException("A composite mapping must contain at least one component to be valid.");
+      }
+      else if(this.DeserializationFunction == null
+              && this.Components.Values.Any(x => x.SerializationFunction == null))
+      {
+        throw new InvalidMappingException("This composite mapping is 'useless'.  It must either expose a " +
+                                          "deserialization function or all of its components must expose " +
+                                          "serialization functions.");
+      }
 
       // There is more to do here!
     }

@@ -91,7 +91,6 @@
     <Compile Include="Patterns\ServiceLayer\TestLocalRequestDispatcher.cs" />
     <Compile Include="Collections\TestNameValueCollectionExtensions.cs" />
     <Compile Include="Collections\Serialization\MappingModel\TestClassMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\TestSimplePropertyMapping.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\TestClassMappingHelper.cs" />
     <Compile Include="Collections\Serialization\StubTypes.cs" />
     <Compile Include="Collections\Serialization\MappingHelpers\TestCompositeMappingHelper.cs" />
@@ -105,6 +104,7 @@
     <Compile Include="Collections\Serialization\MappingModel\TestCollectionMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\TestCompositeComponentMapping.cs" />
     <Compile Include="Collections\Serialization\MappingModel\TestCompositeMapping.cs" />
+    <Compile Include="Collections\Serialization\MappingModel\TestSimpleMapping.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
