@@ -20,7 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 
-namespace CSF.Serialization
+namespace CSF.Patterns.SerializedLob
 {
   /// <summary>
   /// Abstract base class implementing <see cref="ISerializationService"/> and providing some of the framework for

@@ -26,7 +26,7 @@ using System.Text;
 using System.Xml.Serialization;
 using CSF.Reflection;
 
-namespace CSF.Serialization
+namespace CSF.Patterns.SerializedLob
 {
   /// <summary>
   /// An implementation of <see cref="ISerializationContainer"/> for XML-serialized data.

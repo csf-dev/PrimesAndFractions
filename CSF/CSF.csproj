@@ -116,10 +116,6 @@
     <Compile Include="Collections\IEventBoundList`T.cs" />
     <Compile Include="Collections\EventBoundListWrapper`T.cs" />
     <Compile Include="Collections\IListExtensions.cs" />
-    <Compile Include="Serialization\ISerializationService.cs" />
-    <Compile Include="Serialization\SerializationService.cs" />
-    <Compile Include="Serialization\ISerializationContainer.cs" />
-    <Compile Include="Serialization\XmlSerializationContainer.cs" />
     <Compile Include="DictionaryEqualityComparer.cs" />
     <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="Entities\IIdentity`1.cs" />
@@ -193,6 +189,10 @@
     <Compile Include="Collections\Serialization\MappingModel\SimpleMapping`1.cs" />
     <Compile Include="Collections\Serialization\MappingModel\ValueTypeCollectionMapping`1.cs" />
     <Compile Include="Reflection\Reflect.cs" />
+    <Compile Include="Patterns\SerializedLob\ISerializationContainer.cs" />
+    <Compile Include="Patterns\SerializedLob\ISerializationService.cs" />
+    <Compile Include="Patterns\SerializedLob\SerializationService.cs" />
+    <Compile Include="Patterns\SerializedLob\XmlSerializationContainer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -206,12 +206,12 @@
     <Folder Include="Patterns\IoC\" />
     <Folder Include="Configuration\" />
     <Folder Include="Web\" />
-    <Folder Include="Serialization\" />
     <Folder Include="Globalization\" />
     <Folder Include="Patterns\ServiceLayer\" />
     <Folder Include="Collections\Serialization\" />
     <Folder Include="Collections\Serialization\MappingModel\" />
     <Folder Include="Collections\Serialization\MappingHelpers\" />
+    <Folder Include="Patterns\SerializedLob\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

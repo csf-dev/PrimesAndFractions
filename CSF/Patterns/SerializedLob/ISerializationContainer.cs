@@ -20,7 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 
-namespace CSF.Serialization
+namespace CSF.Patterns.SerializedLob
 {
   /// <summary>
   /// Interface represents a container for data that can be serialized into string form.

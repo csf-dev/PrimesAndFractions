@@ -20,7 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 
-namespace CSF.Serialization
+namespace CSF.Patterns.SerializedLob
 {
   /// <summary>
   /// Interface for a service that is capable of serializing and persisting objects in a non-relational manner.
