@@ -61,6 +61,14 @@ namespace Test.CSF.Patterns.ServiceLayer
       this.MockDispatcher
         .Verify(x => x.Register(typeof(MockRequestTwo), It.IsAny<MockRequestHandlerTwo>()),
                 Times.Once());
+
+      this.MockDispatcher
+        .Verify(x => x.Register(typeof(MockRequestThree), It.IsAny<MockAbstractRequestHandler>()),
+                Times.Never());
+
+      this.MockDispatcher
+        .Verify(x => x.Register(It.IsAny<Type>(), It.IsAny<IRequestHandler>()),
+                Times.Exactly(2));
     }
 
     #endregion

@@ -10,7 +10,7 @@
     <RootNamespace>CSF</RootNamespace>
     <AssemblyName>CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>1.1.0</ReleaseVersion>
+    <ReleaseVersion>2.0.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -56,11 +56,8 @@
     <Compile Include="IO\IIniSection.cs" />
     <Compile Include="IO\IniDocument.cs" />
     <Compile Include="IO\IniSection.cs" />
-    <Compile Include="Collections\IKeyValueSerializer.cs" />
     <Compile Include="ICalculator.cs" />
     <Compile Include="SimpleCalculator.cs" />
-    <Compile Include="Collections\KeyValueSerializer.cs" />
-    <Compile Include="Reflection\StaticReflectionUtility.cs" />
     <Compile Include="Validation\IValidator.cs" />
     <Compile Include="Validation\Validator.cs" />
     <Compile Include="Validation\ValidationFunction.cs" />
@@ -99,12 +96,8 @@
     <Compile Include="Patterns\IoC\IRegisteredService.cs" />
     <Compile Include="Entities\EntityReader.cs" />
     <Compile Include="Entities\Identity.cs" />
-    <Compile Include="Entities\Identity`T.cs" />
     <Compile Include="Entities\IEntity.cs" />
-    <Compile Include="Entities\IEntity`T.cs" />
     <Compile Include="Entities\IIdentity.cs" />
-    <Compile Include="Entities\IIdentity`T.cs" />
-    <Compile Include="Entities\Entity`T.cs" />
     <Compile Include="ISessionStorage.cs" />
     <Compile Include="AspNetSessionStorage.cs" />
     <Compile Include="MemorySessionStorage.cs" />
@@ -123,17 +116,13 @@
     <Compile Include="Collections\IEventBoundList`T.cs" />
     <Compile Include="Collections\EventBoundListWrapper`T.cs" />
     <Compile Include="Collections\IListExtensions.cs" />
-    <Compile Include="Serialization\ISerializationService.cs" />
-    <Compile Include="Serialization\SerializationService.cs" />
-    <Compile Include="Serialization\ISerializationContainer.cs" />
-    <Compile Include="Serialization\XmlSerializationContainer.cs" />
     <Compile Include="DictionaryEqualityComparer.cs" />
-    <Compile Include="Entities\IIdentityUnwrappingService.cs" />
-    <Compile Include="Entities\IIdentityExtensions.cs" />
     <Compile Include="DateTimeExtensions.cs" />
-    <Compile Include="Collections\IPropertyKeyMapping.cs" />
-    <Compile Include="Collections\SimplePropertyKeyMapping.cs" />
-    <Compile Include="Collections\CustomPropertyKeyMapping.cs" />
+    <Compile Include="Entities\IIdentity`1.cs" />
+    <Compile Include="Entities\IIdentity`2.cs" />
+    <Compile Include="Entities\Identity`2.cs" />
+    <Compile Include="Entities\IEntity`2.cs" />
+    <Compile Include="Entities\Entity`2.cs" />
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
@@ -148,6 +137,14 @@
     <Compile Include="Patterns\ServiceLayer\RequestDispatchException.cs" />
     <Compile Include="Patterns\ServiceLayer\RequestDispatcherBase.cs" />
     <Compile Include="Patterns\ServiceLayer\LocalRequestDispatcher.cs" />
+    <Compile Include="Collections\NameValueCollectionExtensions.cs" />
+    <Compile Include="Web\HttpRequestExtensions.cs" />
+    <Compile Include="NullSafe.cs" />
+    <Compile Include="Reflection\Reflect.cs" />
+    <Compile Include="Patterns\SerializedLob\ISerializationContainer.cs" />
+    <Compile Include="Patterns\SerializedLob\ISerializationService.cs" />
+    <Compile Include="Patterns\SerializedLob\SerializationService.cs" />
+    <Compile Include="Patterns\SerializedLob\XmlSerializationContainer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -161,9 +158,9 @@
     <Folder Include="Patterns\IoC\" />
     <Folder Include="Configuration\" />
     <Folder Include="Web\" />
-    <Folder Include="Serialization\" />
     <Folder Include="Globalization\" />
     <Folder Include="Patterns\ServiceLayer\" />
+    <Folder Include="Patterns\SerializedLob\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

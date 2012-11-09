@@ -15,7 +15,7 @@ namespace CSF.Data.NHibernate
     /// <remarks>
     /// The rationale for this method is that - when running on the Mono framework instead of the .NET framework - we
     /// will generally prefer to use Mono's builtin driver for SQLite, instead of using a locally-installed SQLite
-    /// driver.  This method will use <see cref="StaticReflectionUtility.IsUsingMonoFramework"/> and, if we are on Mono,
+    /// driver.  This method will use <see cref="Reflect.IsMono"/> and, if we are on Mono,
     /// substitute the default driver that NHibernate would select with Mono's builtin.  If we are not running on Mono
     /// then this method does nothing.
     /// </remarks>
@@ -32,7 +32,7 @@ namespace CSF.Data.NHibernate
         throw new ArgumentNullException("config");
       }
 
-      return StaticReflectionUtility.IsUsingMonoFramework()? config.Driver<MonoNHibernateSqlLiteDriver>() : config;
+      return Reflect.IsMono()? config.Driver<MonoNHibernateSqlLiteDriver>() : config;
     }
   }
 }

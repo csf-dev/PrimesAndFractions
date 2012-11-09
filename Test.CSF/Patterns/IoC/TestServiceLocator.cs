@@ -19,7 +19,9 @@ namespace Test.CSF.Patterns.IoC
     [Category("Integration")]
     public void TestUsage()
     {
-      ServiceLocator.Select<IMockService>(() => { return new MockServiceOne(); });
+      ServiceLocator.Select(x => {
+        x.Select<IMockService>(() => new MockServiceOne());
+      });
       
       IMockService service = ServiceLocator.Get<IMockService>();
       
@@ -30,8 +32,10 @@ namespace Test.CSF.Patterns.IoC
       
       Assert.AreSame(service, secondService, "Same cached instance returned");
       
-      ServiceLocator.Select<IMockService>(() => {return new MockServiceTwo(); });
-      
+      ServiceLocator.Select(x => {
+        x.Select<IMockService>(() => new MockServiceTwo());
+      });
+
       service = ServiceLocator.Get<IMockService>();
       
       Assert.AreNotSame(service, secondService, "Services are no longer the same");
@@ -44,9 +48,11 @@ namespace Test.CSF.Patterns.IoC
     [Category("Integration")]
     public void TestDisposedAfterReplacement()
     {
-      ServiceLocator.Select<IMockService>(() => {
-        this.CachedService = new MockServiceOne();
-        return this.CachedService;
+      ServiceLocator.Select(x => {
+        x.Select<IMockService>(() => {
+          this.CachedService = new MockServiceOne();
+          return this.CachedService;
+        });
       });
 
       IMockService service = ServiceLocator.Get<IMockService>();
@@ -54,7 +60,10 @@ namespace Test.CSF.Patterns.IoC
       Assert.AreEqual(this.CachedService, service, "Returns cached service");
       Assert.IsFalse(this.CachedService.IsDisposed, "Not disposed yet");
 
-      ServiceLocator.Select<IMockService>(() => new MockServiceTwo());
+      ServiceLocator.Select(x => {
+        x.Select<IMockService>(() => new MockServiceTwo());
+      });
+
       service = ServiceLocator.Get<IMockService>();
 
       Assert.AreNotEqual(this.CachedService, service, "Service replaced correctly");

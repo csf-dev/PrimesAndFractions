@@ -49,7 +49,7 @@ namespace CSF.Cli
     /// </param>
     protected bool Contains(Expression<Func<TParameterContainer, object>> identifier)
     {
-      return this.Contains(StaticReflectionUtility.GetMember<TParameterContainer>(identifier));
+      return this.Contains(Reflect.Member<TParameterContainer>(identifier));
     }
     
     /// <summary>
@@ -60,7 +60,7 @@ namespace CSF.Cli
     /// </param>
     protected IParameter Get(Expression<Func<TParameterContainer, object>> identifier)
     {
-      return this.Get(StaticReflectionUtility.GetMember<TParameterContainer>(identifier));
+      return this.Get(Reflect.Member<TParameterContainer>(identifier));
     }
     
     /// <summary>
@@ -74,7 +74,7 @@ namespace CSF.Cli
     /// </typeparam>
     protected IParameter<TParameterValue> Get<TParameterValue>(Expression<Func<TParameterContainer, object>> identifier)
     {
-      return this.Get<TParameterValue>(StaticReflectionUtility.GetMember<TParameterContainer>(identifier));
+      return this.Get<TParameterValue>(Reflect.Member<TParameterContainer>(identifier));
     }
     
     #endregion

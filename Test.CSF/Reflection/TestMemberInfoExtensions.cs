@@ -22,7 +22,7 @@ namespace Test.CSF.Reflection
       Assert.IsNotNull(attrib, "Attribute is not null");
       Assert.AreEqual(23, attrib.Value, "Attribute value is correct");
       
-      member = StaticReflectionUtility.GetMember<FooClass>(x => x.Bar);
+      member = Reflect.Member<FooClass>(x => x.Bar);
       attrib = member.GetAttribute<SampleAttribute>();
       Assert.IsNotNull(attrib, "Attribute is not null (property)");
       Assert.AreEqual(3, attrib.Value, "Attribute value is correct (property)");
@@ -50,7 +50,7 @@ namespace Test.CSF.Reflection
       IList<SampleAttribute> attrib;
       MemberInfo member;
       
-      member = StaticReflectionUtility.GetMember<FooClass>(x => x.Baz);
+      member = Reflect.Member<FooClass>(x => x.Baz);
       attrib = member.GetAttributes<SampleAttribute>();
       Assert.IsNotNull(attrib, "Attributes collection is not null");
       Assert.AreEqual(2, attrib.Count, "Attributes collection has correct count");
@@ -81,7 +81,7 @@ namespace Test.CSF.Reflection
     public void TestHasAttribute()
     {
       Assert.IsTrue(typeof(FooClass).HasAttribute<SampleAttribute>(), "FooClass has the attribute");
-      Assert.IsTrue(StaticReflectionUtility.GetMember<FooClass>(x => x.Baz).HasAttribute<SampleAttribute>(),
+      Assert.IsTrue(Reflect.Member<FooClass>(x => x.Baz).HasAttribute<SampleAttribute>(),
                     "Member 'Baz' has the sample attribute");
       Assert.IsFalse(typeof(FooEnum).HasAttribute<SampleAttribute>(), "FooEnum does not have the attribute");
     }

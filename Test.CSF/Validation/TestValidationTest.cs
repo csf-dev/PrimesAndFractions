@@ -33,7 +33,7 @@ namespace Test.CSF.Validation
     {
       ValidationTest<SampleObject, string> test;
       test = new ValidationTest<SampleObject, string>(x => x == "foo",
-                                                      StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyOne),
+                                                      Reflect.Member<SampleObject>(x => x.PropertyOne),
                                                       null);
       
       SampleObject target = new SampleObject() {
@@ -52,7 +52,7 @@ namespace Test.CSF.Validation
     {
       ValidationTest<SampleObject, int> test;
       test = new ValidationTest<SampleObject, int>(x => x == 4,
-                                                   StaticReflectionUtility.GetMember<SampleObject>(x => x.FieldTwo),
+                                                   Reflect.Member<SampleObject>(x => x.FieldTwo),
                                                    null);
       
       SampleObject target = new SampleObject() {
