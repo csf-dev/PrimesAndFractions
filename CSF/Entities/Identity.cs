@@ -47,7 +47,8 @@ namespace CSF.Entities
     /// <returns>
     /// An <see cref="IIdentity"/>
     /// </returns>
-    public static IIdentity<TEntity,TIdentifier> Create<TEntity,TIdentifier>(TIdentifier identifier) where TEntity : IEntity
+    public static IIdentity<TEntity,TIdentifier> Create<TEntity,TIdentifier>(TIdentifier identifier)
+      where TEntity : IEntity
     {
       return new Identity<TEntity,TIdentifier>(identifier);
     }
@@ -73,6 +74,62 @@ namespace CSF.Entities
                            .MakeGenericType(entityType, typeof(TIdentifier))
                            .GetConstructor(new Type[] { typeof(TIdentifier) })
                            .Invoke(new object[] { identifier });
+    }
+
+    /// <summary>
+    /// Parse the specified input as an <see cref="IIdentity"/> instance.
+    /// </summary>
+    /// <param name='identifier'>
+    /// The identifier to parse.
+    /// </param>
+    /// <typeparam name='TEntity'>
+    /// The type of entity that the identity instance is to be for.
+    /// </typeparam>
+    /// <typeparam name='TIdentifier'>
+    /// The target type for the identifier.
+    /// </typeparam>
+    public static IIdentity<TEntity,TIdentifier> Parse<TEntity,TIdentifier>(object identifier)
+      where TEntity : IEntity
+    {
+      TIdentifier parsedIdentifier = (TIdentifier) Convert.ChangeType(identifier, typeof(TIdentifier));
+      return Identity.Create<TEntity,TIdentifier>(parsedIdentifier);
+    }
+
+    /// <summary>
+    /// Attempts to parse the specified input as an <see cref="IIdentity"/> instance.
+    /// </summary>
+    /// <returns>
+    /// A value that indicates whether the parsing was successful or not.
+    /// </returns>
+    /// <param name='identifier'>
+    /// The identifier to parse.
+    /// </param>
+    /// <param name='identity'>
+    /// If the output of this method is <c>true</c> then this parameter exposes the parsed identity.  Otherwise, its
+    /// value is undefined.
+    /// </param>
+    /// <typeparam name='TEntity'>
+    /// The type of entity that the identity instance is to be for.
+    /// </typeparam>
+    /// <typeparam name='TIdentifier'>
+    /// The target type for the identifier.
+    /// </typeparam>
+    public static bool TryParse<TEntity,TIdentifier>(object identifier, out IIdentity<TEntity,TIdentifier> identity)
+      where TEntity : IEntity
+    {
+      TIdentifier parsedIdentifier = default(TIdentifier);
+      bool output = false;
+      identity = null;
+
+      try
+      {
+        parsedIdentifier = (TIdentifier) Convert.ChangeType(identifier, typeof(TIdentifier));
+        identity = Identity.Create<TEntity,TIdentifier>(parsedIdentifier);
+        output = true;
+      }
+      catch(Exception) {}
+
+      return output;
     }
 
     #endregion
