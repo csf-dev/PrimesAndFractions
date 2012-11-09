@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utils", "utils", "{AD355647
 		utils\bump-versions = utils\bump-versions
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.KeyValueSerializer", "CSF.KeyValueSerializer\CSF.KeyValueSerializer.csproj", "{794FC584-5189-4971-B07C-937B5B7BA461}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{18466B45-F3E5-46D9-808D-EA2896CC7ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18466B45-F3E5-46D9-808D-EA2896CC7ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18466B45-F3E5-46D9-808D-EA2896CC7ACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{794FC584-5189-4971-B07C-937B5B7BA461}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{794FC584-5189-4971-B07C-937B5B7BA461}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{794FC584-5189-4971-B07C-937B5B7BA461}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{794FC584-5189-4971-B07C-937B5B7BA461}.Release|Any CPU.Build.0 = Release|Any CPU
 		{80484DD4-6FAE-4473-9FF2-E5A68AE7C669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{80484DD4-6FAE-4473-9FF2-E5A68AE7C669}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80484DD4-6FAE-4473-9FF2-E5A68AE7C669}.Release|Any CPU.ActiveCfg = Release|Any CPU

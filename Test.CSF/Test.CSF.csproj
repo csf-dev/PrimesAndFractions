@@ -90,21 +90,21 @@
     <Compile Include="Patterns\ServiceLayer\TestRequestDispatcherBase.cs" />
     <Compile Include="Patterns\ServiceLayer\TestLocalRequestDispatcher.cs" />
     <Compile Include="Collections\TestNameValueCollectionExtensions.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\TestClassMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingHelpers\TestClassMappingHelper.cs" />
-    <Compile Include="Collections\Serialization\StubTypes.cs" />
-    <Compile Include="Collections\Serialization\MappingHelpers\TestCompositeMappingHelper.cs" />
-    <Compile Include="Collections\Serialization\MappingHelpers\TestValueTypeCollectionMappingHelper.cs" />
-    <Compile Include="Collections\Serialization\MappingHelpers\TestReferenceTypeCollectionMappingHelper.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\TestDefaultKeyNamingPolicy.cs" />
-    <Compile Include="Collections\Serialization\TestClassKeyValueSerializer.cs" />
-    <Compile Include="Collections\Serialization\TestValueTypeCollectionKeyValueSerializer.cs" />
     <Compile Include="TestNullSafe.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\TestMappingBase.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\TestCollectionMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\TestCompositeComponentMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\TestCompositeMapping.cs" />
-    <Compile Include="Collections\Serialization\MappingModel\TestSimpleMapping.cs" />
+    <Compile Include="KeyValueSerializer\StubTypes.cs" />
+    <Compile Include="KeyValueSerializer\TestClassKeyValueSerializer.cs" />
+    <Compile Include="KeyValueSerializer\TestValueTypeCollectionKeyValueSerializer.cs" />
+    <Compile Include="KeyValueSerializer\MappingHelpers\TestClassMappingHelper.cs" />
+    <Compile Include="KeyValueSerializer\MappingHelpers\TestCompositeMappingHelper.cs" />
+    <Compile Include="KeyValueSerializer\MappingHelpers\TestValueTypeCollectionMappingHelper.cs" />
+    <Compile Include="KeyValueSerializer\MappingHelpers\TestReferenceTypeCollectionMappingHelper.cs" />
+    <Compile Include="KeyValueSerializer\MappingModel\TestClassMapping.cs" />
+    <Compile Include="KeyValueSerializer\MappingModel\TestDefaultKeyNamingPolicy.cs" />
+    <Compile Include="KeyValueSerializer\MappingModel\TestMappingBase.cs" />
+    <Compile Include="KeyValueSerializer\MappingModel\TestCollectionMapping.cs" />
+    <Compile Include="KeyValueSerializer\MappingModel\TestCompositeComponentMapping.cs" />
+    <Compile Include="KeyValueSerializer\MappingModel\TestCompositeMapping.cs" />
+    <Compile Include="KeyValueSerializer\MappingModel\TestSimpleMapping.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -124,6 +124,10 @@
       <Project>{18466B45-F3E5-46D9-808D-EA2896CC7ACD}</Project>
       <Name>CSF.Data.NHibernate</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CSF.KeyValueSerializer\CSF.KeyValueSerializer.csproj">
+      <Project>{794FC584-5189-4971-B07C-937B5B7BA461}</Project>
+      <Name>CSF.KeyValueSerializer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IO\" />
@@ -140,8 +144,7 @@
     <Folder Include="Globalization\" />
     <Folder Include="Patterns\ServiceLayer\" />
     <Folder Include="Collections\Serialization\" />
-    <Folder Include="Collections\Serialization\MappingModel\" />
-    <Folder Include="Collections\Serialization\MappingHelpers\" />
+    <Folder Include="KeyValueSerializer\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reflection\TestResource.txt">
