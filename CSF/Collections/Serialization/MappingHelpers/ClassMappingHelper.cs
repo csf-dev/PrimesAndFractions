@@ -142,7 +142,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public ISimpleMappingHelper<TObject, TValue> Simple<TValue>(Expression<Func<TObject, TValue>> property)
     {
       ISimpleMapping<TValue> mapping;
-      PropertyInfo prop = StaticReflectionUtility.GetProperty<TObject,TValue>(property);
+      PropertyInfo prop = Reflect.Property<TObject,TValue>(property);
 
       mapping = (ISimpleMapping<TValue>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(mapping == null)
@@ -166,7 +166,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
     public ICompositeMappingHelper<TObject, TValue> Composite<TValue>(Expression<Func<TObject, TValue>> property)
     {
       ICompositeMapping<TValue> mapping;
-      PropertyInfo prop = StaticReflectionUtility.GetProperty<TObject,TValue>(property);
+      PropertyInfo prop = Reflect.Property<TObject,TValue>(property);
 
       mapping = (ICompositeMapping<TValue>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(mapping == null)
@@ -195,7 +195,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
       where TCollectionItem : class
     {
       IReferenceTypeCollectionMapping<TCollectionItem> baseMapping;
-      PropertyInfo prop = StaticReflectionUtility.GetProperty<TObject,ICollection<TCollectionItem>>(property);
+      PropertyInfo prop = Reflect.Property<TObject,ICollection<TCollectionItem>>(property);
 
       baseMapping = (IReferenceTypeCollectionMapping<TCollectionItem>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(baseMapping == null)
@@ -224,7 +224,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
       where TCollectionItem : struct
     {
       IValueTypeCollectionMapping<TCollectionItem> baseMapping;
-      PropertyInfo prop = StaticReflectionUtility.GetProperty<TObject,ICollection<TCollectionItem>>(property);
+      PropertyInfo prop = Reflect.Property<TObject,ICollection<TCollectionItem>>(property);
 
       baseMapping = (IValueTypeCollectionMapping<TCollectionItem>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(baseMapping == null)
@@ -253,7 +253,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
       where TClass : class
     {
       IClassMapping<TClass> baseMapping;
-      PropertyInfo prop = StaticReflectionUtility.GetProperty<TObject,TClass>(property);
+      PropertyInfo prop = Reflect.Property<TObject,TClass>(property);
 
       baseMapping = (IClassMapping<TClass>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(baseMapping == null)
@@ -282,7 +282,7 @@ namespace CSF.Collections.Serialization.MappingHelpers
       where TEntity : IEntity
     {
       ISimpleMapping<TEntity> mapping;
-      PropertyInfo prop = StaticReflectionUtility.GetProperty<TObject,IEntity<TEntity, TIdentity>>(property);
+      PropertyInfo prop = Reflect.Property<TObject,IEntity<TEntity, TIdentity>>(property);
 
       mapping = (ISimpleMapping<TEntity>) this.Mapping.Mappings.Where(x => x.Property == prop).FirstOrDefault();
       if(mapping == null)

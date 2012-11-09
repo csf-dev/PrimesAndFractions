@@ -41,7 +41,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
     {
       var rootMapping = new Mock<IClassMapping<Foo>>();
       var propertyMapping = new Mock<ISimpleMapping<string>>();
-      var prop = StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty);
+      var prop = Reflect.Property<Foo>(x => x.TestProperty);
 
       propertyMapping.Setup(x => x.Property)
         .Returns(prop);
@@ -69,8 +69,8 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       var propertyMapping = new Mock<IMapping>();
       var nestedMapping = new Mock<IMapping>();
 
-      var prop = StaticReflectionUtility.GetProperty<Bar>(x => x.Foo);
-      var nestedProp = StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty);
+      var prop = Reflect.Property<Bar>(x => x.Foo);
+      var nestedProp = Reflect.Property<Foo>(x => x.TestProperty);
 
       rootMapping.Setup(x => x.ToString()).Returns("Root mapping");
       rootMapping.SetupGet(x => x.Property).Returns((PropertyInfo) null);
@@ -102,8 +102,8 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       var collectionMapping = new Mock<IMapping>();
       var nestedMapping = new Mock<IMapping>();
 
-      var collectionProperty = StaticReflectionUtility.GetProperty<Baz>(x => x.TestCollection);
-      var nestedProp = StaticReflectionUtility.GetProperty<Bar>(x => x.BarProperty);
+      var collectionProperty = Reflect.Property<Baz>(x => x.TestCollection);
+      var nestedProp = Reflect.Property<Bar>(x => x.BarProperty);
 
       rootMapping.Setup(x => x.ToString()).Returns("Root mapping");
       rootMapping.SetupGet(x => x.Property).Returns((PropertyInfo) null);
@@ -135,7 +135,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       var collectionMapping = new Mock<IMapping>();
       var nestedMapping = new Mock<IMapping>();
 
-      var nestedProp = StaticReflectionUtility.GetProperty<Bar>(x => x.BarProperty);
+      var nestedProp = Reflect.Property<Bar>(x => x.BarProperty);
 
       collectionMapping.As<ICollectionMapping>().SetupGet(x => x.CollectionKeyType).Returns(CollectionKeyType.Separate);
       collectionMapping.Setup(x => x.ToString()).Returns("Property (collection) mapping");
@@ -164,10 +164,10 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       var collection2Mapping = new Mock<IMapping>();
       var nestedMapping2 = new Mock<IMapping>();
 
-      var collection1Property = StaticReflectionUtility.GetProperty<Baz>(x => x.TestCollection);
-      var nestedProp = StaticReflectionUtility.GetProperty<Bar>(x => x.Baz);
-      var collection2Property = StaticReflectionUtility.GetProperty<Baz>(x => x.TestCollection);
-      var nestedProp2 = StaticReflectionUtility.GetProperty<Bar>(x => x.Baz);
+      var collection1Property = Reflect.Property<Baz>(x => x.TestCollection);
+      var nestedProp = Reflect.Property<Bar>(x => x.Baz);
+      var collection2Property = Reflect.Property<Baz>(x => x.TestCollection);
+      var nestedProp2 = Reflect.Property<Bar>(x => x.Baz);
 
       rootMapping.Setup(x => x.ToString()).Returns("Root mapping");
       rootMapping.SetupGet(x => x.Property).Returns((PropertyInfo) null);

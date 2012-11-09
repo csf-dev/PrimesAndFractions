@@ -93,7 +93,7 @@ The test should fail because the 'Bar' type does not have a parameterless constr
       ClassMapping<Foo> mapping = new ClassMapping<Foo>();
       var child = new Mock<IMapping>();
 
-      child.Setup(x => x.Property).Returns(StaticReflectionUtility.GetProperty<Foo>(f => f.TestInteger));
+      child.Setup(x => x.Property).Returns(Reflect.Property<Foo>(f => f.TestInteger));
 
       mapping.Mappings.Add(child.Object);
       IMapping retrieved = mapping.GetMapping<Foo>(x => x.TestInteger);
@@ -120,13 +120,13 @@ The test should fail because the 'Bar' type does not have a parameterless constr
         .Returns(true);
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childTwo
         .Setup(x => x.Deserialize(It.IsAny<IDictionary<string,string>>(), out outInt, new int[0]))
         .Throws(new MandatorySerializationException(childTwo.Object));
       childTwo
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+        .Returns(Reflect.Property<Foo>(x => x.TestInteger));
 
       mapping.Mappings.Add(childOne.Object);
       mapping.Mappings.Add(childTwo.Object);
@@ -155,13 +155,13 @@ The test should fail because the 'Bar' type does not have a parameterless constr
         .Returns(true);
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childTwo
         .Setup(x => x.Deserialize(It.IsAny<IDictionary<string,string>>(), out outInt, new int[0]))
         .Returns(true);
       childTwo
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+        .Returns(Reflect.Property<Foo>(x => x.TestInteger));
 
       mapping.Mappings.Add(childOne.Object);
       mapping.Mappings.Add(childTwo.Object);
@@ -191,13 +191,13 @@ The test should fail because the 'Bar' type does not have a parameterless constr
         .Returns(true);
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childTwo
         .Setup(x => x.Deserialize(It.IsAny<IDictionary<string,string>>(), out outInt, new int[0]))
         .Returns(false);
       childTwo
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+        .Returns(Reflect.Property<Foo>(x => x.TestInteger));
 
       mapping.Mappings.Add(childOne.Object);
       mapping.Mappings.Add(childTwo.Object);
@@ -228,13 +228,13 @@ The test should fail because the 'Bar' type does not have a parameterless constr
         .Returns(true);
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childTwo
         .Setup(x => x.Deserialize(It.IsAny<IDictionary<string,string>>(), out outInt, new int[0]))
         .Returns(true);
       childTwo
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+        .Returns(Reflect.Property<Foo>(x => x.TestInteger));
 
       mapping.Mappings.Add(childOne.Object);
       mapping.Mappings.Add(childTwo.Object);
@@ -265,13 +265,13 @@ The test should fail because the 'Bar' type does not have a parameterless constr
         .Returns(false);
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childTwo
         .Setup(x => x.Deserialize(It.IsAny<IDictionary<string,string>>(), out outInt, new int[0]))
         .Returns(false);
       childTwo
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+        .Returns(Reflect.Property<Foo>(x => x.TestInteger));
 
       mapping.Mappings.Add(childOne.Object);
       mapping.Mappings.Add(childTwo.Object);
@@ -355,13 +355,13 @@ The test should fail because the 'Bar' type does not have a parameterless constr
 
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childOne
         .Setup(x => x.Serialize(It.IsAny<object>(), out childOneResult, new int[0]))
         .Returns(true);
       childTwo
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+        .Returns(Reflect.Property<Foo>(x => x.TestInteger));
       childTwo
         .Setup(x => x.Serialize(It.IsAny<object>(), out childTwoResult, new int[0]))
         .Returns(true);
@@ -394,13 +394,13 @@ The test should fail because the 'Bar' type does not have a parameterless constr
 
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childOne
         .Setup(x => x.Serialize(It.IsAny<object>(), out childOneResult, new int[0]))
         .Returns(true);
       childTwo
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+        .Returns(Reflect.Property<Foo>(x => x.TestInteger));
       childTwo
         .Setup(x => x.Serialize(It.IsAny<object>(), out childTwoResult, new int[0]))
         .Returns(true);
@@ -436,13 +436,13 @@ The test should fail because the 'Bar' type does not have a parameterless constr
 
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childOne
         .Setup(x => x.Serialize(It.IsAny<object>(), out childOneResult, new int[0]))
         .Returns(true);
       childTwo
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+        .Returns(Reflect.Property<Foo>(x => x.TestInteger));
       childTwo
         .Setup(x => x.Serialize(It.IsAny<object>(), out childTwoResult, new int[0]))
         .Returns(false);
@@ -474,13 +474,13 @@ The test should fail because the 'Bar' type does not have a parameterless constr
 
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childOne
         .Setup(x => x.Serialize(It.IsAny<object>(), out childOneResult, new int[0]))
         .Returns(true);
       childTwo
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+        .Returns(Reflect.Property<Foo>(x => x.TestInteger));
       childTwo
         .Setup(x => x.Serialize(It.IsAny<object>(), out childTwoResult, new int[0]))
         .Throws(new MandatorySerializationException(childTwo.Object));
@@ -510,13 +510,13 @@ The test should fail because the 'Bar' type does not have a parameterless constr
 
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childOne
         .Setup(x => x.Serialize(It.IsAny<object>(), out childOneResult, new int[0]))
         .Returns(false);
       childTwo
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+        .Returns(Reflect.Property<Foo>(x => x.TestInteger));
       childTwo
         .Setup(x => x.Serialize(It.IsAny<object>(), out childTwoResult, new int[0]))
         .Returns(false);
@@ -546,13 +546,13 @@ The test should fail because the 'Bar' type does not have a parameterless constr
 
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childOne
         .Setup(x => x.Serialize(It.IsAny<object>(), out childOneResult, new int[0]))
         .Returns(true);
       childTwo
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+        .Returns(Reflect.Property<Foo>(x => x.TestInteger));
       childTwo
         .Setup(x => x.Serialize(It.IsAny<object>(), out childTwoResult, new int[0]))
         .Returns(true);
@@ -578,7 +578,7 @@ The test should fail because the 'Bar' type does not have a parameterless constr
 
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childOne
         .Setup(x => x.Serialize(It.IsAny<object>(), out childOneResult, new int[0]))
         .Returns(true);
@@ -605,7 +605,7 @@ The test should fail because the 'Bar' type does not have a parameterless constr
 
       childOne
         .SetupGet(x => x.Property)
-        .Returns(StaticReflectionUtility.GetProperty<Foo>(x => x.TestProperty));
+        .Returns(Reflect.Property<Foo>(x => x.TestProperty));
       childOne
         .Setup(x => x.Serialize(It.IsAny<object>(), out childOneResult, new int[0]))
         .Returns(false);

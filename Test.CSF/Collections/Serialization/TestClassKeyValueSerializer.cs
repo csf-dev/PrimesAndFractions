@@ -72,7 +72,7 @@ namespace Test.CSF.Collections.Serialization
                       ((IClassMapping<MockClass>) serializer.RootMapping).Mappings.Count,
                       "Correct count of mappings");
 
-      var collectionOneProp = StaticReflectionUtility.GetProperty<MockClass>(x => x.CollectionOne);
+      var collectionOneProp = Reflect.Property<MockClass>(x => x.CollectionOne);
       IClassMapping<MockClass> rootMapping = (IClassMapping<MockClass>) serializer.RootMapping;
       Assert.AreEqual(1,
                       rootMapping.Mappings.Where(x => x.Property == collectionOneProp).Count(),

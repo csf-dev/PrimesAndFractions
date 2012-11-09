@@ -72,7 +72,7 @@ namespace CSF.Serialization
     public virtual Type Type
     {
       get {
-        return String.IsNullOrEmpty(this.TypeName)? null : StaticReflectionUtility.GetTypeFromAppDomain(this.TypeName);
+        return String.IsNullOrEmpty(this.TypeName)? null : Reflect.TypeFromAppDomain(this.TypeName);
       }
       set {
         this.TypeName = (value != null)? value.FullName : null;

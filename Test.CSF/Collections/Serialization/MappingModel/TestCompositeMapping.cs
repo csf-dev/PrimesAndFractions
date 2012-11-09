@@ -21,7 +21,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       componentMap.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("FooYear");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", componentMap.Object);
 
       Assert.AreEqual("FooYear", mapping.GetKeyName("Year", new int[0]));
@@ -33,7 +33,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
     {
       var parent = new Mock<IMapping>();
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.GetKeyName("Year", new int[0]);
     }
 
@@ -44,7 +44,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
     {
       var parent = new Mock<IMapping>();
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Validate();
     }
 
@@ -59,7 +59,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       componentMap.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("FooYear");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", componentMap.Object);
       mapping.Validate();
     }
@@ -84,7 +84,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       monthComponent.SetupGet(x => x.ComponentIdentifier).Returns("Month");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", yearComponent.Object);
       mapping.Components.Add("Month", monthComponent.Object);
 
@@ -114,7 +114,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       monthComponent.SetupGet(x => x.ComponentIdentifier).Returns("Month");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", yearComponent.Object);
       mapping.Components.Add("Month", monthComponent.Object);
       mapping.FlagKey = "date";
@@ -146,7 +146,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       monthComponent.SetupGet(x => x.ComponentIdentifier).Returns("Month");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", yearComponent.Object);
       mapping.Components.Add("Month", monthComponent.Object);
 
@@ -175,7 +175,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       monthComponent.SetupGet(x => x.ComponentIdentifier).Returns("Month");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", yearComponent.Object);
       mapping.Components.Add("Month", monthComponent.Object);
 
@@ -194,7 +194,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       DateTime date = DateTime.Today;
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
 
       IDictionary<string,string> result;
       mapping.Serialize(date, out result, new int[0]);
@@ -217,7 +217,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       monthComponent.SetupGet(x => x.ComponentIdentifier).Returns("Month");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", yearComponent.Object);
       mapping.Components.Add("Month", monthComponent.Object);
 
@@ -243,7 +243,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       monthComponent.SetupGet(x => x.ComponentIdentifier).Returns("Month");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", yearComponent.Object);
       mapping.Components.Add("Month", monthComponent.Object);
       mapping.DeserializationFunction = dict => new DateTime(Int32.Parse(dict["Year"]), Int32.Parse(dict["Month"]), 1);
@@ -274,7 +274,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       monthComponent.SetupGet(x => x.ComponentIdentifier).Returns("Month");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", yearComponent.Object);
       mapping.Components.Add("Month", monthComponent.Object);
       mapping.DeserializationFunction = dict => new DateTime(Int32.Parse(dict["Year"]), Int32.Parse(dict["Month"]), 1);
@@ -298,7 +298,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       DateTime date = DateTime.Today;
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.DeserializationFunction = dict => new DateTime(Int32.Parse(dict["Year"]), Int32.Parse(dict["Month"]), 1);
 
       IDictionary<string,string> data = new Dictionary<string, string>();
@@ -322,7 +322,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       monthComponent.SetupGet(x => x.ComponentIdentifier).Returns("Month");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", yearComponent.Object);
       mapping.Components.Add("Month", monthComponent.Object);
       mapping.DeserializationFunction = dict => new DateTime(Int32.Parse(dict["Year"]), Int32.Parse(dict["Month"]), 1);
@@ -349,7 +349,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       monthComponent.SetupGet(x => x.ComponentIdentifier).Returns("Month");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", yearComponent.Object);
       mapping.Components.Add("Month", monthComponent.Object);
       mapping.DeserializationFunction = dict => new DateTime(Int32.Parse(dict["Year"]), Int32.Parse(dict["Month"]), 1);
@@ -377,7 +377,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       monthComponent.SetupGet(x => x.ComponentIdentifier).Returns("Month");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", yearComponent.Object);
       mapping.Components.Add("Month", monthComponent.Object);
       mapping.DeserializationFunction = dict => {
@@ -409,7 +409,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       monthComponent.SetupGet(x => x.ComponentIdentifier).Returns("Month");
 
       CompositeMapping<DateTime> mapping = new CompositeMapping<DateTime>(parent.Object,
-                                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestDateTime));
+                                                                          Reflect.Property<Foo>(x => x.TestDateTime));
       mapping.Components.Add("Year", yearComponent.Object);
       mapping.Components.Add("Month", monthComponent.Object);
       mapping.DeserializationFunction = dict => new DateTime(Int32.Parse(dict["Year"]), Int32.Parse(dict["Month"]), 1);

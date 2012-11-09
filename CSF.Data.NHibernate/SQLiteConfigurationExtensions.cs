@@ -32,7 +32,7 @@ namespace CSF.Data.NHibernate
         throw new ArgumentNullException("config");
       }
 
-      return StaticReflectionUtility.IsUsingMonoFramework()? config.Driver<MonoNHibernateSqlLiteDriver>() : config;
+      return Reflect.IsMono()? config.Driver<MonoNHibernateSqlLiteDriver>() : config;
     }
   }
 }

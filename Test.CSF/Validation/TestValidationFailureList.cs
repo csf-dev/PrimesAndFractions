@@ -17,13 +17,13 @@ namespace Test.CSF.Validation
       ValidationTestList<SampleObject> list = new ValidationTestList<SampleObject>();
       
       list.Add(new ValidationTest<SampleObject, string>(x => x.Length > 4,
-                                                        StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyOne),
+                                                        Reflect.Member<SampleObject>(x => x.PropertyOne),
                                                         "Foo"));
       list.Add(new ValidationTest<SampleObject, string>(x => x.Length < 10,
-                                                        StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyOne),
+                                                        Reflect.Member<SampleObject>(x => x.PropertyOne),
                                                         "Bar"));
       list.Add(new ValidationTest<SampleObject, int>(x => x != 3,
-                                                     StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyTwo),
+                                                     Reflect.Member<SampleObject>(x => x.PropertyTwo),
                                                      "Bar"));
       
       ValidationTestList<SampleObject> subset = list.ByMember(x => x.PropertyOne);
@@ -39,13 +39,13 @@ namespace Test.CSF.Validation
       ValidationTestList<SampleObject> list = new ValidationTestList<SampleObject>();
       
       list.Add(new ValidationTest<SampleObject, string>(x => x.Length > 4,
-                                                        StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyOne),
+                                                        Reflect.Member<SampleObject>(x => x.PropertyOne),
                                                         "Foo"));
       list.Add(new ValidationTest<SampleObject, string>(x => x.Length < 10,
-                                                        StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyOne),
+                                                        Reflect.Member<SampleObject>(x => x.PropertyOne),
                                                         "Bar"));
       list.Add(new ValidationTest<SampleObject, int>(x => x != 3,
-                                                     StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyTwo),
+                                                     Reflect.Member<SampleObject>(x => x.PropertyTwo),
                                                      "Bar"));
       
       ValidationTestList<SampleObject> subset = list.ByIdentifier("Bar");
@@ -61,13 +61,13 @@ namespace Test.CSF.Validation
       ValidationTestList<SampleObject> list = new ValidationTestList<SampleObject>();
       
       list.Add(new ValidationTest<SampleObject, string>(x => x.Length > 4,
-                                                        StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyOne),
+                                                        Reflect.Member<SampleObject>(x => x.PropertyOne),
                                                         "Foo"));
       list.Add(new ValidationTest<SampleObject, string>(x => x.Length < 10,
-                                                        StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyOne),
+                                                        Reflect.Member<SampleObject>(x => x.PropertyOne),
                                                         "Bar"));
       list.Add(new ValidationTest<SampleObject, int>(x => x != 3,
-                                                     StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyTwo),
+                                                     Reflect.Member<SampleObject>(x => x.PropertyTwo),
                                                      "Bar"));
       
       ValidationTestList<SampleObject> subset = list.ByIdentifier("Bar", x => x.PropertyOne);
@@ -83,13 +83,13 @@ namespace Test.CSF.Validation
       ValidationTestList<SampleObject> list = new ValidationTestList<SampleObject>();
       
       list.Add(new ValidationTest<SampleObject, string>(x => x.Length > 4,
-                                                        StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyOne),
+                                                        Reflect.Member<SampleObject>(x => x.PropertyOne),
                                                         "Foo"));
       list.Add(new ValidationTest<SampleObject, string>(x => x.Length < 10,
-                                                        StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyOne),
+                                                        Reflect.Member<SampleObject>(x => x.PropertyOne),
                                                         "Bar"));
       list.Add(new ValidationTest<SampleObject, int>(x => x != 3,
-                                                     StaticReflectionUtility.GetMember<SampleObject>(x => x.PropertyTwo),
+                                                     Reflect.Member<SampleObject>(x => x.PropertyTwo),
                                                      "Bar"));
       
       ValidationTestList<SampleObject> subset = list.ByIdentifier("Spong");

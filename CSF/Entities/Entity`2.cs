@@ -392,7 +392,7 @@ namespace CSF.Entities
 
       if(output == null)
       {
-        PropertyInfo propInfo = StaticReflectionUtility.GetProperty(property);
+        PropertyInfo propInfo = Reflect.Property(property);
 
         output = sourceList.WrapWithBeforeActions(
           (list, item) => {
@@ -514,7 +514,7 @@ namespace CSF.Entities
         typedList.DetachAll();
       }
 
-      PropertyInfo propInfo = StaticReflectionUtility.GetProperty(property);
+      PropertyInfo propInfo = Reflect.Property(property);
       foreach(TItem item in replacementList)
       {
         propInfo.SetValue(item, this, null);

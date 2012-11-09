@@ -45,7 +45,7 @@ namespace CSF.Validation
     /// </param>
     public ValidationTestList<TTarget> ByMember(Expression<Func<TTarget, object>> member)
     {
-      return this.ByMember(StaticReflectionUtility.GetMember<TTarget>(member));
+      return this.ByMember(Reflect.Member<TTarget>(member));
     }
     
     /// <summary>
@@ -91,7 +91,7 @@ namespace CSF.Validation
     /// </param>
     public ValidationTestList<TTarget> ByIdentifier(object identifier, Expression<Func<TTarget, object>> member)
     {
-      return this.ByIdentifier(identifier, StaticReflectionUtility.GetMember<TTarget>(member));
+      return this.ByIdentifier(identifier, Reflect.Member<TTarget>(member));
     }
     
     /// <summary>

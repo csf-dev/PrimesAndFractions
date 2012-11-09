@@ -34,7 +34,7 @@ namespace Test.CSF.Cli
       
       Assert.AreEqual(2, parser.RegisteredParameters.Count, "Correct count of parameters");
       
-      object identifier = StaticReflectionUtility.GetMember<SampleClass>(x => x.PropertyOne);
+      object identifier = Reflect.Member<SampleClass>(x => x.PropertyOne);
       IParameter testParameter = (from x in parser.RegisteredParameters
                                   where x.Identifier == identifier
                                   select x).FirstOrDefault();

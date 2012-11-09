@@ -28,7 +28,7 @@ namespace CSF.Reflection
   /// <summary>
   /// Helper class for reflection-related tasks.
   /// </summary>
-  public class StaticReflectionUtility
+  public class Reflect
   {
     #region methods
     
@@ -53,9 +53,9 @@ namespace CSF.Reflection
     /// <exception cref='ArgumentException'>
     /// Is thrown when an argument passed to a method is invalid.
     /// </exception>
-    public static MemberInfo GetMember<TObject, TReturn>(Expression<Func<TObject, TReturn>> expression)
+    public static MemberInfo Member<TObject, TReturn>(Expression<Func<TObject, TReturn>> expression)
     {
-      return GetMember(expression.Body);
+      return Member(expression.Body);
     }
       
     /// <summary>
@@ -76,9 +76,9 @@ namespace CSF.Reflection
     /// <exception cref='ArgumentException'>
     /// Is thrown when an argument passed to a method is invalid.
     /// </exception>
-    public static MemberInfo GetMember<TObject>(Expression<Func<TObject, object>> expression)
+    public static MemberInfo Member<TObject>(Expression<Func<TObject, object>> expression)
     {
-      return GetMember(expression.Body);
+      return Member(expression.Body);
     }
     
     /// <summary>
@@ -99,9 +99,9 @@ namespace CSF.Reflection
     /// <exception cref='ArgumentException'>
     /// Is thrown when an argument passed to a method is invalid.
     /// </exception>
-    public static PropertyInfo GetProperty<TObject>(Expression<Func<TObject, object>> expression)
+    public static PropertyInfo Property<TObject>(Expression<Func<TObject, object>> expression)
     {
-      return GetMember<TObject>(expression) as PropertyInfo;
+      return Member<TObject>(expression) as PropertyInfo;
     }
     
     /// <summary>
@@ -125,9 +125,9 @@ namespace CSF.Reflection
     /// <exception cref='ArgumentException'>
     /// Is thrown when an argument passed to a method is invalid.
     /// </exception>
-    public static PropertyInfo GetProperty<TObject,TReturn>(Expression<Func<TObject, TReturn>> expression)
+    public static PropertyInfo Property<TObject,TReturn>(Expression<Func<TObject, TReturn>> expression)
     {
-      return GetMember<TObject,TReturn>(expression) as PropertyInfo;
+      return Member<TObject,TReturn>(expression) as PropertyInfo;
     }
     
     /// <summary>
@@ -148,9 +148,9 @@ namespace CSF.Reflection
     /// <exception cref='ArgumentException'>
     /// Is thrown when an argument passed to a method is invalid.
     /// </exception>
-    public static FieldInfo GetField<TObject>(Expression<Func<TObject, object>> expression)
+    public static FieldInfo Field<TObject>(Expression<Func<TObject, object>> expression)
     {
-      return GetMember<TObject>(expression) as FieldInfo;
+      return Member<TObject>(expression) as FieldInfo;
     }
     
     /// <summary>
@@ -171,9 +171,9 @@ namespace CSF.Reflection
     /// <exception cref='ArgumentException'>
     /// Is thrown when an argument passed to a method is invalid.
     /// </exception>
-    public static MethodInfo GetMethod<TObject>(Expression<Func<TObject, object>> expression)
+    public static MethodInfo Method<TObject>(Expression<Func<TObject, object>> expression)
     {
-      return GetMember<TObject>(expression) as MethodInfo;
+      return Member<TObject>(expression) as MethodInfo;
     }
 
     /// <summary>
@@ -185,9 +185,9 @@ namespace CSF.Reflection
     /// <param name='typeName'>
     /// The full name of the type to find and return, does not need to be assembly-qualified.
     /// </param>
-    public static Type GetTypeFromAppDomain(string typeName)
+    public static Type TypeFromAppDomain(string typeName)
     {
-      return GetTypeFromAppDomain(AppDomain.CurrentDomain, typeName);
+      return TypeFromAppDomain(AppDomain.CurrentDomain, typeName);
     }
 
     /// <summary>
@@ -202,7 +202,7 @@ namespace CSF.Reflection
     /// <param name='typeName'>
     /// The full name of the type to find and return, does not need to be assembly-qualified.
     /// </param>
-    public static Type GetTypeFromAppDomain(AppDomain domain, string typeName)
+    public static Type TypeFromAppDomain(AppDomain domain, string typeName)
     {
       if(domain == null)
       {
@@ -239,7 +239,7 @@ namespace CSF.Reflection
     /// <returns>
     /// <c>true</c> if the application is executing on the mono framework; otherwise, <c>false</c>.
     /// </returns>
-    public static bool IsUsingMonoFramework()
+    public static bool IsMono()
     {
       return (Type.GetType("Mono.Runtime") != null);
     }
@@ -263,7 +263,7 @@ namespace CSF.Reflection
     /// <exception cref='ArgumentException'>
     /// Is thrown when an argument passed to a method is invalid.
     /// </exception>
-    private static MemberInfo GetMember(Expression expression)
+    private static MemberInfo Member(Expression expression)
     {
       MemberExpression memberExpression = null;
       MemberInfo output = null;

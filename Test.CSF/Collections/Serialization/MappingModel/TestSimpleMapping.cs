@@ -16,7 +16,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
     public void TestDefaultSerializationDeserializationMethods()
     {
       var parent = new Mock<IMapping>();
-      var property = StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger);
+      var property = Reflect.Property<Foo>(x => x.TestInteger);
 
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object, property);
 
@@ -31,7 +31,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
     {
       var parent = new Mock<IMapping>();
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object,
-                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+                                                          Reflect.Property<Foo>(x => x.TestInteger));
       mapping.SerializationFunction = null;
       mapping.DeserializationFunction = null;
 
@@ -51,7 +51,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       policy.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("Foo");
 
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object,
-                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+                                                          Reflect.Property<Foo>(x => x.TestInteger));
       mapping.AttachKeyNamingPolicy<IKeyNamingPolicy>(map => policy.Object);
 
       IDictionary<string,string> result = new Dictionary<string, string>();
@@ -72,7 +72,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       policy.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("Foo");
 
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object,
-                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+                                                          Reflect.Property<Foo>(x => x.TestInteger));
       mapping.AttachKeyNamingPolicy<IKeyNamingPolicy>(map => policy.Object);
       mapping.FlagKey = "flag";
       mapping.FlagValue = "val";
@@ -96,7 +96,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       policy.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("Foo");
 
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object,
-                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+                                                          Reflect.Property<Foo>(x => x.TestInteger));
       mapping.AttachKeyNamingPolicy<IKeyNamingPolicy>(map => policy.Object);
       mapping.SerializationFunction = x => null;
 
@@ -117,7 +117,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       policy.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("Foo");
 
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object,
-                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+                                                          Reflect.Property<Foo>(x => x.TestInteger));
       mapping.AttachKeyNamingPolicy<IKeyNamingPolicy>(map => policy.Object);
       mapping.SerializationFunction = null;
 
@@ -135,7 +135,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       policy.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("Foo");
 
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object,
-                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+                                                          Reflect.Property<Foo>(x => x.TestInteger));
       mapping.AttachKeyNamingPolicy<IKeyNamingPolicy>(map => policy.Object);
       mapping.SerializationFunction = x => null;
       mapping.Mandatory = true;
@@ -157,7 +157,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       policy.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("Foo");
 
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object,
-                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+                                                          Reflect.Property<Foo>(x => x.TestInteger));
       mapping.AttachKeyNamingPolicy<IKeyNamingPolicy>(map => policy.Object);
 
       IDictionary<string,string> data = new Dictionary<string, string>();
@@ -179,7 +179,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       policy.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("Foo");
 
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object,
-                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+                                                          Reflect.Property<Foo>(x => x.TestInteger));
       mapping.AttachKeyNamingPolicy<IKeyNamingPolicy>(map => policy.Object);
       mapping.FlagKey = "Flag";
 
@@ -201,7 +201,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       policy.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("Foo");
 
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object,
-                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+                                                          Reflect.Property<Foo>(x => x.TestInteger));
       mapping.AttachKeyNamingPolicy<IKeyNamingPolicy>(map => policy.Object);
       mapping.DeserializationFunction = x => {
         throw new Exception("This is a test exception");
@@ -225,7 +225,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       policy.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("Foo");
 
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object,
-                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+                                                          Reflect.Property<Foo>(x => x.TestInteger));
       mapping.AttachKeyNamingPolicy<IKeyNamingPolicy>(map => policy.Object);
 
       IDictionary<string,string> data = new Dictionary<string, string>();
@@ -246,7 +246,7 @@ namespace Test.CSF.Collections.Serialization.MappingModel
       policy.Setup(x => x.GetKeyName(It.IsAny<int[]>())).Returns("Foo");
 
       SimpleMapping<int> mapping = new SimpleMapping<int>(parent.Object,
-                                                          StaticReflectionUtility.GetProperty<Foo>(x => x.TestInteger));
+                                                          Reflect.Property<Foo>(x => x.TestInteger));
       mapping.AttachKeyNamingPolicy<IKeyNamingPolicy>(map => policy.Object);
       mapping.Mandatory = true;
 

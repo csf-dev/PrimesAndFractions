@@ -173,7 +173,7 @@ namespace CSF.Collections.Serialization.MappingModel
                                             "to use the parameterless GetMapping overload?");
       }
 
-      PropertyInfo propInfo = StaticReflectionUtility.GetProperty<TOuterObject>(property);
+      PropertyInfo propInfo = Reflect.Property<TOuterObject>(property);
 
       if(propInfo == null)
       {
