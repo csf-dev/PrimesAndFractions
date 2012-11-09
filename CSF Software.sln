@@ -11,12 +11,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.Testing", "CSF.Testing\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.Testing.Mocks", "CSF.Testing.Mocks\CSF.Testing.Mocks.csproj", "{F9B97F83-AAB0-4E83-B2E6-9D4A2958B820}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.Web.Mvc", "CSF.Web.Mvc\CSF.Web.Mvc.csproj", "{9FC21F73-B7AA-4870-B356-993906947DAD}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7B12E9AF-526D-4F1F-93E4-B1AB5AA9AA89}"
 	ProjectSection(SolutionItems) = preProject
 		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.Web.Mvc", "CSF.Web.Mvc\CSF.Web.Mvc.csproj", "{9FC21F73-B7AA-4870-B356-993906947DAD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{8784C0D4-1A4C-42A0-B29B-D17832369CF2}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\CSF.Collections.Serialization.xmi = Documentation\CSF.Collections.Serialization.xmi
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utils", "utils", "{AD355647-E323-4982-9E58-FD308EBFA0BB}"
 	ProjectSection(SolutionItems) = preProject

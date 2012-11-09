@@ -1,5 +1,5 @@
 //
-//  IIdentityUnwrappingService.cs
+//  ICollectionMapping.cs
 //
 //  Author:
 //       Craig Fowler <craig@craigfowler.me.uk>
@@ -20,32 +20,36 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 
-namespace CSF.Entities
+namespace CSF.Collections.Serialization.MappingModel
 {
   /// <summary>
-  /// Interface for a service that is able to 'unwrap' an <see cref="IIdentity"/> into its original entity, using some
-  /// kind of retreival mechanism.
+  /// Marker interface for a mapping that relates to a collection.
   /// </summary>
-  public interface IIdentityUnwrappingService
+  public interface ICollectionMapping : IMapping
   {
     /// <summary>
-    /// Unwrap the specified identity returning the entity that the identity represents.
+    /// Gets the type of collection keying in-use.
     /// </summary>
-    /// <param name='identity'>
-    /// An <see cref="IIdentity"/> instance.
-    /// </param>
-    /// <typeparam name='TEntity'>
-    /// The type of entity expected by the unwrapping action.
-    /// </typeparam>
-    TEntity Unwrap<TEntity>(IIdentity<TEntity> identity) where TEntity : IEntity;
+    /// <value>
+    /// The type of the collection key.
+    /// </value>
+    CollectionKeyType CollectionKeyType { get; set; }
 
     /// <summary>
-    /// Unwrap the specified identity returning the entity that the identity represents.
+    /// Gets or sets the minimum 'array index' used whilst searching for values to deserialize.
     /// </summary>
-    /// <param name='identity'>
-    /// An <see cref="IIdentity"/> instance.
-    /// </param>
-    IEntity Unwrap(IIdentity identity);
+    /// <value>
+    /// The minimum 'array index' for deserialization.
+    /// </value>
+    int DeserializeMinimumIndex { get; set; }
+
+    /// <summary>
+    /// Gets or sets the maximum 'array index' used whilst searching for values to deserialize.
+    /// </summary>
+    /// <value>
+    /// The maximum 'array index' for deserialization.
+    /// </value>
+    int DeserializeMaximumIndex { get; set; }
   }
 }
 
