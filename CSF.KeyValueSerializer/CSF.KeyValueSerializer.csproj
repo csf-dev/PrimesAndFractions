@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>CSF.KeyValueSerializer</RootNamespace>
     <AssemblyName>CSF.KeyValueSerializer</AssemblyName>
-    <ReleaseVersion>1.1.0</ReleaseVersion>
+    <ReleaseVersion>2.0.0</ReleaseVersion>
     <newfilesearch>OnLoad</newfilesearch>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
