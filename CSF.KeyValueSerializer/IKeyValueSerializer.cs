@@ -20,6 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using CSF.KeyValueSerializer.MappingModel;
 
 namespace CSF.KeyValueSerializer
 {
@@ -43,6 +44,14 @@ namespace CSF.KeyValueSerializer
     /// The object instance to serialize.
     /// </param>
     IDictionary<string,string> Serialize(TOutput data);
+
+    /// <summary>
+    /// Gets the root mapping from this serializer instance.
+    /// </summary>
+    /// <value>
+    /// The root mapping.
+    /// </value>
+    IMapping RootMapping { get; }
   }
 }
 
