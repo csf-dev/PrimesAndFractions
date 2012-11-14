@@ -660,7 +660,7 @@ namespace Test.CSF.KeyValueSerializer
       serializer.Map(root => {
         root.Collection(x => x.CollectionTwo, c => {
           c.CommaSeparatedList();
-          c.Entity<Person,uint>().Deserialize(s => new Person() { Id = UInt32.Parse(s) });
+          c.Entity<IPerson,uint>().Deserialize(s => new Person() { Id = UInt32.Parse(s) });
         });
       });
 

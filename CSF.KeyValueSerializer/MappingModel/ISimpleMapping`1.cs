@@ -26,7 +26,7 @@ namespace CSF.KeyValueSerializer.MappingModel
   /// <summary>
   /// Interface for a mapping which describes a simple value-to-property mapping using a single collection value.
   /// </summary>
-  public interface ISimpleMapping<TValue> : IMapping, IEndpointMapping
+  public interface ISimpleMapping<TValue> : ISimpleMapping, IMapping, IEndpointMapping
   {
     #region properties
 
