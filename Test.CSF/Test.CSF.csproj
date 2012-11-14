@@ -105,6 +105,7 @@
     <Compile Include="KeyValueSerializer\MappingModel\TestCompositeComponentMapping.cs" />
     <Compile Include="KeyValueSerializer\MappingModel\TestCompositeMapping.cs" />
     <Compile Include="KeyValueSerializer\MappingModel\TestSimpleMapping.cs" />
+    <Compile Include="Collections\TestIDictionaryExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
