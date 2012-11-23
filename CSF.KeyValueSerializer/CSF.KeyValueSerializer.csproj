@@ -55,7 +55,6 @@
     <Compile Include="CollectionKeyValueSerializer.cs" />
     <Compile Include="IClassKeyValueSerializer`1.cs" />
     <Compile Include="ICollectionKeyValueSerializer.cs" />
-    <Compile Include="IKeyValueSerializer.cs" />
     <Compile Include="IValueTypeCollectionKeyValueSerializer.cs" />
     <Compile Include="KeyValueSerializerBase.cs" />
     <Compile Include="ValueTypeCollectionKeyValueSerializer.cs" />
@@ -100,5 +99,7 @@
     <Compile Include="MappingModel\SimpleMapping`1.cs" />
     <Compile Include="MappingModel\ValueTypeCollectionMapping`1.cs" />
     <Compile Include="MappingModel\ISimpleMapping.cs" />
+    <Compile Include="IKeyValueSerializer`1.cs" />
+    <Compile Include="IKeyValueSerializer.cs" />
   </ItemGroup>
 </Project>

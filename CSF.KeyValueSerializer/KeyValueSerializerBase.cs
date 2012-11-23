@@ -112,6 +112,20 @@ namespace CSF.KeyValueSerializer
     }
 
     #endregion
+
+    #region explicit interface implementations
+
+    object IKeyValueSerializer.Deserialize(IDictionary<string,string> data)
+    {
+      return this.Deserialize(data);
+    }
+
+    IDictionary<string,string> IKeyValueSerializer.Serialize(object data)
+    {
+      return this.Serialize((TOutput) data);
+    }
+
+    #endregion
   }
 }
 
