@@ -205,6 +205,46 @@ namespace Test.CSF.KeyValueSerializer.MappingModel
                                     nestedProp2.Name),
                       name);
     }
+
+//    [Test]
+//    public void TestGetKeyNameCollectionContainer()
+//    {
+//      var rootMapping = new Mock<IMapping>();
+//      var collectionMapping = new Mock<IMapping>();
+//      var collection2Mapping = new Mock<IMapping>();
+//      var mapAsOne = new Mock<IMapping>();
+//      var mapAsTwo = new Mock<IMapping>();
+//
+//      var firstProperty = Reflect.Property<CollectionContainer>(x => x.FirstCollection);
+//      var secondProperty = Reflect.Property<CollectionContainer>(x => x.SecondCollection);
+//
+//      rootMapping.Setup(x => x.Property).Returns((PropertyInfo) null);
+//      rootMapping.Setup(x => x.ParentMapping).Returns((IMapping) null);
+//      rootMapping.Setup(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(rootMapping.Object));
+//
+//      collectionMapping.As<ICollectionMapping>().SetupGet(x => x.CollectionKeyType).Returns(CollectionKeyType.Separate);
+//      collectionMapping.Setup(x => x.Property).Returns(firstProperty);
+//      collectionMapping.Setup(x => x.ParentMapping).Returns(rootMapping.Object);
+//      collectionMapping.Setup(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(collectionMapping.Object));
+//
+//      collection2Mapping.As<ICollectionMapping>().SetupGet(x => x.CollectionKeyType).Returns(CollectionKeyType.Separate);
+//      collection2Mapping.Setup(x => x.Property).Returns(secondProperty);
+//      collection2Mapping.Setup(x => x.ParentMapping).Returns(rootMapping.Object);
+//      collection2Mapping.Setup(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(collection2Mapping.Object));
+//
+//      mapAsOne.Setup(x => x.Property).Returns((PropertyInfo) null);
+//      mapAsOne.Setup(x => x.ParentMapping).Returns(collectionMapping.Object);
+//      mapAsOne.Setup(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(mapAsOne.Object));
+//
+//      mapAsTwo.Setup(x => x.Property).Returns((PropertyInfo) null);
+//      mapAsTwo.Setup(x => x.ParentMapping).Returns(collection2Mapping.Object);
+//      mapAsTwo.Setup(x => x.KeyNamingPolicy).Returns(new DefaultKeyNamingPolicy(mapAsTwo.Object));
+//
+//      string name = mapAsOne.Object.KeyNamingPolicy.GetKeyName(2);
+//      Assert.IsNotNull(name);
+//
+//      Assert.AreNotEqual(String.Format("{0}[{1}]", firstProperty.Name, 2, ))
+//    }
   }
 }
 
