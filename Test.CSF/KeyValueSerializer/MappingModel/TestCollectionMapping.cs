@@ -830,6 +830,40 @@ namespace Test.CSF.KeyValueSerializer.MappingModel
       Assert.IsNull(output, "Output null");
     }
 
+    [Test]
+    public void TestDeserializeSeparateKeysNulls()
+    {
+      var mapAs = new Mock<IMapping>();
+      CollectionMapping<Foo> mapping = new StubCollectionMapping() {
+        MapAs = mapAs.Object,
+        CollectionKeyType = CollectionKeyType.Separate
+      };
+
+      IDictionary<string,string> collection = new Dictionary<string, string>();
+      object
+        output1 = null,
+        output2 = null,
+        output3 = new Foo() { TestInteger = 2 };
+
+      mapAs
+        .Setup(x => x.Deserialize(It.IsAny<IDictionary<string,string>>(), out output1, It.Is<int[]>(a => a[0] == 0)))
+        .Returns(false);
+      mapAs
+        .Setup(x => x.Deserialize(It.IsAny<IDictionary<string,string>>(), out output2, It.Is<int[]>(a => a[0] == 1)))
+        .Returns(false);
+      mapAs
+        .Setup(x => x.Deserialize(It.IsAny<IDictionary<string,string>>(), out output3, It.Is<int[]>(a => a[0] == 2)))
+        .Returns(true);
+
+      ICollection<Foo> output;
+      bool success = mapping.Deserialize(collection, out output, new int[0]);
+
+      Assert.IsTrue(success, "Success");
+      Assert.IsNotNull(output, "Output null");
+      Assert.AreEqual(1, output.Count, "Output count");
+      Assert.IsTrue(output.Any(x => Object.ReferenceEquals(output3, x)), "Single result");
+    }
+
     #endregion
 
     #region stub type
