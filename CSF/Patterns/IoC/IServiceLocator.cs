@@ -65,7 +65,15 @@ namespace CSF.Patterns.IoC
     /// An implementation of the requested service.
     /// </returns>
     TInterface GetService<TInterface>() where TInterface : class;
-    
+
+    /// <summary>
+    /// Disposes a service implementation and removes it from the appropriate cache, ready for it to be recreated.
+    /// </summary>
+    /// <typeparam name='TInterface'>
+    /// The interface of the desired service.
+    /// </typeparam>
+    void DisposeService<TInterface>() where TInterface : class;
+
     #endregion
   }
 }
