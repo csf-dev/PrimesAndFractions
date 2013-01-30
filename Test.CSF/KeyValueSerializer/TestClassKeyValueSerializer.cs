@@ -418,6 +418,61 @@ namespace Test.CSF.KeyValueSerializer
       Assert.IsTrue(result.TestValueCollection.Any(x => x.Year == 2012 && x.Month == 11), "Second result present");
     }
 
+    [Test]
+    public void TestDeserializeCollectionContainer()
+    {
+      var serializer = new ClassKeyValueSerializer<StubCollectionContainer>();
+
+      serializer.Map(root => {
+        root.UsingFactory(() => new StubCollectionContainer());
+
+        root.ValueCollection(coll => coll.AddColumns, collMap => {
+          collMap.Composite()
+            .Component("Year", x => x.Serialize(d => d.Year.ToString()))
+            .Component("Month", x => x.Serialize(d => d.Month.ToString()))
+            .Component("Day", x => x.Serialize(d => d.Day.ToString()))
+              .Deserialize(data => new DateTime(Int32.Parse(data["Year"]),
+                                                Int32.Parse(data["Month"]),
+                                                Int32.Parse(data["Day"])));
+        });
+
+        root.ValueCollection(coll => coll.MoveColumns, coll2Map => {
+          coll2Map.Composite()
+            .Component("Year", x => x.Serialize(d => d.Year.ToString()))
+            .Component("Month", x => x.Serialize(d => d.Month.ToString()))
+            .Component("Day", x => x.Serialize(d => d.Day.ToString()))
+              .Deserialize(data => new DateTime(Int32.Parse(data["Year"]),
+                                                Int32.Parse(data["Month"]),
+                                                Int32.Parse(data["Day"])));
+        });
+      });
+
+//      Console.WriteLine("Mapping key is: `{0}`",
+//                        serializer
+//                          .RootMapping
+//                          .GetMapping<CollectionContainer>(x => x.FirstCollection)
+//                          .GetMapping()
+//                          .GetKeyName("Year", 2));
+
+      IDictionary<string,string> stringData = new Dictionary<string, string>();
+
+      stringData.Add("MoveColumns[0]Year", "1990");
+      stringData.Add("MoveColumns[0]Month", "1");
+      stringData.Add("MoveColumns[0]Day", "1");
+      stringData.Add("MoveColumns[1]Year", "1991");
+      stringData.Add("MoveColumns[1]Month", "2");
+      stringData.Add("MoveColumns[1]Day", "2");
+      stringData.Add("MoveColumns[2]Year", "1992");
+      stringData.Add("MoveColumns[2]Month", String.Empty);
+      stringData.Add("MoveColumns[2]Day", String.Empty);
+
+      StubCollectionContainer output = serializer.Deserialize(stringData);
+
+      Assert.IsNotNull(output);
+      Assert.AreEqual(2, output.MoveColumns.Count, "Correct count of parsed items (1)");
+      Assert.AreEqual(0, output.AddColumns.Count, "Second collection empty");
+    }
+
     #endregion
 
     #region serialization
@@ -660,7 +715,7 @@ namespace Test.CSF.KeyValueSerializer
       serializer.Map(root => {
         root.Collection(x => x.CollectionTwo, c => {
           c.CommaSeparatedList();
-          c.Entity<Person,uint>().Deserialize(s => new Person() { Id = UInt32.Parse(s) });
+          c.Entity<IPerson,uint>().Deserialize(s => new Person() { Id = UInt32.Parse(s) });
         });
       });
 

@@ -69,19 +69,37 @@ namespace Test.CSF.Patterns.IoC
       Assert.AreNotEqual(this.CachedService, service, "Service replaced correctly");
       Assert.IsTrue(this.CachedService.IsDisposed, "Disposed");
     }
+
+    [Test]
+    public void TestDisposeAndReplace()
+    {
+      ServiceLocator.Select(x => {
+        x.Select<IMockService>(() => new MockServiceOne());
+      });
+
+      IMockService instanceOne = ServiceLocator.Get<IMockService>();
+      ServiceLocator.DisposeAndReplace<IMockService>();
+      IMockService instanceTwo = ServiceLocator.Get<IMockService>();
+
+      Assert.AreNotSame(instanceOne, instanceTwo, "Service instances are not the same");
+      Assert.IsTrue(instanceOne.IsDisposed, "Instance one disposed");
+      Assert.IsFalse(instanceTwo.IsDisposed, "Instance two disposed");
+    }
     
     #endregion
     
     #region mocks
     
-    public interface IMockService
+    public interface IMockService : IDisposable
     {
+      bool IsDisposed { get; }
+
       string GetString();
     }
     
     public class MockServiceOne : IMockService, IDisposable
     {
-      public bool IsDisposed = false;
+      public bool IsDisposed { get; private set; }
 
       public string GetString()
       {
@@ -96,9 +114,16 @@ namespace Test.CSF.Patterns.IoC
     
     public class MockServiceTwo : IMockService
     {
+      public bool IsDisposed { get; private set; }
+
       public string GetString()
       {
         return this.GetType().Name;
+      }
+
+      public void Dispose()
+      {
+        this.IsDisposed = true;
       }
     }
     

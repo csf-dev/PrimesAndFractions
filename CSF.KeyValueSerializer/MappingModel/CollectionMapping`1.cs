@@ -121,7 +121,7 @@ namespace CSF.KeyValueSerializer.MappingModel
                                             "a separator character.  The only valid configuration is to map the " +
                                             "collection using a 'simple' mapping but no mapping was found.");
         }
-        else if(!(aggregateMapping is ISimpleMapping<TItem>))
+        else if(!(aggregateMapping is ISimpleMapping))
         {
           throw new InvalidMappingException("This collection-type mapping is configured to use aggregate values with " +
                                             "a separator character.  The only valid configuration is to map the " +

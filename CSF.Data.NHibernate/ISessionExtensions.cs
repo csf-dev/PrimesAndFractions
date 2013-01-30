@@ -68,6 +68,70 @@ namespace CSF.Data.NHibernate
 
       return session.Load<TEntity>(identity.Value);
     }
+
+    /// <summary>
+    /// Attempts to parse an entity identifier and then use that to 'get' a matching entity instance.
+    /// </summary>
+    /// <returns>
+    /// An entity instance, or a null reference if no matching entity could be retrieved.
+    /// </returns>
+    /// <param name='session'>
+    /// An NHibernate ISession
+    /// </param>
+    /// <param name='identifier'>
+    /// The identifier to parse.
+    /// </param>
+    /// <typeparam name='TEntity'>
+    /// The type of the desired entity.
+    /// </typeparam>
+    /// <typeparam name='TIdentifier'>
+    /// The type of the identifier.
+    /// </typeparam>
+    public static TEntity GetEntity<TEntity,TIdentifier>(this ISession session, object identifier)
+      where TEntity : class,IEntity
+    {
+      IIdentity<TEntity,TIdentifier> identity;
+      TEntity output = null;
+
+      if(Identity.TryParse<TEntity,TIdentifier>(identifier, out identity))
+      {
+        output = session.GetEntity(identity);
+      }
+
+      return output;
+    }
+
+    /// <summary>
+    /// Attempts to parse an entity identifier and then use that to 'load' a matching entity instance.
+    /// </summary>
+    /// <returns>
+    /// An entity instance, or a null reference if no matching entity could be retrieved.
+    /// </returns>
+    /// <param name='session'>
+    /// An NHibernate ISession
+    /// </param>
+    /// <param name='identifier'>
+    /// The identifier to parse.
+    /// </param>
+    /// <typeparam name='TEntity'>
+    /// The type of the desired entity.
+    /// </typeparam>
+    /// <typeparam name='TIdentifier'>
+    /// The type of the identifier.
+    /// </typeparam>
+    public static TEntity LoadEntity<TEntity,TIdentifier>(this ISession session, object identifier)
+      where TEntity : class,IEntity
+    {
+      IIdentity<TEntity,TIdentifier> identity;
+      TEntity output = null;
+
+      if(Identity.TryParse<TEntity,TIdentifier>(identifier, out identity))
+      {
+        output = session.LoadEntity(identity);
+      }
+
+      return output;
+    }
   }
 }
 

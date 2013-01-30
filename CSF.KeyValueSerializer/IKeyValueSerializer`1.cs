@@ -1,5 +1,5 @@
 //
-//  ISimpleMapping.cs
+//  IKeyValueSerializer.cs
 //
 //  Author:
 //       Craig Fowler <craig@craigfowler.me.uk>
@@ -19,34 +19,31 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
-using System.Reflection;
+using System.Collections.Generic;
+using CSF.KeyValueSerializer.MappingModel;
 
-namespace CSF.KeyValueSerializer.MappingModel
+namespace CSF.KeyValueSerializer
 {
   /// <summary>
-  /// Interface for a mapping which describes a simple value-to-property mapping using a single collection value.
+  /// Interface for a key/value serializer
   /// </summary>
-  public interface ISimpleMapping<TValue> : ISimpleMapping, IMapping, IEndpointMapping
+  public interface IKeyValueSerializer<TOutput> : IKeyValueSerializer
   {
-    #region properties
+    /// <summary>
+    /// Deserialize the specified data, returning an object instance.
+    /// </summary>
+    /// <param name='data'>
+    /// The collection of string data to deserialize.
+    /// </param>
+    new TOutput Deserialize(IDictionary<string,string> data);
 
     /// <summary>
-    /// Gets the function used to deserialize the property value from a string.
+    /// Serialize the specified data, returning a dictionary/collection of string data.
     /// </summary>
-    /// <value>
-    /// A method body containing the deserialization function.
-    /// </value>
-    Func<string,TValue> DeserializationFunction { get; set; }
-
-    /// <summary>
-    /// Gets the function used to serialize a string from the property value.
-    /// </summary>
-    /// <value>
-    /// A method body containing the serialization function.
-    /// </value>
-    Func<TValue,string> SerializationFunction { get; set; }
-
-    #endregion
+    /// <param name='data'>
+    /// The object instance to serialize.
+    /// </param>
+    IDictionary<string,string> Serialize(TOutput data);
   }
 }
 

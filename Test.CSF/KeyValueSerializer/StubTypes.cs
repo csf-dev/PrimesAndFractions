@@ -77,12 +77,21 @@ namespace Test.CSF.KeyValueSerializer
 
     public IList<string> CollectionOne { get; set; }
 
-    public IList<Person> CollectionTwo { get; set; }
+    public IList<IPerson> CollectionTwo { get; set; }
 
     public IList<DateTime> CollectionThree { get; set; }
   }
 
-  public class Person : Entity<Person,uint>
+  public interface IPerson : IEntity<Person,uint>
+  {
+    string Name { get; set; }
+
+    DateTime Birthday { get; set; }
+
+    int Friends { get; set; }
+  }
+
+  public class Person : Entity<Person,uint>, IPerson
   {
     public string Name { get; set; }
 

@@ -205,6 +205,32 @@ namespace CSF.Patterns.IoC
       
       return output;
     }
+
+    /// <summary>
+    /// Disposes a service implementation and removes it from the appropriate cache, ready for it to be recreated.
+    /// </summary>
+    /// <typeparam name='TInterface'>
+    /// The interface of the desired service.
+    /// </typeparam>
+    public virtual void DisposeService<TInterface>() where TInterface : class
+    {
+      Type interfaceType = typeof(TInterface);
+      
+      if(!this.RegisteredServiceFactories.ContainsKey(interfaceType))
+      {
+        throw new InvalidOperationException(String.Format("This service locator contains no implementation for '{0}'",
+                                                          interfaceType.FullName));
+      }
+      
+      IRegisteredService service = this.RegisteredServiceFactories[interfaceType];
+      IServiceInstanceCache serviceCache = this.GetServiceCache(service.Lifespan);
+      
+      if(serviceCache.Contains<TInterface>())
+      {
+        serviceCache.Remove<TInterface>();
+      }
+    }
+
     
     /// <summary>
     /// Releases all resource used by the <see cref="CSF.Patterns.IoC.ServiceLocator"/> object.
@@ -353,45 +379,20 @@ namespace CSF.Patterns.IoC
     {
       return DefaultInstance.GetService<TInterface>();
     }
-    
+
     /// <summary>
-    /// Replaces the current <see cref="IServiceLocator"/> back-end for this type with the provided implementation.
+    /// Disposes of a given service implementation and clears it.
     /// </summary>
     /// <remarks>
-    /// This method additionally disposes the current service locator and all of the service instances that is
-    /// may contain.
+    /// This essentially removes a cached service implementation such that (the next time it is requested), it will
+    /// be re-created using the original factory method.
     /// </remarks>
-    /// <param name='serviceLocatorImplementation'>
-    /// The service locator implementation to use from now on.
-    /// </param>
-    /// <exception cref='ArgumentNullException'>
-    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
-    /// </exception>
-    public static void DisposeAndReplace(IServiceLocator serviceLocatorImplementation)
+    /// <typeparam name='TInterface'>
+    /// The type of service to dispose of.
+    /// </typeparam>
+    public static void DisposeAndReplace<TInterface>() where TInterface : class
     {
-      if(serviceLocatorImplementation == null)
-      {
-        throw new ArgumentNullException ("serviceLocatorImplementation");
-      }
-      
-      if(DefaultInstance != null)
-      {
-        DefaultInstance.Dispose();
-      }
-      
-      DefaultInstance = serviceLocatorImplementation;
-    }
-    
-    /// <summary>
-    /// Replaces the current <see cref="IServiceLocator"/> back-end for this type with a new default implementation.
-    /// </summary>
-    /// <remarks>
-    /// This method additionally disposes the current service locator and all of the service instances that is
-    /// may contain.
-    /// </remarks>
-    public static void DisposeAndReplace()
-    {
-      DisposeAndReplace(new ServiceLocator());
+      DefaultInstance.DisposeService<TInterface>();
     }
     
     #endregion

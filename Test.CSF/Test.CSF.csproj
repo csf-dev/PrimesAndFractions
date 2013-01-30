@@ -10,7 +10,7 @@
     <RootNamespace>Test.CSF</RootNamespace>
     <AssemblyName>Test.CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>2.0.0</ReleaseVersion>
+    <ReleaseVersion>2.1.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -105,6 +105,9 @@
     <Compile Include="KeyValueSerializer\MappingModel\TestCompositeComponentMapping.cs" />
     <Compile Include="KeyValueSerializer\MappingModel\TestCompositeMapping.cs" />
     <Compile Include="KeyValueSerializer\MappingModel\TestSimpleMapping.cs" />
+    <Compile Include="Collections\TestIDictionaryExtensions.cs" />
+    <Compile Include="KeyValueSerializer\StubCollectionContainer.cs" />
+    <Compile Include="KeyValueSerializer\TestEntityDeserialization.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

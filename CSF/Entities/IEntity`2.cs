@@ -51,7 +51,7 @@ namespace CSF.Entities
     /// database-mapping layers that need a property with which to reference the unique identifier.
     /// </para>
     /// </remarks>
-    new TIdentity Id { get; }
+    new TIdentity Id { get; set; }
     
     #endregion
     
