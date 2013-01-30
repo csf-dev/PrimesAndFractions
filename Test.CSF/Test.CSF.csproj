@@ -146,7 +146,6 @@
     <Folder Include="Testing\" />
     <Folder Include="Globalization\" />
     <Folder Include="Patterns\ServiceLayer\" />
-    <Folder Include="Collections\Serialization\" />
     <Folder Include="KeyValueSerializer\" />
   </ItemGroup>
   <ItemGroup>

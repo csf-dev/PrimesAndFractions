@@ -372,14 +372,14 @@ namespace CSF.Collections
     object ICollection.SyncRoot
     {
       get {
-        throw new NotSupportedException();
+        return ((ICollection) _wrapped).SyncRoot;
       }
     }
 
     bool ICollection.IsSynchronized
     {
       get {
-        throw new NotSupportedException();
+        return ((ICollection) _wrapped).IsSynchronized;
       }
     }
 
