@@ -10,7 +10,7 @@
     <RootNamespace>Test.CSF</RootNamespace>
     <AssemblyName>Test.CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>2.1.1</ReleaseVersion>
+    <ReleaseVersion>2.2.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,7 +54,6 @@
     <Compile Include="IO\TestTabularDataParser.cs" />
     <Compile Include="IO\TestIniDocument.cs" />
     <Compile Include="TestSimpleCalculator.cs" />
-    <Compile Include="Reflection\TestStaticReflectionUtility.cs" />
     <Compile Include="Validation\TestValidator.cs" />
     <Compile Include="Validation\TestValidationFailureList.cs" />
     <Compile Include="Mocks\SampleObject.cs" />
@@ -108,6 +107,7 @@
     <Compile Include="Collections\TestIDictionaryExtensions.cs" />
     <Compile Include="KeyValueSerializer\StubCollectionContainer.cs" />
     <Compile Include="KeyValueSerializer\TestEntityDeserialization.cs" />
+    <Compile Include="Reflection\TestReflect.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
