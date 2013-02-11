@@ -173,7 +173,7 @@ namespace CSF.Validation
                                                 ValidationFunction<TMember> test,
                                                 object testIdentifier)
     {
-      return this.AddTest<TMember>(Reflect.Member<TTarget, TMember>(member), test, testIdentifier);
+      return this.AddTest<TMember>(Reflect.Member<TTarget,TMember>(member), test, testIdentifier);
     }
     
     /// <summary>
