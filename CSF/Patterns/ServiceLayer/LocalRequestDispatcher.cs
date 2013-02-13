@@ -119,7 +119,7 @@ namespace CSF.Patterns.ServiceLayer
 
       try
       {
-        this.Handlers[requestType].Handle(request);
+        this.Handlers[requestType].HandleRequestOnly(request);
       }
       catch(Exception ex)
       {

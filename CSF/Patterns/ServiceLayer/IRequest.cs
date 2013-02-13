@@ -27,6 +27,13 @@ namespace CSF.Patterns.ServiceLayer
   /// </summary>
   public interface IRequest
   {
+    /// <summary>
+    /// Gets the type of the current request instance.
+    /// </summary>
+    /// <returns>
+    /// The type.
+    /// </returns>
+    Type GetType();
   }
 }
 
