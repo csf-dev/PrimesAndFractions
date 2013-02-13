@@ -10,7 +10,7 @@
     <RootNamespace>CSF</RootNamespace>
     <AssemblyName>CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>2.2.0</ReleaseVersion>
+    <ReleaseVersion>2.3.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -146,6 +146,8 @@
     <Compile Include="Patterns\SerializedLob\SerializationService.cs" />
     <Compile Include="Patterns\SerializedLob\XmlSerializationContainer.cs" />
     <Compile Include="Collections\IDictionaryExtensions.cs" />
+    <Compile Include="Patterns\ServiceLayer\IRequest`1.cs" />
+    <Compile Include="Patterns\ServiceLayer\RequestExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

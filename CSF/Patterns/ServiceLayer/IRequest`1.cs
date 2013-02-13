@@ -1,10 +1,10 @@
 //
-//  IRequest.cs
+//  IRequest1.cs
 //
 //  Author:
 //       Craig Fowler <craig@craigfowler.me.uk>
 //
-//  Copyright (c) 2012 Craig Fowler
+//  Copyright (c) 2013 Craig Fowler
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,17 +23,10 @@ using System;
 namespace CSF.Patterns.ServiceLayer
 {
   /// <summary>
-  /// Interface for a service layer request.
+  /// Interface for a service layer request that knows its own preferred type of response.
   /// </summary>
-  public interface IRequest
+  public interface IRequest<TResponse> : IRequest where TResponse : IResponse
   {
-    /// <summary>
-    /// Gets the type of the current request instance.
-    /// </summary>
-    /// <returns>
-    /// The type.
-    /// </returns>
-    Type GetType();
   }
 }
 

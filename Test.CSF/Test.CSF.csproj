@@ -10,7 +10,7 @@
     <RootNamespace>Test.CSF</RootNamespace>
     <AssemblyName>Test.CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>2.2.0</ReleaseVersion>
+    <ReleaseVersion>2.3.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -85,7 +85,6 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Globalization\TestCultureInfoExtensions.cs" />
-    <Compile Include="Patterns\ServiceLayer\MockRequestHandlers.cs" />
     <Compile Include="Patterns\ServiceLayer\TestRequestDispatcherBase.cs" />
     <Compile Include="Patterns\ServiceLayer\TestLocalRequestDispatcher.cs" />
     <Compile Include="Collections\TestNameValueCollectionExtensions.cs" />
@@ -108,6 +107,7 @@
     <Compile Include="KeyValueSerializer\StubCollectionContainer.cs" />
     <Compile Include="KeyValueSerializer\TestEntityDeserialization.cs" />
     <Compile Include="Reflection\TestReflect.cs" />
+    <Compile Include="Patterns\ServiceLayer\TestRequestExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

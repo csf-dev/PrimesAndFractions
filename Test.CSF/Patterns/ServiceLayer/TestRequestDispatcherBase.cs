@@ -12,6 +12,7 @@ namespace Test.CSF.Patterns.ServiceLayer
     #region fields
 
     private Mock<IRequestDispatcher> MockDispatcher;
+    private IRequestDispatcher Dispatcher;
 
     #endregion
 
@@ -21,6 +22,11 @@ namespace Test.CSF.Patterns.ServiceLayer
     public void Setup()
     {
       this.MockDispatcher = new Mock<IRequestDispatcher>();
+      this.MockDispatcher
+        .Setup(x => x.Register(It.IsAny<Type>(), It.IsAny<IRequestHandler>()))
+        .Returns(this.MockDispatcher.Object);
+
+      this.Dispatcher = new DummyRequestDispatcher(this.MockDispatcher.Object);
     }
 
     #endregion
@@ -30,46 +36,54 @@ namespace Test.CSF.Patterns.ServiceLayer
     [Test]
     public void TestRegister()
     {
-      IRequestDispatcher dispatcher = new DummyRequestDispatcher(this.MockDispatcher.Object);
+      this.Dispatcher.Register<MockRequestType1,MockHandlerType1>();
 
       this.MockDispatcher
-        .Setup(x => x.Register(It.IsAny<Type>(), It.IsAny<IRequestHandler>()))
-        .Returns(this.MockDispatcher.Object);
-
-      dispatcher.Register<MockRequestOne,MockRequestHandlerOne>();
-
-      this.MockDispatcher
-        .Verify(x => x.Register(typeof(MockRequestOne), It.IsAny<MockRequestHandlerOne>()),
+        .Verify(x => x.Register(It.Is<Type>(typ => typ == typeof(MockRequestType1)), It.IsAny<MockHandlerType1>()),
                 Times.Once());
     }
 
     [Test]
     public void TestRegisterFromAssemblyOf()
     {
-      IRequestDispatcher dispatcher = new DummyRequestDispatcher(this.MockDispatcher.Object);
-
-      this.MockDispatcher
-        .Setup(x => x.Register(It.IsAny<Type>(), It.IsAny<IRequestHandler>()))
-        .Returns(this.MockDispatcher.Object);
-
-      dispatcher.RegisterFromAssemblyOf<DummyRequestDispatcher>();
-
-      this.MockDispatcher
-        .Verify(x => x.Register(typeof(MockRequestOne), It.IsAny<MockRequestHandlerOne>()),
-                Times.Once());
-
-      this.MockDispatcher
-        .Verify(x => x.Register(typeof(MockRequestTwo), It.IsAny<MockRequestHandlerTwo>()),
-                Times.Once());
-
-      this.MockDispatcher
-        .Verify(x => x.Register(typeof(MockRequestThree), It.IsAny<MockAbstractRequestHandler>()),
-                Times.Never());
+      this.Dispatcher.RegisterFromAssemblyOf<DummyRequestDispatcher>();
 
       this.MockDispatcher
         .Verify(x => x.Register(It.IsAny<Type>(), It.IsAny<IRequestHandler>()),
-                Times.Exactly(2));
+                Times.AtLeast(2),
+                "Some registrations processed");
+
+      this.MockDispatcher
+        .Verify(x => x.Register(It.Is<Type>(typ => typ == typeof(MockRequestType1)), It.IsAny<MockHandlerType1>()),
+                Times.Once(),
+                "Mock request 1 (and handler) registered");
+
+      this.MockDispatcher
+        .Verify(x => x.Register(It.Is<Type>(typ => typ == typeof(MockRequestType2)), It.IsAny<MockHandlerType2>()),
+                Times.Once(),
+                "Mock request 2 (and handler) registered");
+
+      this.MockDispatcher
+        .Verify(x => x.Register(It.Is<Type>(typ => typ == typeof(MockRequestType3)), It.IsAny<MockHandlerType3>()),
+                Times.Never(),
+                "Mock request 3 (and handler) NOT registered (the handler is abstract)");
     }
+
+    #endregion
+
+    #region contained types
+    
+    public class MockRequestType1 : IRequest {}
+    public class MockRequestType2 : IRequest {}
+    public class MockRequestType3 : IRequest {}
+
+    public class MockResponseType1 : Response {}
+    public class MockResponseType2 : Response {}
+    public class MockResponseType3 : Response {}
+
+    public class MockHandlerType1 : RequestHandlerBase<MockRequestType1,MockResponseType1> {}
+    public class MockHandlerType2 : RequestHandlerBase<MockRequestType2,MockResponseType2> {}
+    public abstract class MockHandlerType3 : RequestHandlerBase<MockRequestType3,MockResponseType3> {}
 
     #endregion
 
