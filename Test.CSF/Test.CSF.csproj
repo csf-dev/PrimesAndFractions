@@ -107,6 +107,7 @@
     <Compile Include="KeyValueSerializer\StubCollectionContainer.cs" />
     <Compile Include="KeyValueSerializer\TestEntityDeserialization.cs" />
     <Compile Include="Reflection\TestReflect.cs" />
+    <Compile Include="Patterns\ServiceLayer\TestRequestExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
