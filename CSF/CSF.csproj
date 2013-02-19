@@ -148,6 +148,7 @@
     <Compile Include="Collections\IDictionaryExtensions.cs" />
     <Compile Include="Patterns\ServiceLayer\IRequest`1.cs" />
     <Compile Include="Patterns\ServiceLayer\RequestExtensions.cs" />
+    <Compile Include="StringExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
