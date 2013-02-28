@@ -79,6 +79,26 @@ namespace CSF.Reflection
     {
       return GetField(value);
     }
+
+    /// <summary>
+    /// Determines whether the given enumeration value is a defined value of its parent enumeration.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c> if the given value is a defined value of its associated enumeration; otherwise, <c>false</c>.
+    /// </returns>
+    /// <param name='value'>
+    /// The enumeration value to analyse.
+    /// </param>
+    public static bool IsDefinedValue(this Enum value)
+    {
+      if(value == null)
+      {
+        throw new ArgumentNullException("value");
+      }
+
+      Type enumerationType = value.GetType();
+      return Enum.IsDefined(enumerationType, value);
+    }
     
     #endregion
     
