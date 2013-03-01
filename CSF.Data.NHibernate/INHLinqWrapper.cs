@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NHibernate;
+using CSF.Entities;
 
 namespace CSF.Data.NHibernate
 {
@@ -37,7 +38,7 @@ namespace CSF.Data.NHibernate
 
     #endregion
 
-    #region methods
+    #region equivalents to NHibernate LINQ extension methods
 
     /// <summary>
     /// Returns a cacheable implementation of the given <paramref name="query"/>.
@@ -153,6 +154,90 @@ namespace CSF.Data.NHibernate
     /// The target type for the query.
     /// </typeparam>
     IFutureValue<T> ToFutureValue<T>(IQueryable<T> query);
+
+    #endregion
+
+    #region getting and loading
+
+    /// <summary>
+    /// Gets an entity of the specified identity.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method is a parallel to <c>ISession.Get</c> except that it takes a generic <c>IIdentity</c> instance,
+    /// removing the need to pass in the type of entity desired.
+    /// </para>
+    /// </remarks>
+    /// <param name='identity'>
+    /// The identity of the desired entity.
+    /// </param>
+    /// <param name='session'>
+    /// An NHibernate ISession
+    /// </param>
+    /// <typeparam name='T'>
+    /// The type of entity desired, which may be inferred via the <paramref name="identity"/> parameter.
+    /// </typeparam>
+    T Get<T>(IIdentity<T> identity, ISession session) where T : IEntity;
+
+    /// <summary>
+    /// Loads an entity of the specified identity.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method is a parallel to <c>ISession.Load</c> except that it takes a generic <c>IIdentity</c> instance,
+    /// removing the need to pass in the type of entity desired.
+    /// </para>
+    /// <para>
+    /// Additionally, this method will return a null/default result for a null identity.
+    /// </para>
+    /// </remarks>
+    /// <param name='identity'>
+    /// The identity of the desired entity.
+    /// </param>
+    /// <param name='session'>
+    /// An NHibernate ISession
+    /// </param>
+    /// <typeparam name='T'>
+    /// The type of entity desired, which may be inferred via the <paramref name="identity"/> parameter.
+    /// </typeparam>
+    T Load<T>(IIdentity<T> identity, ISession session) where T : IEntity;
+
+    /// <summary>
+    /// Gets an entity of the specified identity using the <see cref="Session"/> referenced by this instance.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method is a parallel to <c>ISession.Get</c> except that it takes a generic <c>IIdentity</c> instance,
+    /// removing the need to pass in the type of entity desired.
+    /// </para>
+    /// </remarks>
+    /// <param name='identity'>
+    /// The identity of the desired entity.
+    /// </param>
+    /// <typeparam name='T'>
+    /// The type of entity desired, which may be inferred via the <paramref name="identity"/> parameter.
+    /// </typeparam>
+    T Get<T>(IIdentity<T> identity) where T : IEntity;
+
+    /// <summary>
+    /// Loads an entity of the specified identity using the <see cref="Session"/> referenced by this instance.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method is a parallel to <c>ISession.Load</c> except that it takes a generic <c>IIdentity</c> instance,
+    /// removing the need to pass in the type of entity desired.
+    /// </para>
+    /// <para>
+    /// Additionally, this method will return a null/default result for a null identity.
+    /// </para>
+    /// </remarks>
+    /// <param name='identity'>
+    /// The identity of the desired entity.
+    /// </param>
+    /// <typeparam name='T'>
+    /// The type of entity desired, which may be inferred via the <paramref name="identity"/> parameter.
+    /// </typeparam>
+    T Load<T>(IIdentity<T> identity) where T : IEntity;
 
     #endregion
   }

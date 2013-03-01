@@ -7,6 +7,7 @@ namespace CSF.Data.NHibernate
   /// <summary>
   /// Extension methods for an NHibernate ISession.
   /// </summary>
+  [Obsolete("This type will be removed in a future version, functionality is now available via the INHLinqWrapper")]
   public static class ISessionExtensions
   {
     /// <summary>
@@ -24,6 +25,7 @@ namespace CSF.Data.NHibernate
     /// <typeparam name='TEntity'>
     /// The type of entity that will be returned by this method.
     /// </typeparam>
+    [Obsolete("This type will be removed in a future version, functionality is now available via the INHLinqWrapper")]
     public static TEntity GetEntity<TEntity>(this ISession session, IIdentity<TEntity> identity)
       where TEntity : IEntity
     {
@@ -54,6 +56,7 @@ namespace CSF.Data.NHibernate
     /// <typeparam name='TEntity'>
     /// The type of entity that will be returned by this method.
     /// </typeparam>
+    [Obsolete("This type will be removed in a future version, functionality is now available via the INHLinqWrapper")]
     public static TEntity LoadEntity<TEntity>(this ISession session, IIdentity<TEntity> identity)
       where TEntity : IEntity
     {
@@ -87,6 +90,7 @@ namespace CSF.Data.NHibernate
     /// <typeparam name='TIdentifier'>
     /// The type of the identifier.
     /// </typeparam>
+    [Obsolete("This type will be removed in a future version, functionality is now available via the INHLinqWrapper")]
     public static TEntity GetEntity<TEntity,TIdentifier>(this ISession session, object identifier)
       where TEntity : class,IEntity
     {
@@ -119,6 +123,7 @@ namespace CSF.Data.NHibernate
     /// <typeparam name='TIdentifier'>
     /// The type of the identifier.
     /// </typeparam>
+    [Obsolete("This type will be removed in a future version, functionality is now available via the INHLinqWrapper")]
     public static TEntity LoadEntity<TEntity,TIdentifier>(this ISession session, object identifier)
       where TEntity : class,IEntity
     {
