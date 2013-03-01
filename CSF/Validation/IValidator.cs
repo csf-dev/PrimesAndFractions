@@ -42,7 +42,7 @@ namespace CSF.Validation
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
     /// </exception>
     IList<IValidationTest<TTarget>> Tests { get; set; }
-    
+
     #endregion
     
     #region test registration
@@ -158,6 +158,27 @@ namespace CSF.Validation
     IValidator<TTarget> AddTest<TMember>(MemberInfo member,
                                          ValidationFunction<TMember> test,
                                          object testIdentifier);
+
+    /// <summary>
+    /// Configures this validator instance such that it will throw an exception on a validation failure, instead of
+    /// returning false.
+    /// </summary>
+    /// <returns>
+    /// A reference to the validator instance.
+    /// </returns>
+    IValidator<TTarget> ThrowOnFailure();
+
+    /// <summary>
+    /// Configures this validator instance, determining whether or not it will throw an exception on a validation
+    /// failure, instead of simply returning false.
+    /// </summary>
+    /// <returns>
+    /// A reference to the validator instance.
+    /// </returns>
+    /// <param name='throwOnFailure'>
+    /// A value that indicates whether the 'throw on failure' functionality should be enabled or disabled.
+    /// </param>
+    IValidator<TTarget> ThrowOnFailure(bool throwOnFailure);
     
     #endregion
     
@@ -196,6 +217,7 @@ namespace CSF.Validation
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="target"/> is null.
     /// </exception>
+    [Obsolete("This method is deprecated, use the 'setup method' ThrowOnFailure instead.")]
     bool Validate(TTarget target, bool throwOnFailure);
     
     /// <summary>

@@ -62,7 +62,7 @@ namespace Test.CSF.Validation
     }
     
     [Test]
-    [ExpectedException(ExceptionType = typeof(ValidationFailureException<SampleObject>))]
+    [ExpectedException(typeof(ValidationFailureException<SampleObject>))]
     public void TestValidateException()
     {
       var validator = new Validator<SampleObject>();
@@ -77,8 +77,29 @@ namespace Test.CSF.Validation
       SampleObject target = new SampleObject() {
         PropertyOne = "bar"
       };
-      
+
+#pragma warning disable 618
       validator.Validate(target, true);
+#pragma warning restore 618
+      Assert.Fail("Test should not reach this point");
+    }
+    
+    [Test]
+    [ExpectedException(typeof(ValidationFailureException<SampleObject>))]
+    public void TestValidateThrowOnFailure()
+    {
+      var validator = new Validator<SampleObject>();
+      
+      validator
+        .AddTest<string>(x => x.PropertyOne, y => y.Length == 3, "Test one")
+        .AddTest<string>(x => x.PropertyOne, y => y.StartsWith("f"), "Test two")
+        .ThrowOnFailure();
+      
+      SampleObject target = new SampleObject() {
+        PropertyOne = "bar"
+      };
+
+      validator.Validate(target);
       Assert.Fail("Test should not reach this point");
     }
     
