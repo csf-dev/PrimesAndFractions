@@ -24,7 +24,7 @@ namespace Test.CSF.Reflection
     }
     
     [Test]
-    [ExpectedException(ExceptionType = typeof(ArgumentException))]
+    [ExpectedException(typeof(ArgumentException))]
     public void TestGetUITextInvalid()
     {
       ((SampleEnum) 5).GetUIText();
@@ -37,6 +37,18 @@ namespace Test.CSF.Reflection
       FieldInfo field = SampleEnum.Three.GetFieldInfo();
       Assert.IsNotNull(field, "Field info not null");
       Assert.AreEqual(SampleEnum.Three.ToString(), field.Name, "Field hsa correct name");
+    }
+
+    [Test]
+    public void TestIsDefinedValueTrue()
+    {
+      Assert.IsTrue(SampleEnum.Two.IsDefinedValue());
+    }
+
+    [Test]
+    public void TestIsDefinedValueFalse()
+    {
+      Assert.IsFalse(((SampleEnum) 8).IsDefinedValue());
     }
     
     #endregion

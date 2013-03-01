@@ -38,6 +38,7 @@ namespace CSF.Validation
     #region fields
     
     private IList<IValidationTest<TTarget>> _tests;
+    private bool _throwOnFailure;
     
     #endregion
     
@@ -202,6 +203,34 @@ namespace CSF.Validation
       this.Tests.Add(new ValidationTest<TTarget, TMember>(test, member, testIdentifier));
       return this;
     }
+
+    /// <summary>
+    /// Configures this validator instance such that it will throw an exception on a validation failure, instead of
+    /// returning false.
+    /// </summary>
+    /// <returns>
+    /// A reference to the validator instance.
+    /// </returns>
+    public IValidator<TTarget> ThrowOnFailure()
+    {
+      return this.ThrowOnFailure(true);
+    }
+
+    /// <summary>
+    /// Configures this validator instance, determining whether or not it will throw an exception on a validation
+    /// failure, instead of simply returning false.
+    /// </summary>
+    /// <returns>
+    /// A reference to the validator instance.
+    /// </returns>
+    /// <param name='throwOnFailure'>
+    /// A value that indicates whether the 'throw on failure' functionality should be enabled or disabled.
+    /// </param>
+    public IValidator<TTarget> ThrowOnFailure(bool throwOnFailure)
+    {
+      _throwOnFailure = throwOnFailure;
+      return this;
+    }
     
     #endregion
     
@@ -221,7 +250,15 @@ namespace CSF.Validation
     /// </exception>
     public bool Validate (TTarget target)
     {
-      return this.Validate(target, false);
+      ValidationTestList<TTarget> failures;
+      bool output = this.Validate(target, out failures);
+      
+      if(_throwOnFailure && !output)
+      {
+        throw new ValidationFailureException<TTarget>(failures);
+      }
+      
+      return output;
     }
   
     /// <summary>
@@ -243,17 +280,11 @@ namespace CSF.Validation
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="target"/> is null.
     /// </exception>
+    [Obsolete("This method is deprecated, use the 'setup method' ThrowOnFailure instead.")]
     public bool Validate (TTarget target, bool throwOnFailure)
     {
-      ValidationTestList<TTarget> failures;
-      bool output = this.Validate(target, out failures);
-      
-      if(throwOnFailure && !output)
-      {
-        throw new ValidationFailureException<TTarget>(failures);
-      }
-      
-      return output;
+      this.ThrowOnFailure(throwOnFailure);
+      return this.Validate(target);
     }
   
     /// <summary>
@@ -284,8 +315,9 @@ namespace CSF.Validation
       {
         try
         {
-          bool pass = test.Execute(target);
-          if(!pass)
+          bool testPassed = test.Execute(target);
+
+          if(!testPassed)
           {
             failures.Add(test);
           }
@@ -310,6 +342,7 @@ namespace CSF.Validation
     /// </summary>
     public Validator()
     {
+      _throwOnFailure = false;
       this.Tests = new List<IValidationTest<TTarget>>();
     }
     

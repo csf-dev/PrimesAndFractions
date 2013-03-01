@@ -10,7 +10,7 @@
     <RootNamespace>Test.CSF</RootNamespace>
     <AssemblyName>Test.CSF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>2.3.0</ReleaseVersion>
+    <ReleaseVersion>2.4.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -108,6 +108,8 @@
     <Compile Include="KeyValueSerializer\TestEntityDeserialization.cs" />
     <Compile Include="Reflection\TestReflect.cs" />
     <Compile Include="Patterns\ServiceLayer\TestRequestExtensions.cs" />
+    <Compile Include="TestStringExtensions.cs" />
+    <Compile Include="Data\NHibernate\TestDefaultLinqWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -147,6 +149,8 @@
     <Folder Include="Globalization\" />
     <Folder Include="Patterns\ServiceLayer\" />
     <Folder Include="KeyValueSerializer\" />
+    <Folder Include="Data\" />
+    <Folder Include="Data\NHibernate\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reflection\TestResource.txt">
