@@ -111,6 +111,7 @@
     <Compile Include="TestStringExtensions.cs" />
     <Compile Include="Data\NHibernate\TestDefaultLinqWrapper.cs" />
     <Compile Include="Collections\TestIEnumerableExtensions.cs" />
+    <Compile Include="TestEnumExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

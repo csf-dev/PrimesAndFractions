@@ -150,6 +150,7 @@
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Collections\IEnumerableExtensions.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="EnumExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
