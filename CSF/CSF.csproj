@@ -103,7 +103,6 @@
     <Compile Include="MemorySessionStorage.cs" />
     <Compile Include="Configuration\ConnectionStringSettingsExtensions.cs" />
     <Compile Include="VersionExtensions.cs" />
-    <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="Reflection\MemberInfoExtensions.cs" />
     <Compile Include="Reflection\EnumExtensions.cs" />
     <Compile Include="Reflection\UITextAttribute.cs" />
@@ -149,6 +148,8 @@
     <Compile Include="Patterns\ServiceLayer\IRequest`1.cs" />
     <Compile Include="Patterns\ServiceLayer\RequestExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
+    <Compile Include="Collections\IEnumerableExtensions.cs" />
+    <Compile Include="IEnumerableExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -110,6 +110,7 @@
     <Compile Include="Patterns\ServiceLayer\TestRequestExtensions.cs" />
     <Compile Include="TestStringExtensions.cs" />
     <Compile Include="Data\NHibernate\TestDefaultLinqWrapper.cs" />
+    <Compile Include="Collections\TestIEnumerableExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
