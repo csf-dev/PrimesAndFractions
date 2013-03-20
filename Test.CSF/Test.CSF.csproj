@@ -157,6 +157,9 @@
     <EmbeddedResource Include="Reflection\TestResource.txt">
       <LogicalName>TestResource.txt</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reflection\TestResourceType.txt">
+      <LogicalName>Test.CSF.Reflection.TestResourceType.txt</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Test.CSF.dll.config">
