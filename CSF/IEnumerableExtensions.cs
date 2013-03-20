@@ -20,6 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Collections;
+using System.Linq;
 using System.Text;
 using CSF.Collections;
 
@@ -48,7 +49,9 @@ namespace CSF
     [Obsolete("This type and its associated extension methods are being moved to the 'CSF.Collections' namespace.")]
     public static string ToSeparatedString(this IEnumerable collection, string separator)
     {
-      return CSF.Collections.IEnumerableExtensions.CreateSeparatedString(collection, separator);
+      return CSF.Collections.IEnumerableExtensions.CreateSeparatedString(collection.Cast<object>(),
+                                                                         separator,
+                                                                         x => x);
     }
   }
 }
