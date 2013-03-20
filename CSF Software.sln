@@ -20,7 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7B12E9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{8784C0D4-1A4C-42A0-B29B-D17832369CF2}"
 	ProjectSection(SolutionItems) = preProject
-		Documentation\CSF.Collections.Serialization.xmi = Documentation\CSF.Collections.Serialization.xmi
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utils", "utils", "{AD355647-E323-4982-9E58-FD308EBFA0BB}"
