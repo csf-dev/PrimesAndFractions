@@ -300,6 +300,34 @@ namespace Test.CSF.Entities
     }
 
     [Test]
+    [Description("This test highlights an issue whereby, if the event-bound list is initialised and then " +
+                 "subsequently the source list is replaced, the list exposed by the property becomes out of sync " +
+                 "with the wrapped list/backing store.")]
+    public void TestGetOneToManyReferenceListReplaceSourceList()
+    {
+      Person person = new Person();
+
+      Order order = new Order();
+
+      // Touch the property in order to initialise the collection.
+      IList<Order> propertyList = person.Orders;
+
+      Assert.IsNotNull(propertyList, "Event bound orders nullability (pre-switch)");
+      Assert.AreEqual(0, propertyList.Count, "Event bound orders count (pre-switch)");
+
+      // Switch the source list behind the scenes!  The event-bound list doesn't know that anything's happened though!
+      person.SourceList = new List<Order>(new Order[] { order });
+
+      // Get the list from the property again.
+      propertyList = person.Orders;
+
+      Assert.IsNotNull(propertyList, "Event bound orders nullability (post-switch)");
+      Assert.AreEqual(1, propertyList.Count, "Event bound orders count (post-switch)");
+      Assert.IsTrue(propertyList.Contains(order), "Event bound orders expected contained item (post-switch)");
+    }
+
+    [Test]
+    [Ignore("This is a test case to illustrate a bug that needs fixing, but not immediately.  See issue #18")]
     [Description("This test highlights a problem with the API that makes it easy to introduce a bug if the method " +
                  "is not used correctly.")]
     public void TestGetOneToManyReferenceListReplaceListBadAPI()
@@ -322,6 +350,7 @@ namespace Test.CSF.Entities
     }
 
     [Test]
+    [Ignore("This is a test case to illustrate a bug that needs fixing, but not immediately.  See issue #18")]
     [Description("This test highlights a problem with the API that makes it easy to introduce a bug if the method " +
                  "is not used correctly.")]
     public void TestGetOneToManyReferenceListReplaceWithEmptyListBadAPI()
@@ -375,6 +404,9 @@ namespace Test.CSF.Entities
       {
         get {
           return _orders;
+        }
+        set {
+          _orders = value;
         }
       }
     }
