@@ -460,7 +460,7 @@ namespace CSF.Entities
 
       IEventBoundList<TItem> typedList = wrappedList as IEventBoundList<TItem>;
 
-      if(typedList == null)
+      if(typedList == null || !typedList.IsWrappedList(sourceList))
       {
         sourceList = sourceList?? new List<TItem>();
         wrappedList = this.GetOneToManyReferenceList(sourceList, property);
