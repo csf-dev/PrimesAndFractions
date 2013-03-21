@@ -28,7 +28,7 @@ namespace Test.CSF.Entities
   [TestFixture]
   public class TestEntity
   {
-    #region tests
+    #region general tests
     
     [Test]
     public void TestHasIdentity()
@@ -160,12 +160,15 @@ namespace Test.CSF.Entities
       Assert.IsTrue(three != threeProduct, "Non-matching types not equal");
     }
 
+    #endregion
+
+    #region testing event-bound reference lists
+
     [Test]
-    public void TestGetReciprocalReferenceList()
+    [Description("Tests using the 'Add' method to add items to an existing list.")]
+    public void TestGetOneToManyReferenceListAdd()
     {
-      Person
-        person = new Person() { Id = 1 },
-        personTwo = new Person() { Id = 2 };
+      Person person = new Person() { Id = 1 };
 
       Order
         orderOne = new Order(),
@@ -175,45 +178,172 @@ namespace Test.CSF.Entities
       person.Orders.Add(orderOne);
       person.Orders.Add(orderTwo);
 
-      Assert.AreEqual(2, person.Orders.Count, "Correct order count");
-      Assert.AreEqual(2, person.SourceList.Count, "Correct order count (source)");
-      Assert.AreEqual(person, orderOne.Owner, "Correct owner (order 1)");
-      Assert.AreEqual(person, orderTwo.Owner, "Correct owner (order 2)");
-      Assert.IsNull(orderThree.Owner, "Owner is null (order 3)");
-
-      Assert.IsTrue(person.Orders.Remove(orderTwo), "Truth when removing an order that was in the set");
-      Assert.IsNull(orderTwo.Owner, "Owner is null after removal (order 2)");
-      Assert.AreEqual(1, person.Orders.Count, "Correct order count (after removal)");
-      Assert.AreEqual(1, person.SourceList.Count, "Correct order count (source, after removal)");
-
-      person.Orders = new Order[] { orderThree };
-
-      Assert.IsNull(orderOne.Owner, "Owner is null after overwriting list (order 1)");
-      Assert.AreEqual(person, orderThree.Owner, "Correct owner after overwriting list (order 3)");
-      Assert.AreEqual(1, person.Orders.Count, "Correct order count (after overwriting)");
-      Assert.AreEqual(1, person.SourceList.Count, "Correct order count (source, after overwriting)");
-
-      person.Orders = new List<Order>();
-
-      personTwo.Orders.Add(orderOne);
-      bool removed = person.Orders.Remove(orderOne);
-      Assert.IsFalse(removed, "No item was removed");
-      Assert.AreEqual(personTwo, orderOne.Owner, "Owner of order 1 remains intact");
+      Assert.AreEqual(2, person.Orders.Count, "Order count");
+      Assert.AreEqual(2, person.SourceList.Count, "Order count (source list)");
+      Assert.AreSame(person, orderOne.Owner, "Owner (order 1)");
+      Assert.AreSame(person, orderTwo.Owner, "Owner (order 2)");
+      Assert.IsNull(orderThree.Owner, "Owner (order 3)");
     }
 
     [Test]
-    [ExpectedException(ExceptionType = typeof(ArgumentNullException))]
-    public void TestGetReciprocalReferenceListReplaceWithNull()
+    [Description("Tests using the 'Remove' method to remove items from an existing list.")]
+    public void TestGetOneToManyReferenceListRemove()
     {
-      Person person = new Person() {
-        Id = 1
-      };
+      Person person = new Person() { Id = 1 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order();
+
+      person.Orders = new List<Order>(new Order[] { orderOne, orderTwo });
+
+      Assert.IsTrue(person.Orders.Remove(orderTwo), "Return value of 'Remove' method");
+      Assert.IsNull(orderTwo.Owner, "Owner after removal (order 2)");
+      Assert.AreEqual(1, person.Orders.Count, "Order count");
+      Assert.AreEqual(1, person.SourceList.Count, "Order count (source list)");
+    }
+
+    [Test]
+    [Description("Tests replacing a list with a new one.")]
+    public void TestGetOneToManyReferenceListReplaceList()
+    {
+      Person person = new Person() { Id = 1 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order(),
+        orderThree = new Order();
+
+      person.Orders = new Order[] { orderOne, orderTwo };
+      person.Orders = new Order[] { orderThree };
+
+      Assert.IsNull(orderOne.Owner, "Owner after replacement (order 1)");
+      Assert.IsNull(orderTwo.Owner, "Owner after replacement (order 2)");
+      Assert.AreSame(person, orderThree.Owner, "Owner after replacement (order 3)");
+      Assert.AreEqual(1, person.Orders.Count, "Order count");
+      Assert.AreEqual(1, person.SourceList.Count, "Order count (source list)");
+    }
+
+    [Test]
+    [Description("Tests replacing a list with an empty one.")]
+    public void TestGetOneToManyReferenceListReplaceWithEmptyList()
+    {
+      Person person = new Person() { Id = 1 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order();
+
+      person.Orders = new Order[] { orderOne, orderTwo };
+      person.Orders = new List<Order>();
+
+      Assert.IsNull(orderOne.Owner, "Owner after replacement (order 1)");
+      Assert.IsNull(orderTwo.Owner, "Owner after replacement (order 2)");
+      Assert.AreEqual(0, person.Orders.Count, "Order count");
+      Assert.AreEqual(0, person.SourceList.Count, "Order count (source list)");
+    }
+
+    [Test]
+    [Description("Tests replacing a list with an empty one and then immediately trying to remove an item.")]
+    public void TestGetOneToManyReferenceListReplaceWithEmptyListThenRemove()
+    {
+      Person person = new Person() { Id = 1 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order();
+
+      person.Orders = new Order[] { orderOne, orderTwo };
+      person.Orders = new List<Order>();
+
+      Assert.IsFalse(person.Orders.Remove(orderOne), "Return value of 'Remove' method call.");
+    }
+
+    [Test]
+    [Description("Tests replacing a list with an empty one and then immediately trying to remove an item.")]
+    public void TestGetOneToManyReferenceListReplaceWithEmptyListThenAddToDifferentCollection()
+    {
+      Person
+        person = new Person() { Id = 1 },
+        personTwo = new Person() { Id = 2 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order();
+
+      person.Orders = new Order[] { orderOne, orderTwo };
+      person.Orders = new List<Order>();
+
+      personTwo.Orders.Add(orderOne);
+      Assert.AreSame(personTwo, orderOne.Owner, "Owner (order 1)");
+    }
+
+    [Test]
+    public void TestGetOneToManyReferenceListCheckingSourceList()
+    {
+      Person person = new Person() { Id = 1 };
+      Order order = new Order() { Id = 2 };
+
+      person.Orders = new Order[] { order };
+
+      Assert.AreEqual(1, person.SourceList.Count, "Count of orders in source list.");
+      Assert.IsNotNull(order.Owner, "Order owner nullability");
+      Assert.AreSame(person, person.SourceList[0].Owner, "Order owner in source list item");
+    }
+
+    [Test]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetOneToManyReferenceListReplaceWithNull()
+    {
+      Person person = new Person() { Id = 1 };
       person.Orders = null;
+    }
+
+    [Test]
+    [Description("This test highlights a problem with the API that makes it easy to introduce a bug if the method " +
+                 "is not used correctly.")]
+    public void TestGetOneToManyReferenceListReplaceListBadAPI()
+    {
+      Person person = new Person() { Id = 1 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order(),
+        orderThree = new Order();
+
+      person.WrongOrders = new Order[] { orderOne, orderTwo };
+      person.WrongOrders = new Order[] { orderThree };
+
+      Assert.IsNull(orderOne.Owner, "Owner after replacement (order 1)");
+      Assert.IsNull(orderTwo.Owner, "Owner after replacement (order 2)");
+      Assert.AreSame(person, orderThree.Owner, "Owner after replacement (order 3)");
+      Assert.AreEqual(1, person.WrongOrders.Count, "Order count");
+      Assert.AreEqual(1, person.SourceList.Count, "Order count (source list)");
+    }
+
+    [Test]
+    [Description("This test highlights a problem with the API that makes it easy to introduce a bug if the method " +
+                 "is not used correctly.")]
+    public void TestGetOneToManyReferenceListReplaceWithEmptyListBadAPI()
+    {
+      Person person = new Person() { Id = 1 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order();
+
+      person.WrongOrders = new Order[] { orderOne, orderTwo };
+      person.WrongOrders = new List<Order>();
+
+      Assert.IsNull(orderOne.Owner, "Owner after replacement (order 1)");
+      Assert.IsNull(orderTwo.Owner, "Owner after replacement (order 2)");
+      Assert.AreEqual(0, person.WrongOrders.Count, "Order count");
+      Assert.AreEqual(0, person.SourceList.Count, "Order count (source list)");
     }
 
     #endregion
     
-    #region mocks
+    #region contained mocks
     
     public class Person : Entity<Person,uint>
     {
@@ -226,6 +356,17 @@ namespace Test.CSF.Entities
         }
         set {
           _wrappedOrders = this.ReplaceOneToManyReferenceList(_wrappedOrders, value, x => x.Owner);
+          _orders = value;
+        }
+      }
+
+      public virtual IList<Order> WrongOrders
+      {
+        get {
+          return this.GetOneToManyReferenceList(ref _wrappedOrders, ref _orders, x => x.Owner);
+        }
+        set {
+          this.ReplaceOneToManyReferenceList(_wrappedOrders, value, x => x.Owner);
           _orders = value;
         }
       }
