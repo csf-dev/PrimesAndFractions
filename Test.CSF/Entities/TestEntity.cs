@@ -326,11 +326,13 @@ namespace Test.CSF.Entities
       Assert.IsTrue(propertyList.Contains(order), "Event bound orders expected contained item (post-switch)");
     }
 
+    #endregion
+
+    #region testing event-bound reference lists via old API
+
     [Test]
-    [Ignore("This is a test case to illustrate a bug that needs fixing, but not immediately.  See issue #18")]
-    [Description("This test highlights a problem with the API that makes it easy to introduce a bug if the method " +
-                 "is not used correctly.")]
-    public void TestGetOneToManyReferenceListReplaceListBadAPI()
+    [Description("Tests using the 'Add' method to add items to an existing list.")]
+    public void TestGetOneToManyReferenceListAddOldApi()
     {
       Person person = new Person() { Id = 1 };
 
@@ -339,21 +341,19 @@ namespace Test.CSF.Entities
         orderTwo = new Order(),
         orderThree = new Order();
 
-      person.WrongOrders = new Order[] { orderOne, orderTwo };
-      person.WrongOrders = new Order[] { orderThree };
+      person.OrdersViaObsoleteApi.Add(orderOne);
+      person.OrdersViaObsoleteApi.Add(orderTwo);
 
-      Assert.IsNull(orderOne.Owner, "Owner after replacement (order 1)");
-      Assert.IsNull(orderTwo.Owner, "Owner after replacement (order 2)");
-      Assert.AreSame(person, orderThree.Owner, "Owner after replacement (order 3)");
-      Assert.AreEqual(1, person.WrongOrders.Count, "Order count");
-      Assert.AreEqual(1, person.SourceList.Count, "Order count (source list)");
+      Assert.AreEqual(2, person.OrdersViaObsoleteApi.Count, "Order count");
+      Assert.AreEqual(2, person.SourceList.Count, "Order count (source list)");
+      Assert.AreSame(person, orderOne.Owner, "Owner (order 1)");
+      Assert.AreSame(person, orderTwo.Owner, "Owner (order 2)");
+      Assert.IsNull(orderThree.Owner, "Owner (order 3)");
     }
 
     [Test]
-    [Ignore("This is a test case to illustrate a bug that needs fixing, but not immediately.  See issue #18")]
-    [Description("This test highlights a problem with the API that makes it easy to introduce a bug if the method " +
-                 "is not used correctly.")]
-    public void TestGetOneToManyReferenceListReplaceWithEmptyListBadAPI()
+    [Description("Tests using the 'Remove' method to remove items from an existing list.")]
+    public void TestGetOneToManyReferenceListRemoveOldApi()
     {
       Person person = new Person() { Id = 1 };
 
@@ -361,13 +361,135 @@ namespace Test.CSF.Entities
         orderOne = new Order(),
         orderTwo = new Order();
 
-      person.WrongOrders = new Order[] { orderOne, orderTwo };
-      person.WrongOrders = new List<Order>();
+      person.OrdersViaObsoleteApi = new List<Order>(new Order[] { orderOne, orderTwo });
+
+      Assert.IsTrue(person.OrdersViaObsoleteApi.Remove(orderTwo), "Return value of 'Remove' method");
+      Assert.IsNull(orderTwo.Owner, "Owner after removal (order 2)");
+      Assert.AreEqual(1, person.OrdersViaObsoleteApi.Count, "Order count");
+      Assert.AreEqual(1, person.SourceList.Count, "Order count (source list)");
+    }
+
+    [Test]
+    [Description("Tests replacing a list with a new one.")]
+    public void TestGetOneToManyReferenceListReplaceListOldApi()
+    {
+      Person person = new Person() { Id = 1 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order(),
+        orderThree = new Order();
+
+      person.OrdersViaObsoleteApi = new Order[] { orderOne, orderTwo };
+      person.OrdersViaObsoleteApi = new Order[] { orderThree };
 
       Assert.IsNull(orderOne.Owner, "Owner after replacement (order 1)");
       Assert.IsNull(orderTwo.Owner, "Owner after replacement (order 2)");
-      Assert.AreEqual(0, person.WrongOrders.Count, "Order count");
+      Assert.AreSame(person, orderThree.Owner, "Owner after replacement (order 3)");
+      Assert.AreEqual(1, person.OrdersViaObsoleteApi.Count, "Order count");
+      Assert.AreEqual(1, person.SourceList.Count, "Order count (source list)");
+    }
+
+    [Test]
+    [Description("Tests replacing a list with an empty one.")]
+    public void TestGetOneToManyReferenceListReplaceWithEmptyListOldApi()
+    {
+      Person person = new Person() { Id = 1 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order();
+
+      person.OrdersViaObsoleteApi = new Order[] { orderOne, orderTwo };
+      person.OrdersViaObsoleteApi = new List<Order>();
+
+      Assert.IsNull(orderOne.Owner, "Owner after replacement (order 1)");
+      Assert.IsNull(orderTwo.Owner, "Owner after replacement (order 2)");
+      Assert.AreEqual(0, person.OrdersViaObsoleteApi.Count, "Order count");
       Assert.AreEqual(0, person.SourceList.Count, "Order count (source list)");
+    }
+
+    [Test]
+    [Description("Tests replacing a list with an empty one and then immediately trying to remove an item.")]
+    public void TestGetOneToManyReferenceListReplaceWithEmptyListThenRemoveOldApi()
+    {
+      Person person = new Person() { Id = 1 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order();
+
+      person.OrdersViaObsoleteApi = new Order[] { orderOne, orderTwo };
+      person.OrdersViaObsoleteApi = new List<Order>();
+
+      Assert.IsFalse(person.OrdersViaObsoleteApi.Remove(orderOne), "Return value of 'Remove' method call.");
+    }
+
+    [Test]
+    [Description("Tests replacing a list with an empty one and then immediately trying to remove an item.")]
+    public void TestGetOneToManyReferenceListReplaceWithEmptyListThenAddToDifferentCollectionOldApi()
+    {
+      Person
+        person = new Person() { Id = 1 },
+        personTwo = new Person() { Id = 2 };
+
+      Order
+        orderOne = new Order(),
+        orderTwo = new Order();
+
+      person.OrdersViaObsoleteApi = new Order[] { orderOne, orderTwo };
+      person.OrdersViaObsoleteApi = new List<Order>();
+
+      personTwo.OrdersViaObsoleteApi.Add(orderOne);
+      Assert.AreSame(personTwo, orderOne.Owner, "Owner (order 1)");
+    }
+
+    [Test]
+    public void TestGetOneToManyReferenceListCheckingSourceListOldApi()
+    {
+      Person person = new Person() { Id = 1 };
+      Order order = new Order() { Id = 2 };
+
+      person.OrdersViaObsoleteApi = new Order[] { order };
+
+      Assert.AreEqual(1, person.SourceList.Count, "Count of orders in source list.");
+      Assert.IsNotNull(order.Owner, "Order owner nullability");
+      Assert.AreSame(person, person.SourceList[0].Owner, "Order owner in source list item");
+    }
+
+    [Test]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetOneToManyReferenceListReplaceWithNullOldApi()
+    {
+      Person person = new Person() { Id = 1 };
+      person.OrdersViaObsoleteApi = null;
+    }
+
+    [Test]
+    [Description("This test highlights an issue whereby, if the event-bound list is initialised and then " +
+                 "subsequently the source list is replaced, the list exposed by the property becomes out of sync " +
+                 "with the wrapped list/backing store.")]
+    public void TestGetOneToManyReferenceListReplaceSourceListOldApi()
+    {
+      Person person = new Person();
+
+      Order order = new Order();
+
+      // Touch the property in order to initialise the collection.
+      IList<Order> propertyList = person.OrdersViaObsoleteApi;
+
+      Assert.IsNotNull(propertyList, "Event bound orders nullability (pre-switch)");
+      Assert.AreEqual(0, propertyList.Count, "Event bound orders count (pre-switch)");
+
+      // Switch the source list behind the scenes!  The event-bound list doesn't know that anything's happened though!
+      person.SourceList = new List<Order>(new Order[] { order });
+
+      // Get the list from the property again.
+      propertyList = person.OrdersViaObsoleteApi;
+
+      Assert.IsNotNull(propertyList, "Event bound orders nullability (post-switch)");
+      Assert.AreEqual(1, propertyList.Count, "Event bound orders count (post-switch)");
+      Assert.IsTrue(propertyList.Contains(order), "Event bound orders expected contained item (post-switch)");
     }
 
     #endregion
@@ -381,21 +503,25 @@ namespace Test.CSF.Entities
       public virtual IList<Order> Orders
       {
         get {
-          return this.GetOneToManyReferenceList(ref _wrappedOrders, ref _orders, x => x.Owner);
+          return this.GetOrInitReferenceList(ref _wrappedOrders, ref _orders, x => x.Owner);
         }
         set {
-          _wrappedOrders = this.ReplaceOneToManyReferenceList(_wrappedOrders, value, x => x.Owner);
+          this.ReplaceReferenceList(ref _wrappedOrders, value, x => x.Owner);
           _orders = value;
         }
       }
 
-      public virtual IList<Order> WrongOrders
+      public virtual IList<Order> OrdersViaObsoleteApi
       {
         get {
+#pragma warning disable 618
           return this.GetOneToManyReferenceList(ref _wrappedOrders, ref _orders, x => x.Owner);
+#pragma warning restore 618
         }
         set {
-          this.ReplaceOneToManyReferenceList(_wrappedOrders, value, x => x.Owner);
+#pragma warning disable 618
+          _wrappedOrders = this.ReplaceOneToManyReferenceList(_wrappedOrders, value, x => x.Owner);
+#pragma warning restore 618
           _orders = value;
         }
       }
