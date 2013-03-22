@@ -151,6 +151,8 @@
     <Compile Include="Collections\IEnumerableExtensions.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="EnumExtensions.cs" />
+    <Compile Include="ExceptionExtensions.cs" />
+    <Compile Include="CannotFixStackTraceException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
