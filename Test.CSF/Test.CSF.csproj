@@ -46,6 +46,7 @@
       <Private>False</Private>
       <Package>nhibernate-3.1</Package>
     </Reference>
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="TestEnumExtensions.cs" />
     <Compile Include="TestExceptionExtensions.cs" />
     <Compile Include="Collections\TestICollectionExtensions.cs" />
+    <Compile Include="Data\TestIDbCommandExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

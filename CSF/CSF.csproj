@@ -154,6 +154,7 @@
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="CannotFixStackTraceException.cs" />
     <Compile Include="Collections\ICollectionExtensions.cs" />
+    <Compile Include="Data\IDbCommandExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -170,6 +171,7 @@
     <Folder Include="Globalization\" />
     <Folder Include="Patterns\ServiceLayer\" />
     <Folder Include="Patterns\SerializedLob\" />
+    <Folder Include="Data\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
