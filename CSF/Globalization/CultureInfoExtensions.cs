@@ -67,7 +67,7 @@ namespace CSF.Globalization
 
       if(culture == null)
       {
-        throw new ArgumentNullException("culture");
+        throw new ArgumentNullException(nameof(culture));
       }
 
       int monthsInYear = culture.Calendar.GetMonthsInYear(year);
