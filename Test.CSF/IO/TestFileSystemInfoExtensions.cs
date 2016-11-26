@@ -45,7 +45,7 @@ namespace Test.CSF.IO
     [TestFixtureSetUp]
     public void FixtureSetup()
     {
-      var config = global::CSF.Configuration.ConfigurationHelper.GetSection<TestConfiguration>();
+      var config = Util.ConfigurationHelper.GetSection<TestConfiguration>();
       if(config == null)
       {
         string message = String.Format("Serious test error; `{0}' must not be null.", typeof(TestConfiguration).Name);

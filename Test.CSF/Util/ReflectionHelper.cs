@@ -1,10 +1,10 @@
-//
-// SampleObject.cs
+﻿//
+// ReflectionHelper.cs
 //
 // Author:
-//       Craig Fowler <craig@csf-dev.com>
+//       Craig Fowler <craig@craigfowler.me.uk>
 //
-// Copyright (c) 2015 CSF Software Limited
+// Copyright (c) 2016 Craig Fowler
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
 
-namespace Test.CSF.Mocks
+namespace Test.CSF.Util
 {
-  public class SampleObject
+  public static class ReflectionHelper
   {
-    public string FieldOne;
-    
-    public int FieldTwo;
-    
-    public string PropertyOne
+    public static bool IsMono()
     {
-      get;
-      set;
-    }
-    
-    public int PropertyTwo
-    {
-      get;
-      set;
+      return Type.GetType("Mono.Runtime") != null;
     }
   }
 }

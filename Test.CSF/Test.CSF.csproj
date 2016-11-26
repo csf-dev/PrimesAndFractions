@@ -34,41 +34,23 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Iesi.Collections">
-      <HintPath>..\Common\Dependencies\Iesi.Collections.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="TestInt32Extensions.cs" />
-    <Compile Include="IO\TestTabularDataParser.cs" />
-    <Compile Include="IO\TestIniDocument.cs" />
-    <Compile Include="TestSimpleCalculator.cs" />
-    <Compile Include="Validation\TestValidator.cs" />
-    <Compile Include="Validation\TestValidationFailureList.cs" />
-    <Compile Include="Mocks\SampleObject.cs" />
-    <Compile Include="Validation\TestValidationTest.cs" />
     <Compile Include="IO\TestFileSystemInfoExtensions.cs" />
     <Compile Include="TestFraction.cs" />
     <Compile Include="TestPrimeFactoriser.cs" />
-    <Compile Include="Entities\TestEntity.cs" />
-    <Compile Include="Entities\TestIdentity.cs" />
     <Compile Include="TestVersionExtensions.cs" />
-    <Compile Include="Reflection\TestTypeExtensions.cs" />
-    <Compile Include="Configuration\TestConfigurationHelper.cs" />
-    <Compile Include="Configuration\MockConfigurationSection.cs" />
     <Compile Include="TestDateTimeEqualityComparer.cs" />
-    <Compile Include="Reflection\TestAssemblyExtensions.cs" />
     <Compile Include="Collections\TestOrderNeutralEqualityComparer.cs" />
-    <Compile Include="Collections\TestIListExtensions.cs" />
     <Compile Include="TestDateTimeExtensions.cs" />
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
@@ -76,27 +58,16 @@
     <Compile Include="Globalization\TestCultureInfoExtensions.cs" />
     <Compile Include="TestNullSafe.cs" />
     <Compile Include="Collections\TestIDictionaryExtensions.cs" />
-    <Compile Include="Reflection\TestReflect.cs" />
     <Compile Include="TestStringExtensions.cs" />
     <Compile Include="Collections\TestIEnumerableExtensions.cs" />
     <Compile Include="TestEnumExtensions.cs" />
     <Compile Include="TestExceptionExtensions.cs" />
     <Compile Include="Collections\TestICollectionExtensions.cs" />
-    <Compile Include="Data\TestIDbCommandExtensions.cs" />
-    <Compile Include="Data\TestInMemoryDataReader.cs" />
-    <Compile Include="Collections\TestEventBoundListWrapper.cs" />
     <Compile Include="TestBinaryGuidCombStrategy.cs" />
-    <Compile Include="Collections\TestEventBoundCollectionWrapper.cs" />
-    <Compile Include="Collections\TestReferenceCollection.cs" />
-    <Compile Include="Collections\TestReferenceList.cs" />
     <Compile Include="TestGuidExtensions.cs" />
+    <Compile Include="Util\ReflectionHelper.cs" />
+    <Compile Include="Util\ConfigurationHelper.cs" />
     <Compile Include="TestConfiguration.cs" />
-    <Compile Include="TestThreadSafeCache.cs" />
-    <Compile Include="Collections\Legacy\TestEventBoundSetWrapper.cs" />
-    <Compile Include="Collections\Legacy\TestIesiCollectionExtensions.cs" />
-    <Compile Include="Collections\Legacy\TestReferenceSet.cs" />
-    <Compile Include="Security\TestPBKDF2CredentialVerifier.cs" />
-    <Compile Include="Security\TestAuthenticationService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -108,20 +79,8 @@
   <ItemGroup>
     <Folder Include="IO\" />
     <Folder Include="Collections\" />
-    <Folder Include="Reflection\" />
-    <Folder Include="Validation\" />
-    <Folder Include="Mocks\" />
-    <Folder Include="Security\" />
-    <Folder Include="Configuration\" />
     <Folder Include="Globalization\" />
-    <Folder Include="Data\" />
-    <Folder Include="Collections\Legacy\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Reflection\TestResource.txt">
-      <LogicalName>TestResource.txt</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reflection\TestResourceType.txt" />
+    <Folder Include="Util\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Test.CSF.dll.config">

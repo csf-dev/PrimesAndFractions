@@ -29,7 +29,6 @@ using NUnit.Framework;
 using CSF;
 using System.Reflection;
 using System.Runtime.Serialization;
-using CSF.Reflection;
 
 namespace Test.CSF
 {
@@ -185,7 +184,7 @@ namespace Test.CSF
     [ExpectedException(typeof(TargetInvocationException))]
     public void TestTryFixStackTraceFailure()
     {
-      if(!Reflect.IsMono())
+      if(!Util.ReflectionHelper.IsMono())
       {
         Assert.Ignore("This test is not valid when not running on the open source Mono framework.  When executing " +
                       "against the official .NET framework, the 'private framework method' implementation for fixing " +
