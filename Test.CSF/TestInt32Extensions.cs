@@ -64,14 +64,10 @@ namespace Test.CSF
     }
     
     [Test]
-    [ExpectedException(typeof(NotSupportedException),
-                       ExpectedMessage = "Creating alphabetic references for negative integers is not supported " +
-                                         "when the reference is to be zero-based.")]
+    [ExpectedException(typeof(ArgumentException))]
     public void TestGenerateAlphabeticReferenceException()
     {
-      string reference = Int32Extensions.GenerateAlphabeticReference(-1, true);
-      Assert.IsNull(reference,
-                    "Not a real assert, just stops the compiler warning about 'reference' being unused.");
+      Int32Extensions.GenerateAlphabeticReference(-1, true);
     }
     
     #endregion
@@ -108,10 +104,7 @@ namespace Test.CSF
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestParseAlphabeticReferenceNull()
     {
-      int parsed = Int32Extensions.ParseAlphabeticReference(null, true);
-      Assert.AreEqual(0,
-                      parsed,
-                      "Not a real assert, just stops the compiler warning about 'parsed' being unused.");
+      Int32Extensions.ParseAlphabeticReference(null, true);
     }
     
     [Test]
@@ -120,21 +113,14 @@ namespace Test.CSF
                                           "is not permitted in zero-based scenarios.")]
     public void TestParseAlphabeticReferenceEmptyString()
     {
-      int parsed = Int32Extensions.ParseAlphabeticReference(String.Empty, true);
-      Assert.AreEqual(0,
-                      parsed,
-                      "Not a real assert, just stops the compiler warning about 'parsed' being unused.");
+      Int32Extensions.ParseAlphabeticReference(String.Empty, true);
     }
     
     [Test]
-    [ExpectedException(typeof(FormatException),
-                       ExpectedMessage =  "Alphabetic reference does not conform to the required format.")]
+    [ExpectedException(typeof(FormatException))]
     public void TestParseAlphabeticReferenceInvalid()
     {
-      int parsed = Int32Extensions.ParseAlphabeticReference("a6c", true);
-      Assert.AreEqual(0,
-                      parsed,
-                      "Not a real assert, just stops the compiler warning about 'parsed' being unused.");
+      Int32Extensions.ParseAlphabeticReference("a6c", true);
     }
     
     [Test]

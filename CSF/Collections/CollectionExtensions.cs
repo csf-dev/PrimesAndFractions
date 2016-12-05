@@ -32,7 +32,7 @@ namespace CSF.Collections
   /// <summary>
   /// Extension methods for <c>ICollection</c> instances.
   /// </summary>
-  public static class ICollectionExtensions
+  public static class CollectionExtensions
   {
     /// <summary>
     /// Replaces the contents of the given generic <c>ICollection</c> with a given enumerable collection of the same
@@ -62,11 +62,11 @@ namespace CSF.Collections
     {
       if(sourceCollection == null)
       {
-        throw new ArgumentNullException("sourceCollection");
+        throw new ArgumentNullException(nameof(sourceCollection));
       }
       else if(replacementCollection == null)
       {
-        throw new ArgumentNullException("replacementCollection");
+        throw new ArgumentNullException(nameof(replacementCollection));
       }
 
       sourceCollection.Clear();

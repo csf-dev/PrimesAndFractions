@@ -72,7 +72,10 @@ namespace CSF.IO
     {
       if(!info.IsChildOf(root))
       {
-        throw new ArgumentException("Parameter 'info' is not a child of the root directory.");
+        var message = String.Format(Resources.ExceptionMessages.MustBeChildOfRootFormat,
+                                    nameof(info),
+                                    nameof(root));
+        throw new ArgumentException(message, nameof(info));
       }
       
       return info.FullName.Substring(root.FullName.Length);
@@ -106,7 +109,7 @@ namespace CSF.IO
       }
       else
       {
-        throw new ArgumentNullException("info");
+        throw new ArgumentNullException(nameof(info));
       }
       
       return output;
@@ -120,12 +123,13 @@ namespace CSF.IO
     {
       if(info == null)
       {
-        throw new ArgumentNullException("info");
+        throw new ArgumentNullException(nameof(info));
       }
 
       if(info == info.Root)
       {
-        var message = String.Format("Cannot create the root of a file system: {0}", info.Root.FullName);
+        var message = String.Format(Resources.ExceptionMessages.CannotCreateRootOfFilesystemFormat,
+                                    info.Root.FullName);
         throw new IOException(message);
       }
 

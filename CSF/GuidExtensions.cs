@@ -125,11 +125,11 @@ namespace CSF
     {
       if(guidBytes == null)
       {
-        throw new ArgumentNullException("guidBytes");
+        throw new ArgumentNullException(nameof(guidBytes));
       }
       else if(guidBytes.Length != GUID_BYTE_COUNT)
       {
-        throw new ArgumentException("Byte arrays representing GUIDs must contain exactly 16 bytes.", "guidBytes.");
+        throw new ArgumentException(Resources.ExceptionMessages.MustBeSixteenBytesInAGuid, nameof(guidBytes));
       }
 
       byte[] output = new byte[GUID_BYTE_COUNT];

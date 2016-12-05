@@ -185,9 +185,8 @@ namespace CSF
       }
       else if(zeroBased && integerValue < 0)
       {
-        string exMessage = "Creating alphabetic references for negative integers is not supported when the " +
-                           "reference is to be zero-based.";
-        NotSupportedException ex = new NotSupportedException(exMessage);
+        ArgumentException ex = new ArgumentException(Resources.ExceptionMessages.CannotCreateZeroBasedNegativeAlphabeticReference,
+                                                     nameof(integerValue));
         ex.Data["Integer value"] = integerValue;
         throw ex;
       }
@@ -260,12 +259,11 @@ namespace CSF
       // Sanity-check the input
       if(reference == null)
       {
-        throw new ArgumentNullException("reference");
+        throw new ArgumentNullException(nameof(reference));
       }
       else if(zeroBased && reference.Length == 0)
       {
-        throw new FormatException("An empty string may represent zero in non-zero-based scenarios but it is not " +
-                                  "permitted in zero-based scenarios.");
+        throw new FormatException(Resources.ExceptionMessages.EmptyStringNotPermittedForZeroBasedReferences);
       }
       
       // Loop through the characters in the reference string from the right-most characters to the left
@@ -295,7 +293,7 @@ namespace CSF
           /* If the character was not found but it does not meet the criteria for a negative symbol then throw an
            * exception.
            */
-          FormatException ex = new FormatException("Alphabetic reference does not conform to the required format.");
+          FormatException ex = new FormatException(Resources.ExceptionMessages.AlphabeticReferenceMustBeInValidFormat);
           ex.Data["Reference string"] = reference;
           throw ex;
         }
@@ -432,29 +430,28 @@ namespace CSF
       // Just some sanity checking
       if(targetValue < 0)
       {
-        string message = "Integer value to represent may not be less than zero.";
-        ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException("integerValue", message);
+        ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException(nameof(targetValue),
+                                                                         Resources.ExceptionMessages.IntegerValueMustNotBeLessThanZero);
         ex.Data["Integer value"] = targetValue;
         throw ex;
       }
       else if(!zeroBased && targetValue < 1)
       {
-        string message = "Integer value to represent may not be less than one when performing non-zero-based " +
-                         "generation.";
-        ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException("integerValue", message);
+        ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException(nameof(targetValue),
+                                                                         Resources.ExceptionMessages.IntegerValueMustNotBeLessThanOneForNonZeroBasedOperations);
         ex.Data["Integer value"] = targetValue;
         throw ex;
       }
       else if(currentCharacterPosition < 0)
       {
-        string message = "Current character position (right-to-left, zero based) cannot be less than zero.";
-        ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException("currentCharacterPosition", message);
+        ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException(nameof(currentCharacterPosition),
+                                                                         Resources.ExceptionMessages.CurrentCharacterPositionMustNotBeNegative);
         ex.Data["Character position"] = currentCharacterPosition;
         throw ex;
       }
       else if(output == null)
       {
-        throw new ArgumentNullException("output");
+        throw new ArgumentNullException(nameof(output));
       }
       
       /* The value component is the portion of the target value that is significant to generating the character at

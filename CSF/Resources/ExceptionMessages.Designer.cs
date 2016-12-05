@@ -75,5 +75,89 @@ namespace CSF.Resources {
                 return ResourceManager.GetString("TypeCodeMustBeValid", resourceCulture);
             }
         }
+        
+        internal static string MustBeChildOfRootFormat {
+            get {
+                return ResourceManager.GetString("MustBeChildOfRootFormat", resourceCulture);
+            }
+        }
+        
+        internal static string CannotCreateRootOfFilesystemFormat {
+            get {
+                return ResourceManager.GetString("CannotCreateRootOfFilesystemFormat", resourceCulture);
+            }
+        }
+        
+        internal static string CountOfGuidNonRandomBytesOutOfRangeFormat {
+            get {
+                return ResourceManager.GetString("CountOfGuidNonRandomBytesOutOfRangeFormat", resourceCulture);
+            }
+        }
+        
+        internal static string CannotFixStackTrace {
+            get {
+                return ResourceManager.GetString("CannotFixStackTrace", resourceCulture);
+            }
+        }
+        
+        internal static string FractionMustSimplifyToInteger {
+            get {
+                return ResourceManager.GetString("FractionMustSimplifyToInteger", resourceCulture);
+            }
+        }
+        
+        internal static string FractionDenominatorCannotBeZero {
+            get {
+                return ResourceManager.GetString("FractionDenominatorCannotBeZero", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidFractionFormat {
+            get {
+                return ResourceManager.GetString("InvalidFractionFormat", resourceCulture);
+            }
+        }
+        
+        internal static string MustBeSixteenBytesInAGuid {
+            get {
+                return ResourceManager.GetString("MustBeSixteenBytesInAGuid", resourceCulture);
+            }
+        }
+        
+        internal static string CannotCreateZeroBasedNegativeAlphabeticReference {
+            get {
+                return ResourceManager.GetString("CannotCreateZeroBasedNegativeAlphabeticReference", resourceCulture);
+            }
+        }
+        
+        internal static string EmptyStringNotPermittedForZeroBasedReferences {
+            get {
+                return ResourceManager.GetString("EmptyStringNotPermittedForZeroBasedReferences", resourceCulture);
+            }
+        }
+        
+        internal static string AlphabeticReferenceMustBeInValidFormat {
+            get {
+                return ResourceManager.GetString("AlphabeticReferenceMustBeInValidFormat", resourceCulture);
+            }
+        }
+        
+        internal static string IntegerValueMustNotBeLessThanZero {
+            get {
+                return ResourceManager.GetString("IntegerValueMustNotBeLessThanZero", resourceCulture);
+            }
+        }
+        
+        internal static string IntegerValueMustNotBeLessThanOneForNonZeroBasedOperations {
+            get {
+                return ResourceManager.GetString("IntegerValueMustNotBeLessThanOneForNonZeroBasedOperations", resourceCulture);
+            }
+        }
+        
+        internal static string CurrentCharacterPositionMustNotBeNegative {
+            get {
+                return ResourceManager.GetString("CurrentCharacterPositionMustNotBeNegative", resourceCulture);
+            }
+        }
     }
 }

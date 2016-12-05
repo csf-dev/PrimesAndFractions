@@ -58,12 +58,12 @@
     <Compile Include="Collections\TestIEnumerableExtensions.cs" />
     <Compile Include="TestEnumExtensions.cs" />
     <Compile Include="TestExceptionExtensions.cs" />
-    <Compile Include="Collections\TestICollectionExtensions.cs" />
     <Compile Include="TestBinaryGuidCombStrategy.cs" />
     <Compile Include="TestGuidExtensions.cs" />
     <Compile Include="Util\ReflectionHelper.cs" />
     <Compile Include="Util\ConfigurationHelper.cs" />
     <Compile Include="TestConfiguration.cs" />
+    <Compile Include="Collections\TestCollectionExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
