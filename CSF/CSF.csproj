@@ -8,7 +8,7 @@
     <ProjectGuid>{E563D7BC-1AB1-4AFB-8533-51315437C6E6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>CSF</RootNamespace>
-    <AssemblyName>CSF</AssemblyName>
+    <AssemblyName>CSF.Utils</AssemblyName>
     <ReleaseVersion>6.0.0</ReleaseVersion>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -22,7 +22,7 @@
     <ConsolePause>false</ConsolePause>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DebugSymbols>true</DebugSymbols>
-    <DocumentationFile>bin\Debug\CSF.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\CSF.Utils.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -31,7 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <DocumentationFile>bin\Release\CSF.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\CSF.Utils.xml</DocumentationFile>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
