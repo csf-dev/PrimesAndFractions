@@ -29,5 +29,15 @@ using System.Runtime.CompilerServices;
 using System;
 
 [assembly: CLSCompliant(true)]
-[assembly: AssemblyTitle("CSF")]
-[assembly: AssemblyDescription("A collection of useful types that I have used amongst multiple projects.")]
+[assembly: AssemblyTitle("CSF.Core")]
+[assembly: AssemblyDescription("Various utility types which have no better home anywhere else.  A true assortment of things which have no better home elsewhere.")]
+[assembly: AssemblyCompany("CSF Software Limited")]
+[assembly: AssemblyCopyright("CSF Software Limited")]
+
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
+
+[assembly: AssemblyVersion("6.0.0")]
