@@ -1,7 +1,7 @@
 # CSF Utilities
 This *general purpose utilities library* is an assortment of helper types which
-are too small to warrant their own assemblies. It's a sort of dumping ground
-for specks of useful functionality for which I can't find a better home.
+are too small to warrant their own assemblies. It's where I am putting
+specks of useful functionality for which I can't find a better home.
 
 ## Highlights
 Here are some of the highlights of functionality which is contained within:
