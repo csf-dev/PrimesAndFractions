@@ -58,25 +58,10 @@ namespace CSF
     /// </returns>
     public IEnumerable<int> GetCommonPrimeFactors(int firstNumber, int secondNumber)
     {
-      List<int>
-        firstPrimeFactors = this.GetPrimeFactors(firstNumber).ToList(),
-        secondPrimeFactors = this.GetPrimeFactors(secondNumber).ToList(),
-        output = new List<int>();
-      
-      for(int i = 0; i < firstPrimeFactors.Count; i++)
-      {
-        int
-          current = firstPrimeFactors[i],
-          currentIndex = secondPrimeFactors.IndexOf(current);
-        
-        if(currentIndex >= 0)
-        {
-          output.Add(current);
-          secondPrimeFactors.RemoveAt(currentIndex);
-        }
-      }
-      
-      return output;
+      var firstPrimeFactors = this.GetPrimeFactors(firstNumber).ToList();
+      var secondPrimeFactors = this.GetPrimeFactors(secondNumber).ToList();
+
+      return GetCommonPrimeFactors(firstPrimeFactors, secondPrimeFactors);
     }
     
     /// <summary>
@@ -91,7 +76,8 @@ namespace CSF
     public IEnumerable<int> GetPrimeFactors(int number)
     {
       /* A future plan for this method would be to cache the primes that this instance has already generated.
-       * Then, future calls will use the cache as much as possible rather than generating lots more prime numbers.
+       * Then, future calls will use the cache as much as possible rather than generating the prime numbers afresh
+       * on every call.  This is particularly annoying because this method operates recursively.
        */
       int first = this.GeneratePrimes(number)
                   .TakeWhile(x => x <= Math.Sqrt(number))
@@ -136,16 +122,75 @@ namespace CSF
       return start;
     }
 
+    /// <summary>
+    /// Gets a collection of candidates for prime numbers, up to a given limit.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method is an optimisation, Above the number 2 itself, no number divisible by 2 can be a prime number.
+    /// Likewise, above the number 3, no number divisible by 3 can be a prime number.
+    /// </para>
+    /// <para>
+    /// This method returns the numbers 2, then 3, and then a collection of numbers which are one-less-then and then
+    /// one-greater-than multiples of 6.  The multiple of 6 itself is impossible (divides by 2 and 3).  The multiple of
+    /// 6 ± two is impossible (it would divide by 2) as is the multiple of 6 ± three (it would divide by 3).
+    /// Once we get to ± four or ± five we are talking about the same number as [a different multiple of 6] ± two or
+    /// ± one (respectively) would result in.
+    /// </para>
+    /// <para>
+    /// Thus, this method cuts the work we must perform to find prime numbers roughly to a third of that which we would
+    /// need if we used a naïve search of the whole integer range.
+    /// </para>
+    /// </remarks>
+    /// <returns>The primes.</returns>
+    /// <param name="upTo">Up to.</param>
     private IEnumerable<int> PotentialPrimes(int upTo)
     {
       yield return 2;
       yield return 3;
-      int k = 1;
-      while (k > 0 && (6 * k - 1) <= upTo) {
-        yield return 6 * k - 1;
-        yield return 6 * k + 1;
-        k++;
+
+      var n = 1;
+
+      while (n > 0 && (6 * n - 1) <= upTo)
+      {
+        yield return 6 * n - 1;
+        yield return 6 * n + 1;
+        n++;
       }
+    }
+
+    /// <summary>
+    /// Builds and returns a collection of the prime factors which exist in both first and second collections.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// In this operation, duplicates (which appear in both collections more than once) are included multiple times in
+    /// the output - as many times as they exist in both collections.
+    /// </para>
+    /// <para>
+    /// Note that this method is destructive.  The collection of second prime factors is altered (elements removed) as
+    /// the output is built.  Do not call this when you care that the input parameters are unmodified!
+    /// </para>
+    /// </remarks>
+    /// <returns>The common prime factors.</returns>
+    /// <param name="firstPrimeFactors">First prime factors.</param>
+    /// <param name="secondPrimeFactors">Second prime factors.</param>
+    private IEnumerable<int> GetCommonPrimeFactors(IList<int> firstPrimeFactors, IList<int> secondPrimeFactors)
+    {
+      var output = new List<int>();
+
+      foreach(var factorInFirstCollection in firstPrimeFactors)
+      {
+        var indexInSecondCollection = secondPrimeFactors.IndexOf(factorInFirstCollection);
+
+        if(indexInSecondCollection >= 0)
+        {
+          output.Add(factorInFirstCollection);
+          secondPrimeFactors.RemoveAt(indexInSecondCollection);
+        }
+      }
+
+      return output;
     }
 
     #endregion
