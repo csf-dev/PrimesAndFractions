@@ -36,14 +36,15 @@
     <Reference Include="System.Core" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Package>nunit</Package>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+      <Package>moq-4.0</Package>
     </Reference>
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="TestInt32Extensions.cs" />
     <Compile Include="IO\TestFileSystemInfoExtensions.cs" />
     <Compile Include="TestFraction.cs" />
@@ -52,9 +53,6 @@
     <Compile Include="TestDateTimeEqualityComparer.cs" />
     <Compile Include="Collections\TestOrderNeutralEqualityComparer.cs" />
     <Compile Include="TestDateTimeExtensions.cs" />
-    <Compile Include="..\Common\CommonAssemblyInfo.cs">
-      <Link>CommonAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Globalization\TestCultureInfoExtensions.cs" />
     <Compile Include="TestNullSafe.cs" />
     <Compile Include="Collections\TestIDictionaryExtensions.cs" />

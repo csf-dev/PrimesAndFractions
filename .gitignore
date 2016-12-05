@@ -7,3 +7,5 @@ TestResult.formatted.xml
 *.userprefs
 *.orig
 *.directory
+packages/*/*
+*.nupkg
