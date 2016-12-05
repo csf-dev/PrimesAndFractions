@@ -36,7 +36,7 @@ namespace Test.CSF.Collections
   public class TestIDictionaryExtensions
   {
     [Test]
-    public void TestToNameValueCollection()
+    public void ToNameValueCollection_creates_equivalent_collection()
     {
       Dictionary<string,string> test = new Dictionary<string, string>();
       test.Add("foo", "bar");

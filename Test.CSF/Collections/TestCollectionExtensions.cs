@@ -32,19 +32,17 @@ using CSF.Collections;
 namespace Test.CSF.Collections
 {
   [TestFixture]
-  public class TestICollectionExtensions
+  public class TestCollectionExtensions
   {
     [Test]
-    public void TestReplaceContents()
+    public void ReplaceContents_replaces_contents_with_correct_items()
     {
       List<string> list = new List<string>(new string[] { "A", "B", "C" });
+      var replacement = new [] { "X", "Y", "Z" };
 
-      list.ReplaceContents(new string[] { "X", "Y", "Z" });
+      list.ReplaceContents(replacement);
 
-      Assert.AreEqual(3, list.Count, "Count of items");
-      Assert.IsTrue(list.Contains("X"), "Contained item 1");
-      Assert.IsTrue(list.Contains("Y"), "Contained item 2");
-      Assert.IsTrue(list.Contains("Z"), "Contained item 3");
+      CollectionAssert.AreEquivalent(replacement, list);
     }
   }
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>CSF.Utils</id>
+    <version>6.0.0</version>
+    <title>CSF.Utils</title>
+    <authors>CSF Software Ltd</authors>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/csf-dev/CSF.Utils</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Assorted utility types including OrderNeutralEqualityComparer, BinaryGuidCombStrategy, Fraction, PrimeFactoriser and enum extension methods.</description>
+    <copyright>Copyright 2016</copyright>
+  </metadata>
+  <files>
+    <file src="bin/Release/CSF.Utils.dll" target="lib/net45" />
+  </files>
+</package>

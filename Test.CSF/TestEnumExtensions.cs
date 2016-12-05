@@ -75,7 +75,7 @@ namespace Test.CSF
     }
 
     [Test]
-    [ExpectedException(typeof(NotSupportedException))]
+    [ExpectedException(typeof(ArgumentException))]
     public void TestWithFlagsNotEnumeration()
     {
       DateTime testVal = DateTime.Today;

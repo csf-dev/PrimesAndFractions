@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Test.CSF</RootNamespace>
     <AssemblyName>Test.CSF</AssemblyName>
-    <ReleaseVersion>4.1.1</ReleaseVersion>
+    <ReleaseVersion>6.0.0</ReleaseVersion>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -43,7 +43,6 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="TestInt32Extensions.cs" />
     <Compile Include="IO\TestFileSystemInfoExtensions.cs" />
     <Compile Include="TestFraction.cs" />
@@ -52,9 +51,6 @@
     <Compile Include="TestDateTimeEqualityComparer.cs" />
     <Compile Include="Collections\TestOrderNeutralEqualityComparer.cs" />
     <Compile Include="TestDateTimeExtensions.cs" />
-    <Compile Include="..\Common\CommonAssemblyInfo.cs">
-      <Link>CommonAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Globalization\TestCultureInfoExtensions.cs" />
     <Compile Include="TestNullSafe.cs" />
     <Compile Include="Collections\TestIDictionaryExtensions.cs" />
@@ -62,12 +58,12 @@
     <Compile Include="Collections\TestIEnumerableExtensions.cs" />
     <Compile Include="TestEnumExtensions.cs" />
     <Compile Include="TestExceptionExtensions.cs" />
-    <Compile Include="Collections\TestICollectionExtensions.cs" />
     <Compile Include="TestBinaryGuidCombStrategy.cs" />
     <Compile Include="TestGuidExtensions.cs" />
     <Compile Include="Util\ReflectionHelper.cs" />
     <Compile Include="Util\ConfigurationHelper.cs" />
     <Compile Include="TestConfiguration.cs" />
+    <Compile Include="Collections\TestCollectionExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

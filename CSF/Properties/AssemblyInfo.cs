@@ -1,5 +1,5 @@
 //
-// CommonAssemblyInfo.cs
+// AssemblyInfo.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -26,9 +26,12 @@
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System;
 
+[assembly: CLSCompliant(true)]
+[assembly: AssemblyTitle("CSF.Core")]
+[assembly: AssemblyDescription("Various utility types which have no better home anywhere else.  A true assortment of things which have no better home elsewhere.")]
 [assembly: AssemblyCompany("CSF Software Limited")]
-[assembly: AssemblyProduct("CSF Software Utilities")]
 [assembly: AssemblyCopyright("CSF Software Limited")]
 
 #if DEBUG
@@ -37,9 +40,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
-
-[assembly: AssemblyVersion("5.0.0")]
-
+[assembly: AssemblyVersion("6.0.0")]

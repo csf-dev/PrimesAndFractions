@@ -49,7 +49,7 @@ namespace CSF.Collections
     {
       if(dictionary == null)
       {
-        throw new ArgumentNullException("dictionary");
+        throw new ArgumentNullException(nameof(dictionary));
       }
 
       NameValueCollection output = new NameValueCollection();

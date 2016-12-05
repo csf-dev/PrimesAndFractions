@@ -32,28 +32,41 @@ namespace CSF
   /// An exception thrown when <see cref="M:ExceptionExtensions.FixStackTrace{TException}"/> is unable to use any
   /// mechanism to fix an exception's stack trace.
   /// </summary>
+  [Serializable]
   public class CannotFixStackTraceException : Exception
   {
-    #region constants
-
-    private const string MESSAGE = "An exception was thrown and attempts were made to 'fix'/preserve its stack " +
-                                   "trace, these attempts failed.  Try adding a constructor of signature " +
-                                   "(SerializationInfo, StreamingContext) to the inner exception type.  Otherwise do " +
-                                   "not use FixStackTrace on exceptions of this type.";
-
-    #endregion
-
-    #region constructor
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CannotFixStackTraceException"/> class
+    /// </summary>
+    public CannotFixStackTraceException()
+    {
+    }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CSF.CannotFixStackTraceException"/> class.
+    /// Initializes a new instance of the <see cref="T:CannotFixStackTraceException"/> class
     /// </summary>
-    /// <param name='inner'>
-    /// The inner exception.
-    /// </param>
-    public CannotFixStackTraceException(Exception inner) : base(MESSAGE, inner) {}
+    /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
+    public CannotFixStackTraceException(string message) : base(message)
+    {
+    }
 
-    #endregion
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CannotFixStackTraceException"/> class
+    /// </summary>
+    /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
+    /// <param name="inner">The exception that is the cause of the current exception. </param>
+    public CannotFixStackTraceException(string message, Exception inner) : base(message, inner)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CannotFixStackTraceException"/> class
+    /// </summary>
+    /// <param name="context">The contextual information about the source or destination.</param>
+    /// <param name="info">The object that holds the serialized object data.</param>
+    protected CannotFixStackTraceException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+    {
+    }
   }
 }
 

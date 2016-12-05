@@ -66,31 +66,20 @@ namespace Test.CSF
     }
 
     [Test]
-    [ExpectedException(typeof(CannotFixStackTraceException))]
     public void TestFixStackTraceUsingSerializationCustomException()
     {
+      CustomException fixedException = null;
+
       try
       {
-        CustomException fixedException = null;
-        try
-        {
-          throw new CustomException();
-        }
-        catch(CustomException ex)
-        {
-          fixedException = ExceptionExtensions.FixStackTraceUsingSerialization(ex);;
-        }
-
-        if(fixedException != null)
-        {
-          throw new TargetInvocationException(fixedException);
-        }
+        throw new CustomException();
       }
-      catch(TargetInvocationException ex)
+      catch(CustomException ex)
       {
-        Assert.IsInstanceOf<CustomException>(ex.InnerException, "Inner exception");
-        throw;
+        fixedException = ExceptionExtensions.FixStackTraceUsingSerialization(ex);;
       }
+
+      Assert.IsNull(fixedException);
     }
 
     [Test]
@@ -181,7 +170,6 @@ namespace Test.CSF
     }
 
     [Test]
-    [ExpectedException(typeof(TargetInvocationException))]
     public void TestTryFixStackTraceFailure()
     {
       if(!Util.ReflectionHelper.IsMono())
@@ -192,30 +180,18 @@ namespace Test.CSF
       }
 
       bool success = false;
+      CustomException fixedException = null;
 
       try
       {
-        CustomException fixedException = null;
-        try
-        {
-          throw new CustomException();
-        }
-        catch(CustomException ex)
-        {
-          success = ex.TryFixStackTrace(out fixedException);
-        }
-
-        if(fixedException != null)
-        {
-          throw new TargetInvocationException(fixedException);
-        }
+        throw new CustomException();
       }
-      catch(TargetInvocationException ex)
+      catch(CustomException ex)
       {
-        Assert.IsInstanceOf<CustomException>(ex.InnerException, "Inner exception");
-        Assert.IsFalse(success, "Success of fix");
-        throw;
+        success = ex.TryFixStackTrace(out fixedException);
       }
+
+      Assert.IsFalse(success);
     }
 
     #endregion

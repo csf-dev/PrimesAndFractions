@@ -81,11 +81,11 @@ namespace CSF
     {
       if(value == null)
       {
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
       }
       if(culture == null)
       {
-        throw new ArgumentNullException("culture");
+        throw new ArgumentNullException(nameof(culture));
       }
 
       string lowercaseVersion = value.ToLower(culture);
@@ -140,7 +140,7 @@ namespace CSF
     /// </exception>
     public static TEnum ParseAs<TEnum>(this string value) where TEnum : struct
     {
-      return value.ParseAs<TEnum>(false);
+      return ParseAs<TEnum>(value, false);
     }
 
     /// <summary>
@@ -171,17 +171,17 @@ namespace CSF
     {
       if(value == null)
       {
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
       }
 
-      Type enumType = typeof(TEnum);
+      var output = TryParseAs<TEnum>(value, ignoreCase);
 
-      if(!enumType.IsEnum)
+      if(!output.HasValue)
       {
-        throw new InvalidOperationException("The target type to parse-as must be an enumeration type.");
+        throw new RequiresDefinedEnumerationConstantException(typeof(TEnum), value);
       }
 
-      return (TEnum) Enum.Parse(typeof(TEnum), value, ignoreCase);
+      return output.Value;
     }
 
     /// <summary>
@@ -201,7 +201,7 @@ namespace CSF
     /// </exception>
     public static TEnum? TryParseAs<TEnum>(this string value) where TEnum : struct
     {
-      return value.TryParseAs<TEnum>(false);
+      return TryParseAs<TEnum>(value, false);
     }
 
     /// <summary>
@@ -224,18 +224,23 @@ namespace CSF
     /// </exception>
     public static TEnum? TryParseAs<TEnum>(this string value, bool ignoreCase) where TEnum : struct
     {
-      TEnum? output;
-
-      try
+      if(value == null)
       {
-        output = value.ParseAs<TEnum>(ignoreCase);
-      }
-      catch(ArgumentException)
-      {
-        output = null;
+        return null;
       }
 
-      return output;
+      TEnum output;
+      var enumType = typeof(TEnum);
+      EnumExtensions.RequireEnum(enumType);
+
+      if(Enum.TryParse<TEnum>(value, ignoreCase, out output))
+      {
+        return output;
+      }
+      else
+      {
+        return null;
+      }
     }
 
     #endregion
