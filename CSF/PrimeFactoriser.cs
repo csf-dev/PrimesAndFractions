@@ -1,10 +1,11 @@
 //
 // PrimeFactoriser.cs
 //
-// Author:
+// Authors:
+//       Clinton Sheppard <https://handcraftsman.wordpress.com/>
 //       Craig Fowler <craig@csf-dev.com>
 //
-// Copyright (c) 2015 CSF Software Limited
+// Copyright (c) 2016 the respective authors
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +36,7 @@ namespace CSF
   /// </summary>
   /// <remarks>
   /// <para>
-  /// This type is highly (almost completely) based on the excellent work found at
+  /// This type is heavily (almost completely) based on the excellent work found at
   /// http://handcraftsman.wordpress.com/2010/09/02/ienumerable-of-prime-numbers-in-csharp/ and
   /// http://handcraftsman.wordpress.com/2010/09/02/prime-factorization-in-csharp/
   /// </para>
