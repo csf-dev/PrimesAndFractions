@@ -33,6 +33,14 @@ namespace CSF
   /// </summary>
   public static class VersionExtensions
   {
+    #region constants
+
+    private const string VERSION_SEPARATOR = ".";
+
+    #endregion
+
+    #region methods
+
     /// <summary>
     /// Returns the version number formatted as a "semantic versioning" tag-name.
     /// </summary>
@@ -52,11 +60,13 @@ namespace CSF
     {
       if(version == null)
       {
-        throw new ArgumentNullException ("version");
+        throw new ArgumentNullException (nameof(version));
       }
-      
-      return String.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
+
+      return String.Join(VERSION_SEPARATOR, new [] { version.Major, version.Minor, version.Build });
     }
+
+    #endregion
   }
 }
 

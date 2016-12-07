@@ -39,8 +39,13 @@ namespace CSF
   public struct Fraction : ICloneable
   {
     #region constants
-    
-    private static readonly Regex FractionParser = new Regex(@"^(-?\d+)/(-?\d+)$", RegexOptions.Compiled);
+
+    private const string
+      FRACTION_PARSING_FORMAT           = @"^(-?\d+)/(-?\d+)$",
+      FRACTION_STRING_FORMAT            = "{0}/{1}",
+      FRACTION_COMPOSITE_SEPARATOR      = " ";
+
+    private static readonly Regex FractionParser = new Regex(FRACTION_PARSING_FORMAT, RegexOptions.Compiled);
     
     #endregion
     
@@ -84,7 +89,7 @@ namespace CSF
     public bool SimplifiesToInteger
     {
       get {
-        return (this.Numerator % this.Denominator == 0);
+        return (Numerator % Denominator == 0);
       }
     }
     
@@ -143,7 +148,7 @@ namespace CSF
     /// </returns>
     public override int GetHashCode ()
     {
-      return this.Numerator ^ this.Denominator;
+      return Numerator ^ Denominator;
     }
     
     /// <summary>
@@ -154,7 +159,7 @@ namespace CSF
     /// </returns>
     public Fraction Simplify()
     {
-      int newNumerator = this.Numerator, newDenominator = this.Denominator;
+      int newNumerator = Numerator, newDenominator = Denominator;
       IEnumerable<int> commonFactors;
       
       if(newNumerator == 0)
@@ -164,7 +169,7 @@ namespace CSF
       }
       else
       {
-        commonFactors = PrimeFactoriser.Default.GetCommonPrimeFactors(this.Numerator, this.Denominator);
+        commonFactors = PrimeFactoriser.Default.GetCommonPrimeFactors(Numerator, Denominator);
         foreach(int factor in commonFactors)
         {
           newNumerator = newNumerator / factor;
@@ -189,7 +194,7 @@ namespace CSF
     /// </returns>
     public override string ToString ()
     {
-      return String.Format("{0}/{1}", this.Numerator, this.Denominator);
+      return String.Format(FRACTION_STRING_FORMAT, Numerator, Denominator);
     }
     
     /// <summary>
@@ -216,29 +221,23 @@ namespace CSF
     /// </returns>
     public string ToCompositeString ()
     {
-      string output;
-      
-      if(this.SimplifiesToInteger)
+      if(SimplifiesToInteger)
       {
-        output = this.ToInteger().ToString();
+        return ToInteger().ToString();
       }
-      else
+
+      var integerPortion = (int) Math.Truncate((double) Numerator / (double) Denominator);
+
+      if(integerPortion == 0)
       {
-        int
-          integerPortion = (int) Math.Truncate((double) this.Numerator / (double) this.Denominator),
-          remainder = (this.Numerator % this.Denominator);
-        
-        if(integerPortion != 0)
-        {
-          output = String.Format("{0} {1}", integerPortion, new Fraction(Math.Abs(remainder), this.Denominator));
-        }
-        else
-        {
-          output = new Fraction(remainder, this.Denominator).ToString();
-        }
+        return ToString();
       }
-      
-      return output;
+
+      var remainder = Math.Abs(Numerator % Denominator);
+
+      return String.Concat(integerPortion,
+                           FRACTION_COMPOSITE_SEPARATOR,
+                           new Fraction(remainder, Denominator));
     }
     
     /// <summary>
@@ -249,7 +248,7 @@ namespace CSF
     /// </returns>
     public decimal ToDecimal()
     {
-      return (decimal) this.Numerator / (decimal) this.Denominator;
+      return (decimal) Numerator / (decimal) Denominator;
     }
     
     /// <summary>
@@ -263,12 +262,12 @@ namespace CSF
     /// </returns>
     public int ToInteger()
     {
-      if(!this.SimplifiesToInteger)
+      if(!SimplifiesToInteger)
       {
-        throw new InvalidOperationException("This fraction does not simplify to an integer");
+        throw new InvalidOperationException(Resources.ExceptionMessages.FractionMustSimplifyToInteger);
       }
       
-      return (int) (this.Numerator / this.Denominator);
+      return (int) (Numerator / Denominator);
     }
     
     #endregion
@@ -283,12 +282,12 @@ namespace CSF
     /// </returns>
     public Fraction Clone ()
     {
-      return new Fraction(this.Numerator, this.Denominator);
+      return new Fraction(Numerator, Denominator);
     }
     
     object ICloneable.Clone ()
     {
-      return this.Clone();
+      return Clone();
     }
  
     #endregion
@@ -308,7 +307,8 @@ namespace CSF
     {
       if(denominator == 0)
       {
-        throw new ArgumentOutOfRangeException("denominator", "Fraction denominator cannot be zero");
+        throw new ArgumentOutOfRangeException(nameof(denominator),
+                                              Resources.ExceptionMessages.FractionDenominatorCannotBeZero);
       }
       
       _numerator = numerator;
@@ -340,14 +340,14 @@ namespace CSF
       
       if(specification == null)
       {
-        throw new ArgumentNullException("specification");
+        throw new ArgumentNullException(nameof(specification));
       }
       
       specificationMatch = FractionParser.Match(specification);
       
       if(!specificationMatch.Success)
       {
-        throw new ArgumentException("String to parse does not represent a valid fraction", "specification");
+        throw new FormatException(Resources.ExceptionMessages.InvalidFractionFormat);
       }
       
       return new Fraction(Int32.Parse(specificationMatch.Groups[1].Value),

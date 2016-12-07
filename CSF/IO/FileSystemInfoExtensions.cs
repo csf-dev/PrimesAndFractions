@@ -68,11 +68,14 @@ namespace CSF.IO
     /// <exception cref='ArgumentException'>
     /// Is thrown if the current instance is not a child of the root directory.
     /// </exception>
-    public static string GetRelative(this FileSystemInfo info, DirectoryInfo root)
+    public static string GetRelativePath(this FileSystemInfo info, DirectoryInfo root)
     {
       if(!info.IsChildOf(root))
       {
-        throw new ArgumentException("Parameter 'info' is not a child of the root directory.");
+        var message = String.Format(Resources.ExceptionMessages.MustBeChildOfRootFormat,
+                                    nameof(info),
+                                    nameof(root));
+        throw new ArgumentException(message, nameof(info));
       }
       
       return info.FullName.Substring(root.FullName.Length);
@@ -90,7 +93,7 @@ namespace CSF.IO
     /// <exception cref='ArgumentNullException'>
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
     /// </exception>
-    public static DirectoryInfo GetParent(this FileSystemInfo info)
+    public static DirectoryInfo GetParentDirectory(this FileSystemInfo info)
     {
       DirectoryInfo output;
       DirectoryInfo directory = info as DirectoryInfo;
@@ -106,7 +109,7 @@ namespace CSF.IO
       }
       else
       {
-        throw new ArgumentNullException("info");
+        throw new ArgumentNullException(nameof(info));
       }
       
       return output;
@@ -116,16 +119,17 @@ namespace CSF.IO
     /// Creates a directory recursively, creating parent directories if required.
     /// </summary>
     /// <param name="info">Info.</param>
-    public static void CreateRecursive(this DirectoryInfo info)
+    public static void CreateRecursively(this DirectoryInfo info)
     {
       if(info == null)
       {
-        throw new ArgumentNullException("info");
+        throw new ArgumentNullException(nameof(info));
       }
 
       if(info == info.Root)
       {
-        var message = String.Format("Cannot create the root of a file system: {0}", info.Root.FullName);
+        var message = String.Format(Resources.ExceptionMessages.CannotCreateRootOfFilesystemFormat,
+                                    info.Root.FullName);
         throw new IOException(message);
       }
 
@@ -133,7 +137,7 @@ namespace CSF.IO
       {
         if(info.Parent != info.Root)
         {
-          info.Parent.CreateRecursive();
+          info.Parent.CreateRecursively();
         }
 
         info.Create();

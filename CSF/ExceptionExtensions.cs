@@ -98,29 +98,14 @@ namespace CSF
     {
       TException output;
 
-      if(ex == null)
+      if(TryFixStackTrace(ex, out output))
       {
-        throw new ArgumentNullException("ex");
+        return output;
       }
-
-      output = FixStackTraceUsingInternalPreserve(ex);
-
-      if(output == null)
+      else
       {
-        output = FixStackTraceUsingPrepForRemoting(ex);
+        throw new CannotFixStackTraceException(Resources.ExceptionMessages.CannotFixStackTrace, ex);
       }
-
-      if(output == null)
-      {
-        output = FixStackTraceUsingSerialization(ex);
-      }
-
-      if(output == null)
-      {
-        throw new CannotFixStackTraceException(ex);
-      }
-
-      return output;
     }
 
     /// <summary>
@@ -176,17 +161,34 @@ namespace CSF
     public static bool TryFixStackTrace<TException>(this TException ex, out TException fixedException)
       where TException : Exception
     {
+      if(ex == null)
+      {
+        throw new ArgumentNullException(nameof(ex));
+      }
+
       bool output;
 
-      try
+      var fixedEx = FixStackTraceUsingInternalPreserve(ex);
+
+      if(fixedEx == null)
       {
-        fixedException = ex.FixStackTrace();
-        output = true;
+        fixedEx = FixStackTraceUsingPrepForRemoting(ex);
       }
-      catch(CannotFixStackTraceException)
+
+      if(fixedEx == null)
       {
-        fixedException = ex;
+        fixedEx = FixStackTraceUsingSerialization(ex);
+      }
+
+      if(fixedEx == null)
+      {
         output = false;
+        fixedException = null;
+      }
+      else
+      {
+        output = true;
+        fixedException = fixedEx;
       }
 
       return output;
@@ -226,7 +228,7 @@ namespace CSF
     {
       if(ex == null)
       {
-        throw new ArgumentNullException("ex");
+        throw new ArgumentNullException(nameof(ex));
       }
 
       TException output = null;
@@ -270,7 +272,7 @@ namespace CSF
     {
       if(ex == null)
       {
-        throw new ArgumentNullException("ex");
+        throw new ArgumentNullException(nameof(ex));
       }
 
       TException output = null;
@@ -324,7 +326,7 @@ namespace CSF
     {
       if(ex == null)
       {
-        throw new ArgumentNullException("ex");
+        throw new ArgumentNullException(nameof(ex));
       }
 
       var ctx = new StreamingContext(StreamingContextStates.CrossAppDomain);
@@ -340,7 +342,7 @@ namespace CSF
       }
       catch(SerializationException)
       {
-        throw new CannotFixStackTraceException(ex);
+        return null;
       }
 
       return ex;

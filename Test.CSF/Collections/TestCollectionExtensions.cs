@@ -1,5 +1,5 @@
 //
-// TestNullSafe.cs
+// TestICollectionExtensions.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -25,47 +25,25 @@
 // THE SOFTWARE.
 
 using System;
-using CSF;
 using NUnit.Framework;
+using System.Collections.Generic;
+using CSF.Collections;
 
-namespace Test.CSF
+namespace Test.CSF.Collections
 {
   [TestFixture]
-  public class TestNullSafe
+  public class TestCollectionExtensions
   {
-    #region tests
-
     [Test]
-    public void ConvertTo_returns_correct_result_for_ulong()
+    public void ReplaceContents_replaces_contents_with_correct_items()
     {
-      ulong? val = NullSafe.ConvertTo<ulong>("5");
+      List<string> list = new List<string>(new string[] { "A", "B", "C" });
+      var replacement = new [] { "X", "Y", "Z" };
 
-      Assert.IsTrue(val.HasValue);
-      Assert.AreEqual(5, val.Value);
+      list.ReplaceContents(replacement);
+
+      CollectionAssert.AreEquivalent(replacement, list);
     }
-
-    [Test]
-    public void ConvertTo_returns_correct_result_for_DateTime()
-    {
-      DateTime? val = NullSafe.ConvertTo<DateTime>("2012-10-19");
-
-      Assert.IsTrue(val.HasValue);
-      Assert.AreEqual(new DateTime(2012, 10, 19), val.Value);
-    }
-
-    [Test]
-    public void ConvertTo_returns_null_for_impossible_conversion()
-    {
-      int? val = NullSafe.ConvertTo<int>("foo");
-
-      Assert.IsFalse(val.HasValue);
-
-      val = NullSafe.ConvertTo<int>(null);
-
-      Assert.IsFalse(val.HasValue);
-    }
-
-    #endregion
   }
 }
 

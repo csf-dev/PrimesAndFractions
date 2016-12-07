@@ -52,14 +52,14 @@ namespace Test.CSF
     }
 
     [Test]
-    [ExpectedException(typeof(ArgumentException))]
+    [ExpectedException(typeof(RequiresDefinedEnumerationConstantException))]
     public void TestParseAsCaseInsensitiveFailure()
     {
       "FOO".ParseAs<SampleEnum>();
     }
 
     [Test]
-    [ExpectedException(typeof(ArgumentException))]
+    [ExpectedException(typeof(RequiresDefinedEnumerationConstantException))]
     public void TestParseAsFailure()
     {
       "WONG!".ParseAs<SampleEnum>();
@@ -98,14 +98,14 @@ namespace Test.CSF
     }
 
     [Test]
-    [ExpectedException(typeof(InvalidOperationException))]
+    [ExpectedException(typeof(ArgumentException))]
     public void TestParseAsInvalidType()
     {
       "Foo".ParseAs<int>();
     }
 
     [Test]
-    [ExpectedException(typeof(InvalidOperationException))]
+    [ExpectedException(typeof(ArgumentException))]
     public void TestTryParseAsInvalidType()
     {
       "Foo".TryParseAs<int>();

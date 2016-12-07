@@ -1,5 +1,5 @@
 //
-// TestNullSafe.cs
+// AssemblyInfo.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -24,48 +24,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System;
-using CSF;
-using NUnit.Framework;
 
-namespace Test.CSF
-{
-  [TestFixture]
-  public class TestNullSafe
-  {
-    #region tests
+[assembly: CLSCompliant(true)]
+[assembly: AssemblyTitle("CSF.Core")]
+[assembly: AssemblyDescription("Various utility types which have no better home anywhere else.  A true assortment of things which have no better home elsewhere.")]
+[assembly: AssemblyCompany("CSF Software Limited")]
+[assembly: AssemblyCopyright("CSF Software Limited")]
 
-    [Test]
-    public void ConvertTo_returns_correct_result_for_ulong()
-    {
-      ulong? val = NullSafe.ConvertTo<ulong>("5");
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
 
-      Assert.IsTrue(val.HasValue);
-      Assert.AreEqual(5, val.Value);
-    }
-
-    [Test]
-    public void ConvertTo_returns_correct_result_for_DateTime()
-    {
-      DateTime? val = NullSafe.ConvertTo<DateTime>("2012-10-19");
-
-      Assert.IsTrue(val.HasValue);
-      Assert.AreEqual(new DateTime(2012, 10, 19), val.Value);
-    }
-
-    [Test]
-    public void ConvertTo_returns_null_for_impossible_conversion()
-    {
-      int? val = NullSafe.ConvertTo<int>("foo");
-
-      Assert.IsFalse(val.HasValue);
-
-      val = NullSafe.ConvertTo<int>(null);
-
-      Assert.IsFalse(val.HasValue);
-    }
-
-    #endregion
-  }
-}
-
+[assembly: AssemblyVersion("6.0.0")]

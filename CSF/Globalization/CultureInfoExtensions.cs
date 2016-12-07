@@ -1,5 +1,5 @@
 //
-// IDictionaryExtensions.cs
+// CultureInfoExtensions.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -25,38 +25,55 @@
 // THE SOFTWARE.
 
 using System;
-using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.Globalization;
 
-namespace CSF.Collections
+namespace CSF.Globalization
 {
   /// <summary>
-  /// Extension methods for dictionary types.
+  /// Extension methods for a calendar object.
   /// </summary>
-  public static class IDictionaryExtensions
+  public static class CultureInfoExtensions
   {
     /// <summary>
-    /// Converts a dictionary of strings (string keys and string values) into a <c>NameValueCollection</c> containing
-    /// the same data.
+    /// Gets all of the months in the year and their names.
     /// </summary>
     /// <returns>
-    /// The name value collection.
+    /// The months in the year.
     /// </returns>
-    /// <param name='dictionary'>
-    /// The dictionary to convert.
+    /// <param name='culture'>
+    /// Culture information, relating to which culture to return this information in.
     /// </param>
-    public static NameValueCollection ToNameValueCollection(this IDictionary<string,string> dictionary)
+    public static IDictionary<int, string> GetAllMonths(this CultureInfo culture)
     {
-      if(dictionary == null)
+      return culture.GetAllMonths(DateTime.Today.Year);
+    }
+
+    /// <summary>
+    /// Gets all of the months in the year and their names.
+    /// </summary>
+    /// <returns>
+    /// The months in the year.
+    /// </returns>
+    /// <param name='culture'>
+    /// Culture information, relating to which culture to return this information in.
+    /// </param>
+    /// <param name='year'>
+    /// The year for which we want the months data.
+    /// </param>
+    public static IDictionary<int, string> GetAllMonths(this CultureInfo culture, int year)
+    {
+      IDictionary<int, string> output = new Dictionary<int, string>();
+
+      if(culture == null)
       {
-        throw new ArgumentNullException(nameof(dictionary));
+        throw new ArgumentNullException(nameof(culture));
       }
 
-      NameValueCollection output = new NameValueCollection();
-
-      foreach(string key in dictionary.Keys)
+      int monthsInYear = culture.Calendar.GetMonthsInYear(year);
+      for(int month = 1; month <= monthsInYear; month++)
       {
-        output.Add(key, dictionary[key]);
+        output.Add(month, culture.DateTimeFormat.GetMonthName(month));
       }
 
       return output;

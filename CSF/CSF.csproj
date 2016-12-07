@@ -8,21 +8,21 @@
     <ProjectGuid>{E563D7BC-1AB1-4AFB-8533-51315437C6E6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>CSF</RootNamespace>
-    <AssemblyName>CSF</AssemblyName>
-    <ReleaseVersion>4.1.1</ReleaseVersion>
+    <AssemblyName>CSF.Utils</AssemblyName>
+    <ReleaseVersion>6.0.0</ReleaseVersion>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DebugSymbols>true</DebugSymbols>
-    <DocumentationFile>bin\Debug\CSF.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\CSF.Utils.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -31,40 +31,22 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DocumentationFile>..\bin\Release\CSF.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\CSF.Utils.xml</DocumentationFile>
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Int32Extensions.cs" />
-    <Compile Include="ICalculator.cs" />
-    <Compile Include="SimpleCalculator.cs" />
     <Compile Include="IO\FileSystemInfoExtensions.cs" />
-    <Compile Include="Security\IPasswordService.cs" />
-    <Compile Include="Security\IHashAndSaltPair.cs" />
-    <Compile Include="Security\BinaryHashAndSaltPair.cs" />
-    <Compile Include="Security\BinaryPasswordService.cs" />
     <Compile Include="Fraction.cs" />
     <Compile Include="PrimeFactoriser.cs" />
-    <Compile Include="ISessionStorage.cs" />
-    <Compile Include="MemorySessionStorage.cs" />
     <Compile Include="VersionExtensions.cs" />
     <Compile Include="DateTimeEqualityComparer.cs" />
     <Compile Include="Collections\OrderNeutralEqualityComparer.cs" />
-    <Compile Include="Collections\IListExtensions.cs" />
-    <Compile Include="DictionaryEqualityComparer.cs" />
     <Compile Include="DateTimeExtensions.cs" />
-    <Compile Include="..\Common\CommonAssemblyInfo.cs">
-      <Link>CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Collections\NameValueCollectionExtensions.cs" />
     <Compile Include="NullSafe.cs" />
     <Compile Include="Collections\IDictionaryExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
@@ -72,30 +54,25 @@
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="CannotFixStackTraceException.cs" />
-    <Compile Include="Collections\ICollectionExtensions.cs" />
-    <Compile Include="NameReformatter.cs" />
-    <Compile Include="LowercaseUnderscoreNameReformatter.cs" />
     <Compile Include="IGuidGenerationStrategy.cs" />
     <Compile Include="DefaultGuidStrategy.cs" />
     <Compile Include="BinaryGuidCombStrategy.cs" />
     <Compile Include="GuidExtensions.cs" />
-    <Compile Include="CancelOrProceed.cs" />
-    <Compile Include="ICache.cs" />
-    <Compile Include="NotAvailableInCacheException.cs" />
-    <Compile Include="ThreadSafeCache.cs" />
     <Compile Include="Resources\ExceptionMessages.Designer.cs">
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="RequiresDefinedEnumerationConstantException.cs" />
+    <Compile Include="Globalization\CultureInfoExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Collections\CollectionExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="IO\" />
     <Folder Include="Collections\" />
-    <Folder Include="Security\" />
-    <Folder Include="Patterns\" />
-    <Folder Include="Patterns\SerializedLob\" />
     <Folder Include="Resources\" />
+    <Folder Include="Globalization\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ExceptionMessages.resx">

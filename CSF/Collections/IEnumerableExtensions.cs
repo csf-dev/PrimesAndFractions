@@ -40,109 +40,9 @@ namespace CSF.Collections
     #region extension methods
 
     /// <summary>
-    /// Returns the collection of items as a <see cref="System.String"/>, separated by the given separator.
-    /// </summary>
-    /// <returns>
-    /// A string representation of all of the items within the <paramref name="collection"/>.
-    /// </returns>
-    /// <param name='collection'>
-    /// The collection for which to generate the string representation.
-    /// </param>
-    /// <param name='separator'>
-    /// A separator sequence to appear between every item.
-    /// </param>
-    /// <exception cref='ArgumentNullException'>
-    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
-    /// </exception>
-    public static string ToSeparatedString(this IEnumerable collection, string separator)
-    {
-      return CreateSeparatedString(collection.Cast<object>(), separator, x => x);
-    }
-
-    /// <summary>
-    /// Returns the collection of items as a <see cref="System.String"/>, separated by the given separator.
-    /// </summary>
-    /// <returns>
-    /// A string representation of all of the items within the <paramref name="collection"/>.
-    /// </returns>
-    /// <param name='collection'>
-    /// The collection for which to generate the string representation.
-    /// </param>
-    /// <param name='separator'>
-    /// A separator sequence to appear between every item.
-    /// </param>
-    /// <exception cref='ArgumentNullException'>
-    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
-    /// </exception>
-    /// <typeparam name='T'>
-    /// The type of object contained within the <paramref name="collection"/>.
-    /// </typeparam>
-    public static string ToSeparatedString<T>(this IEnumerable<T> collection, string separator)
-    {
-      return CreateSeparatedString<T>(collection, separator, x => x);
-    }
-
-    /// <summary>
-    /// Returns the collection of items as a <see cref="System.String"/>, separated by the given separator.
-    /// </summary>
-    /// <returns>
-    /// A string representation of all of the items within the <paramref name="collection"/>.
-    /// </returns>
-    /// <param name='collection'>
-    /// The collection for which to generate the string representation.
-    /// </param>
-    /// <param name='separator'>
-    /// A separator sequence to appear between every item.
-    /// </param>
-    /// <param name='selector'>
-    /// A selector function to convert each item into a string representation.
-    /// </param>
-    /// <exception cref='ArgumentNullException'>
-    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
-    /// </exception>
-    /// <typeparam name='T'>
-    /// The type of object contained within the <paramref name="collection"/>.
-    /// </typeparam>
-    public static string ToSeparatedString<T>(this IEnumerable<T> collection, string separator, Func<T,object> selector)
-    {
-      return CreateSeparatedString<T>(collection, separator, selector);
-    }
-
-    /// <summary>
     /// Determines whether the contents of the <paramref name="source"/> collection are the same as the contents of the
     /// collection to <paramref name="compareWith"/>.
     /// </summary>
-    /// <remarks>
-    /// <para>
-    /// This comparison returns true if the two collections both contain equal items, in the same quantity.  The order
-    /// of those items is irrelevant.
-    /// </para>
-    /// <example>
-    /// <para>
-    /// If <c>source</c> contains the items <c>A, A, B, C, D</c> and <c>compareWith</c> contains the items
-    /// <c>D, A, B, C, A</c> then this method will return <c>true</c> because (ignoring order) the collections contain
-    /// the same items.
-    /// </para>
-    /// <para>
-    /// If <c>source</c> contains the items <c>A, A, B, C, D</c> and <c>compareWith</c> contains the items
-    /// <c>D, A, B, C, B</c> then this method will return <c>false</c>.  This is because the item <c>B</c> appears
-    /// twice in <c>compareWith</c> and only once in <c>source</c>, also the item <c>A</c> appears only once in
-    /// <c>compareWith</c> but twice in <c>source</c>.
-    /// </para>
-    /// <para>
-    /// If <c>source</c> contains the items <c>A, B, C</c> and <c>compareWith</c> contains the items
-    /// <c>D, A, B</c> then this method will return <c>false</c>.  This is because the two collections to not carry the
-    /// same items.
-    /// </para>
-    /// </example>
-    /// <para>
-    /// This overload uses the default equality comparer to determine item-equality.
-    /// </para>
-    /// <para>
-    /// This method is very heavily-based on the excellent work found at this StackOverflow answer:
-    /// http://stackoverflow.com/a/3670089
-    /// </para>
-    /// </remarks>
     /// <returns>
     /// <c>true</c> if the two collections contain the same items; <c>false</c> otherwise.
     /// </returns>
@@ -157,44 +57,13 @@ namespace CSF.Collections
     /// </typeparam>
     public static bool AreContentsSameAs<T>(this IEnumerable<T> source, IEnumerable<T> compareWith)
     {
-      return AreContentsSame<T>(source, compareWith, new Dictionary<T,int>());
+      return source.AreContentsSameAs<T>(compareWith, null);
     }
 
     /// <summary>
     /// Determines whether the contents of the <paramref name="source"/> collection are the same as the contents of the
     /// collection to <paramref name="compareWith"/>.
     /// </summary>
-    /// <remarks>
-    /// <para>
-    /// This comparison returns true if the two collections both contain equal items, in the same quantity.  The order
-    /// of those items is irrelevant.
-    /// </para>
-    /// <example>
-    /// <para>
-    /// If <c>source</c> contains the items <c>A, A, B, C, D</c> and <c>compareWith</c> contains the items
-    /// <c>D, A, B, C, A</c> then this method will return <c>true</c> because (ignoring order) the collections contain
-    /// the same items.
-    /// </para>
-    /// <para>
-    /// If <c>source</c> contains the items <c>A, A, B, C, D</c> and <c>compareWith</c> contains the items
-    /// <c>D, A, B, C, B</c> then this method will return <c>false</c>.  This is because the item <c>B</c> appears
-    /// twice in <c>compareWith</c> and only once in <c>source</c>, also the item <c>A</c> appears only once in
-    /// <c>compareWith</c> but twice in <c>source</c>.
-    /// </para>
-    /// <para>
-    /// If <c>source</c> contains the items <c>A, B, C</c> and <c>compareWith</c> contains the items
-    /// <c>D, A, B</c> then this method will return <c>false</c>.  This is because the two collections to not carry the
-    /// same items.
-    /// </para>
-    /// </example>
-    /// <para>
-    /// This overload uses a specified equality comparer to determine equality between items.
-    /// </para>
-    /// <para>
-    /// This method is very heavily-based on the excellent work found at this StackOverflow answer:
-    /// http://stackoverflow.com/a/3670089
-    /// </para>
-    /// </remarks>
     /// <returns>
     /// <c>true</c> if the two collections contain the same items; <c>false</c> otherwise.
     /// </returns>
@@ -214,169 +83,8 @@ namespace CSF.Collections
                                             IEnumerable<T> compareWith,
                                             IEqualityComparer<T> equalityComparer)
     {
-      return AreContentsSame<T>(source, compareWith, new Dictionary<T,int>(equalityComparer));
-    }
-
-    #endregion
-
-    #region static methods
-
-    /// <summary>
-    /// Returns the collection of items as a <see cref="System.String"/>, separated by the given separator.
-    /// </summary>
-    /// <returns>
-    /// A string representation of all of the items within the <paramref name="collection"/>.
-    /// </returns>
-    /// <param name='collection'>
-    /// The collection for which to generate the string representation.
-    /// </param>
-    /// <param name='separator'>
-    /// A separator sequence to appear between every item.
-    /// </param>
-    /// <param name='selector'>
-    /// A selector function to convert each item into a string representation.
-    /// </param>
-    /// <exception cref='ArgumentNullException'>
-    /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
-    /// </exception>
-    internal static string CreateSeparatedString<T>(IEnumerable<T> collection,
-                                                    string separator,
-                                                    Func<T,object> selector)
-    {
-      StringBuilder output = new StringBuilder();
-      
-      if(collection == null)
-      {
-        throw new ArgumentNullException ("collection");
-      }
-      else if(separator == null)
-      {
-        throw new ArgumentNullException ("separator");
-      }
-      else if(selector == null)
-      {
-        throw new ArgumentNullException("selector");
-      }
-      
-      foreach(T item in collection)
-      {
-        output.Append(selector(item).ToString());
-        output.Append(separator);
-      }
-      
-      if(separator.Length > 0)
-      {
-        output.Remove(output.Length - separator.Length, separator.Length);
-      }
-      
-      return output.ToString();
-    }
-
-    /// <summary>
-    /// Determines whether the contents of the <paramref name="firstCollection"/> collection are the same as the
-    /// contents of the collection to <paramref name="secondCollection"/>.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// This comparison returns true if the two collections both contain equal items, in the same quantity.  The order
-    /// of those items is irrelevant.
-    /// </para>
-    /// <example>
-    /// <para>
-    /// If <c>firstCollection</c> contains the items <c>A, A, B, C, D</c> and <c>secondCollection</c> contains the items
-    /// <c>D, A, B, C, A</c> then this method will return <c>true</c> because (ignoring order) the collections contain
-    /// the same items.
-    /// </para>
-    /// <para>
-    /// If <c>firstCollection</c> contains the items <c>A, A, B, C, D</c> and <c>secondCollection</c> contains the items
-    /// <c>D, A, B, C, B</c> then this method will return <c>false</c>.  This is because the item <c>B</c> appears
-    /// twice in <c>secondCollection</c> and only once in <c>firstCollection</c>, also the item <c>A</c> appears only
-    /// once in <c>secondCollection</c> but twice in <c>firstCollection</c>.
-    /// </para>
-    /// <para>
-    /// If <c>firstCollection</c> contains the items <c>A, B, C</c> and <c>secondCollection</c> contains the items
-    /// <c>D, A, B</c> then this method will return <c>false</c>.  This is because the two collections to not carry the
-    /// same items.
-    /// </para>
-    /// </example>
-    /// <para>
-    /// This method is very heavily-based on the excellent work found at this StackOverflow answer:
-    /// http://stackoverflow.com/a/3670089
-    /// </para>
-    /// </remarks>
-    /// <returns>
-    /// <c>true</c> if the two collections contain the same items; <c>false</c> otherwise.
-    /// </returns>
-    /// <param name='firstCollection'>
-    /// The first collection to analyse.
-    /// </param>
-    /// <param name='secondCollection'>
-    /// The second collection to analyse.
-    /// </param>
-    /// <param name='itemCounter'>
-    /// An <c>IDictionary</c> implementation (using an appropriate equality comparer) used to count the instances of
-    /// each item found in the collections.
-    /// </param>
-    /// <typeparam name='T'>
-    /// The type of item contained within the collections.
-    /// </typeparam>
-    internal static bool AreContentsSame<T>(IEnumerable<T> firstCollection,
-                                            IEnumerable<T> secondCollection,
-                                            IDictionary<T,int> itemCounter)
-    {
-      if(firstCollection == null)
-      {
-        throw new ArgumentNullException("firstCollection");
-      }
-      else if(secondCollection == null)
-      {
-        throw new ArgumentNullException("secondCollection");
-      }
-      else if(itemCounter == null)
-      {
-        throw new ArgumentNullException("instanceCounter");
-      }
-
-      bool? output = null;
-
-      if(Object.ReferenceEquals(firstCollection, secondCollection))
-      {
-        output = true;
-      }
-      else
-      {
-        foreach(T item in firstCollection)
-        {
-          if(itemCounter.ContainsKey(item))
-          {
-            itemCounter[item] ++;
-          }
-          else
-          {
-            itemCounter.Add(item, 1);
-          }
-        }
-
-        foreach(T item in secondCollection)
-        {
-          if(itemCounter.ContainsKey(item))
-          {
-            itemCounter[item] --;
-          }
-          else
-          {
-            output = false;
-            break;
-          }
-        }
-
-        if(!output.HasValue)
-        {
-          output = itemCounter.Values.All(count => count == 0);
-        }
-      }
-
-      return output.Value;
+      var comparer = new OrderNeutralEqualityComparer<T>(equalityComparer);
+      return comparer.AreEqual(source, compareWith);
     }
 
     #endregion

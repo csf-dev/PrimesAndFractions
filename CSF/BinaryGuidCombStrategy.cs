@@ -120,10 +120,10 @@ namespace CSF
       if(nonRandomByteCount > MAX_NONRANDOM_BYTES
          || nonRandomByteCount < MIN_NONRANDOM_BYTES)
       {
-        string message = String.Format("Count of non-random bytes must be between {0} and {1} (inclusive).",
+        string message = String.Format(Resources.ExceptionMessages.CountOfGuidNonRandomBytesOutOfRangeFormat,
                                        MIN_NONRANDOM_BYTES,
                                        MAX_NONRANDOM_BYTES);
-        throw new ArgumentOutOfRangeException(message, "nonRandomByteCount");
+        throw new ArgumentOutOfRangeException(message, nameof(nonRandomByteCount));
       }
 
       _nonRandomByteCount = nonRandomByteCount;

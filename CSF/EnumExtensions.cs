@@ -286,7 +286,7 @@ namespace CSF
       if(!type.IsEnum)
       {
         string message = String.Format(ExceptionMessages.OnlySupportedForEnumTypesFormat, type.FullName);
-        throw new NotSupportedException(message);
+        throw new ArgumentException(message, nameof(type));
       }
     }
 

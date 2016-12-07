@@ -1,10 +1,10 @@
-//
-// TestNullSafe.cs
+﻿//
+// ReflectionHelper.cs
 //
 // Author:
-//       Craig Fowler <craig@csf-dev.com>
+//       Craig Fowler <craig@craigfowler.me.uk>
 //
-// Copyright (c) 2015 CSF Software Limited
+// Copyright (c) 2016 Craig Fowler
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,49 +23,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
-using CSF;
-using NUnit.Framework;
 
-namespace Test.CSF
+namespace Test.CSF.Util
 {
-  [TestFixture]
-  public class TestNullSafe
+  public static class ReflectionHelper
   {
-    #region tests
-
-    [Test]
-    public void ConvertTo_returns_correct_result_for_ulong()
+    public static bool IsMono()
     {
-      ulong? val = NullSafe.ConvertTo<ulong>("5");
-
-      Assert.IsTrue(val.HasValue);
-      Assert.AreEqual(5, val.Value);
+      return Type.GetType("Mono.Runtime") != null;
     }
-
-    [Test]
-    public void ConvertTo_returns_correct_result_for_DateTime()
-    {
-      DateTime? val = NullSafe.ConvertTo<DateTime>("2012-10-19");
-
-      Assert.IsTrue(val.HasValue);
-      Assert.AreEqual(new DateTime(2012, 10, 19), val.Value);
-    }
-
-    [Test]
-    public void ConvertTo_returns_null_for_impossible_conversion()
-    {
-      int? val = NullSafe.ConvertTo<int>("foo");
-
-      Assert.IsFalse(val.HasValue);
-
-      val = NullSafe.ConvertTo<int>(null);
-
-      Assert.IsFalse(val.HasValue);
-    }
-
-    #endregion
   }
 }
 
