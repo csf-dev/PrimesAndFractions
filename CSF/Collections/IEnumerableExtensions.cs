@@ -95,8 +95,19 @@ namespace CSF.Collections
     /// <typeparam name="T">The type of the collection items.</typeparam>
     public static T[] CopyToNewArray<T>(this IEnumerable<T> source)
     {
-      // TODO: Write this implementation
-      throw new NotImplementedException();
+      if(source == null)
+      {
+        return null;
+      }
+
+      if(source is T[])
+      {
+        return CopyToNewArray<T>((T[]) source);
+      }
+      else
+      {
+        return source.ToArray().CopyToNewArray();
+      }
     }
 
     /// <summary>
@@ -107,8 +118,17 @@ namespace CSF.Collections
     /// <typeparam name="T">The type of the collection items.</typeparam>
     public static T[] CopyToNewArray<T>(this T[] source)
     {
-      // TODO: Write this implementation
-      throw new NotImplementedException();
+      if(source == null)
+      {
+        return null;
+      }
+
+      int len = source.Length;
+
+      T[] output = new T[len];
+      Array.Copy(source, output, len);
+
+      return output;
     }
 
     #endregion
