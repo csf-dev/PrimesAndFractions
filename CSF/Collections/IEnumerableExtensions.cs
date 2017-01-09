@@ -87,6 +87,30 @@ namespace CSF.Collections
       return comparer.AreEqual(source, compareWith);
     }
 
+    /// <summary>
+    /// Returns a copy of the given collection, in a newly-created array.
+    /// </summary>
+    /// <returns>A new array containing the same objects as the source collection in the same order.</returns>
+    /// <param name="source">The source collection.</param>
+    /// <typeparam name="T">The type of the collection items.</typeparam>
+    public static T[] CopyToNewArray<T>(this IEnumerable<T> source)
+    {
+      // TODO: Write this implementation
+      throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Returns a copy of the given array, in a newly-created array.
+    /// </summary>
+    /// <returns>A new array containing the same objects as the source collection in the same order.</returns>
+    /// <param name="source">The source collection.</param>
+    /// <typeparam name="T">The type of the collection items.</typeparam>
+    public static T[] CopyToNewArray<T>(this T[] source)
+    {
+      // TODO: Write this implementation
+      throw new NotImplementedException();
+    }
+
     #endregion
   }
 }
