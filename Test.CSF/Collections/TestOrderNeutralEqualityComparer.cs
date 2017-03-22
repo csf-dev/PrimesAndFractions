@@ -56,6 +56,22 @@ namespace Test.CSF.Collections
 
       Assert.IsFalse(comparer.Equals(listOne, listThree), "Lists are not equal");
     }
+
+    [Test]
+    public void GetHashCode_returns_same_value_for_array_as_set()
+    {
+      // Arrange
+      var arrayItems = new string[] { "foo", "bar", "baz" };
+      var setItems = new HashSet<string>(arrayItems);
+      var sut = new OrderNeutralEqualityComparer<string>();
+
+      // Act
+      var arrayHash = sut.GetHashCode(arrayItems);
+      var setHash = sut.GetHashCode(setItems);
+
+      // Assert
+      Assert.AreEqual(arrayHash, setHash);
+    }
   }
 }
 

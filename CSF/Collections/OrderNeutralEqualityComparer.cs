@@ -124,18 +124,23 @@ namespace CSF.Collections
         return GetHashCode(enumerable);
       }
 
-      return (obj1 != null)? obj1.GetHashCode() : 0;
+      return 0;
     }
 
     /// <summary>
-    /// Unsupported method would get the hash code for an object.
+    /// Gets the hash code for a collection, in an order-neutral manner.
     /// </summary>
     /// <param name='enumerable'>
     /// The object for which to get a hash code.
     /// </param>
     public int GetHashCode(IEnumerable<TCollection> enumerable)
     {
-      return (enumerable != null)? enumerable.OrderBy(x => x).GetHashCode() : 0;
+      if(enumerable == null)
+      {
+        return 0;
+      }
+
+      return enumerable.Aggregate(0, (acc, next) => acc ^ _itemComparer.GetHashCode(next));
     }
 
     #endregion
