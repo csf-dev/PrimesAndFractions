@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Int32Extensions.cs" />
+    <Compile Include="IO\FilenameExtensionBuilder.cs" />
     <Compile Include="IO\FileSystemInfoExtensions.cs" />
     <Compile Include="Fraction.cs" />
     <Compile Include="PrimeFactoriser.cs" />
@@ -62,6 +63,8 @@
     <Compile Include="GuidExtensions.cs" />
     <Compile Include="Resources\ExceptionMessages.Designer.cs">
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="RequiresDefinedEnumerationConstantException.cs" />
     <Compile Include="Globalization\CultureInfoExtensions.cs" />
@@ -70,13 +73,7 @@
     <Compile Include="IO\IManipulatesFilenameExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="IO\" />
-    <Folder Include="Collections\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Globalization\" />
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Resources\ExceptionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
