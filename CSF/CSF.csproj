@@ -71,6 +71,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="IO\IManipulatesFilenameExtensions.cs" />
+    <Compile Include="IO\IBuildsFilenamesWithExtensions.cs" />
+    <Compile Include="IO\FilenameExtensionManipulator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

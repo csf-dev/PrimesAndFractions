@@ -123,5 +123,12 @@ namespace CSF.IO
     /// <param name="index">The index at which to insert the new extension.</param>
     /// <param name="extraExtension">The extension to add.</param>
     string InsertExtension(string filename, int index, string extraExtension);
+
+    /// <summary>
+    /// Gets a builder instance which may be used to perform advanced manipulation upon a filename.
+    /// </summary>
+    /// <returns>The builder.</returns>
+    /// <param name="filename">Filename.</param>
+    IBuildsFilenamesWithExtensions CreateBuilder(string filename);
   }
 }

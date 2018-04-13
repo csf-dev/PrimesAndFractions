@@ -36,6 +36,7 @@
     <Reference Include="System.Core" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Package>nunit</Package>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
@@ -64,6 +65,7 @@
     <Compile Include="Util\ConfigurationHelper.cs" />
     <Compile Include="TestConfiguration.cs" />
     <Compile Include="Collections\TestCollectionExtensions.cs" />
+    <Compile Include="IO\FilenameExtensionBuilderTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
