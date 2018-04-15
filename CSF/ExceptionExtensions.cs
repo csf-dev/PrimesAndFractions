@@ -93,6 +93,7 @@ namespace CSF
     /// <exception cref="CannotFixStackTraceException">
     /// If none of the mechanisms attempted are able to preserve the stack trace, this exception is raised.
     /// </exception>
+    [Obsolete("Use System.Runtime.ExceptionServices.ExceptionDispatchInfo instead to capture and then rethrow the exception.")]
     public static TException FixStackTrace<TException>(this TException ex)
       where TException : Exception
     {
@@ -158,6 +159,7 @@ namespace CSF
     /// <typeparam name='TException'>
     /// The type of exception.
     /// </typeparam>
+    [Obsolete("Use System.Runtime.ExceptionServices.ExceptionDispatchInfo instead to capture and then rethrow the exception.")]
     public static bool TryFixStackTrace<TException>(this TException ex, out TException fixedException)
       where TException : Exception
     {
@@ -223,6 +225,7 @@ namespace CSF
     /// <typeparam name='TException'>
     /// The type of exception.
     /// </typeparam>
+    [Obsolete("Use System.Runtime.ExceptionServices.ExceptionDispatchInfo instead to capture and then rethrow the exception.")]
     public static TException FixStackTraceUsingInternalPreserve<TException>(TException ex)
       where TException : Exception
     {
@@ -267,6 +270,7 @@ namespace CSF
     /// <typeparam name='TException'>
     /// The type of exception.
     /// </typeparam>
+    [Obsolete("Use System.Runtime.ExceptionServices.ExceptionDispatchInfo instead to capture and then rethrow the exception.")]
     public static TException FixStackTraceUsingPrepForRemoting<TException>(TException ex)
       where TException : Exception
     {
@@ -321,6 +325,7 @@ namespace CSF
     /// <typeparam name='TException'>
     /// The type of exception.
     /// </typeparam>
+    [Obsolete("Use System.Runtime.ExceptionServices.ExceptionDispatchInfo instead to capture and then rethrow the exception.")]
     public static TException FixStackTraceUsingSerialization<TException>(TException ex)
       where TException : Exception
     {
