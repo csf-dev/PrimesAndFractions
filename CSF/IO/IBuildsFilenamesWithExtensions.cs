@@ -1,10 +1,10 @@
-//
-// AssemblyInfo.cs
+﻿//
+// IBuildsFilenamesWithExtensions.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
 //
-// Copyright (c) 2015 CSF Software Limited
+// Copyright (c) 2018 Craig Fowler
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,32 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System;
+using System.Collections.Generic;
 
-[assembly: CLSCompliant(true)]
-[assembly: AssemblyTitle("CSF.Core")]
-[assembly: AssemblyDescription("Various utility types which have no better home anywhere else.  A true assortment of things which have no better home elsewhere.")]
-[assembly: AssemblyCompany("CSF Software Limited")]
-[assembly: AssemblyCopyright("CSF Software Limited")]
+namespace CSF.IO
+{
+  /// <summary>
+  /// A service which can build up a filename and its extensions dynamically.
+  /// </summary>
+  public interface IBuildsFilenamesWithExtensions
+  {
+    /// <summary>
+    /// Gets or sets the base filename (without any extensions).
+    /// </summary>
+    /// <value>The filename.</value>
+    string BaseName { get; set; }
 
-#if DEBUG
-[assembly: AssemblyConfiguration("Debug")]
-#else
-[assembly: AssemblyConfiguration("Release")]
-#endif
+    /// <summary>
+    /// Gets an ordered collection of the extensions.  This collection is mutable; <c>null</c> extensions are ignored.
+    /// </summary>
+    /// <value>The extensions.</value>
+    IList<string> Extensions { get; }
 
-[assembly: AssemblyVersion("6.1.0")]
+    /// <summary>
+    /// Converts the state of the current instance into a <c>System.String</c>.
+    /// </summary>
+    /// <returns>A <see cref="String"/> that represents the current <see cref="IBuildsFilenamesWithExtensions"/>.</returns>
+    string ToString();
+  }
+}

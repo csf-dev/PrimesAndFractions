@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,8 +9,10 @@
     <OutputType>Library</OutputType>
     <RootNamespace>CSF</RootNamespace>
     <AssemblyName>CSF.Utils</AssemblyName>
-    <ReleaseVersion>6.0.0</ReleaseVersion>
+    <ReleaseVersion>6.1.0</ReleaseVersion>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\CSF-Software-OSS.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -40,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Int32Extensions.cs" />
+    <Compile Include="IO\FilenameExtensionBuilder.cs" />
     <Compile Include="IO\FileSystemInfoExtensions.cs" />
     <Compile Include="Fraction.cs" />
     <Compile Include="PrimeFactoriser.cs" />
@@ -60,24 +63,26 @@
     <Compile Include="GuidExtensions.cs" />
     <Compile Include="Resources\ExceptionMessages.Designer.cs">
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="RequiresDefinedEnumerationConstantException.cs" />
     <Compile Include="Globalization\CultureInfoExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="IO\IManipulatesFilenameExtensions.cs" />
+    <Compile Include="IO\IBuildsFilenamesWithExtensions.cs" />
+    <Compile Include="IO\FilenameExtensionManipulator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="IO\" />
-    <Folder Include="Collections\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Globalization\" />
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Resources\ExceptionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CSF.Utils.nuspec" />
   </ItemGroup>
 </Project>

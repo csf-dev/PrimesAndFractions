@@ -9,3 +9,4 @@ TestResult.formatted.xml
 *.directory
 packages/*/*
 *.nupkg
+.vs/

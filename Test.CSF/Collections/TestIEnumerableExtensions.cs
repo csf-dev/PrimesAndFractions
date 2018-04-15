@@ -103,6 +103,82 @@ namespace Test.CSF.Collections
                     "Contents are the same");
     }
 
+    [Test]
+    public void CopyToArray_does_not_return_same_array_instance()
+    {
+      // Arrange
+      var items = new [] { 5, 4, 3, 2, 1 };
+
+      // Act
+      var result = items.CopyToNewArray();
+
+      // Assert
+      Assert.AreNotSame(items, result);
+    }
+
+    [Test]
+    public void CopyToArray_does_not_return_same_enumerable_instance()
+    {
+      // Arrange
+      IEnumerable<int> items = new List<int>(new [] { 5, 4, 3, 2, 1 });
+
+      // Act
+      var result = items.CopyToNewArray();
+
+      // Assert
+      Assert.AreNotSame(items, result);
+    }
+
+    [Test]
+    public void CopyToArray_returns_sequence_equal_collection_with_array_parameter()
+    {
+      // Arrange
+      var items = new [] { 5, 4, 3, 2, 1 };
+
+      // Act
+      var result = items.CopyToNewArray();
+
+      // Assert
+      CollectionAssert.AreEqual(items, result);
+    }
+
+    [Test]
+    public void CopyToArray_returns_sequence_equal_collection_with_enumerable_parameter()
+    {
+      // Arrange
+      IEnumerable<int> items = new List<int>(new [] { 5, 4, 3, 2, 1 });
+
+      // Act
+      var result = items.CopyToNewArray();
+
+      // Assert
+      CollectionAssert.AreEqual(items, result);
+    }
+
+    [Test]
+    public void CopyToArray_returns_null_when_input_is_null_with_array_parameter()
+    {
+      var items = (int[]) null;
+
+      // Act
+      var result = items.CopyToNewArray();
+
+      // Assert
+      Assert.IsNull(result);
+    }
+
+    [Test]
+    public void CopyToArray_returns_null_when_input_is_null_with_enumerable_parameter()
+    {
+      var items = (IEnumerable<int>) null;
+
+      // Act
+      var result = items.CopyToNewArray();
+
+      // Assert
+      Assert.IsNull(result);
+    }
+
     #endregion
 
     #region contained type
