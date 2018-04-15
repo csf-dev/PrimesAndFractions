@@ -179,31 +179,6 @@ namespace Test.CSF
       }
     }
 
-    [Test]
-    public void TestTryFixStackTraceFailure()
-    {
-      if(!Util.ReflectionHelper.IsMono())
-      {
-        Assert.Ignore("This test is not valid when not running on the open source Mono framework.  When executing " +
-                      "against the official .NET framework, the 'private framework method' implementation for fixing " +
-                      "stack traces will work and thus 'TryFixStackTrace' will not fail as intended.");
-      }
-
-      bool success = false;
-      CustomException fixedException = null;
-
-      try
-      {
-        throw new CustomException();
-      }
-      catch(CustomException ex)
-      {
-        success = ex.TryFixStackTrace(out fixedException);
-      }
-
-      Assert.IsFalse(success);
-    }
-
     #endregion
 
     #region contained custom exception
