@@ -82,4 +82,7 @@
       <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="CSF.Utils.nuspec" />
+  </ItemGroup>
 </Project>
