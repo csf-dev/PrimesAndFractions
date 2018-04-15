@@ -363,22 +363,17 @@ namespace CSF
     /// <returns>
     /// A delegate instance, or a null reference if the method does not exist.
     /// </returns>
-    private static Action<Exception> GetInternalPreserveStackTrace()
+    static Action<Exception> GetInternalPreserveStackTrace()
     {
-      Action<Exception> output;
-      MethodInfo method = typeof(Exception).GetMethod(InternalPreserveMethod,
-                                                      BindingFlags.Instance | BindingFlags.NonPublic);
+      var method = typeof(Exception).GetMethod(InternalPreserveMethod,
+                                               BindingFlags.Instance | BindingFlags.NonPublic);
+      if(method == null) return null;
 
-      if(method != null)
+      try
       {
-        output = (Action<Exception>) Delegate.CreateDelegate(typeof(Action<Exception>), method);
+        return (Action<Exception>) Delegate.CreateDelegate(typeof(Action<Exception>), method);
       }
-      else
-      {
-        output = null;
-      }
-
-      return output;
+      catch(Exception) { return null; }
     }
 
     /// <summary>
@@ -387,22 +382,17 @@ namespace CSF
     /// <returns>
     /// A delegate instance, or a null reference if the method does not exist.
     /// </returns>
-    private static Action<Exception> GetPrepForRemoting()
+    static Action<Exception> GetPrepForRemoting()
     {
-      Action<Exception> output;
-      MethodInfo method = typeof(Exception).GetMethod(PrepForRemotingMethod,
-                                                      BindingFlags.Instance | BindingFlags.NonPublic);
+      var method = typeof(Exception).GetMethod(PrepForRemotingMethod,
+                                               BindingFlags.Instance | BindingFlags.NonPublic);
+      if(method == null) return null;
 
-      if(method != null)
+      try
       {
-        output = (Action<Exception>) Delegate.CreateDelegate(typeof(Action<Exception>), method);
+        return (Action<Exception>) Delegate.CreateDelegate(typeof(Action<Exception>), method);
       }
-      else
-      {
-        output = null;
-      }
-
-      return output;
+      catch(Exception) { return null; }
     }
 
     #endregion
