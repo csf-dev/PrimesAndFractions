@@ -50,7 +50,9 @@ namespace Test.CSF
         }
         catch(InvalidOperationException ex)
         {
-          fixedException = ExceptionExtensions.FixStackTraceUsingSerialization(ex);;
+#pragma warning disable CS0618 // Type or member is obsolete
+          fixedException = ExceptionExtensions.FixStackTraceUsingSerialization(ex); ;
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if(fixedException != null)
@@ -76,7 +78,9 @@ namespace Test.CSF
       }
       catch(CustomException ex)
       {
-        fixedException = ExceptionExtensions.FixStackTraceUsingSerialization(ex);;
+#pragma warning disable CS0618 // Type or member is obsolete
+        fixedException = ExceptionExtensions.FixStackTraceUsingSerialization(ex); ;
+#pragma warning restore CS0618 // Type or member is obsolete
       }
 
       Assert.IsNull(fixedException);
@@ -95,7 +99,9 @@ namespace Test.CSF
         }
         catch(InvalidOperationException ex)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
           fixedException = ex.FixStackTrace();
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if(fixedException != null)
@@ -123,7 +129,9 @@ namespace Test.CSF
         }
         catch(CustomSerializableException ex)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
           fixedException = ex.FixStackTrace();
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if(fixedException != null)
@@ -153,7 +161,9 @@ namespace Test.CSF
         }
         catch(CustomSerializableException ex)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
           success = ex.TryFixStackTrace(out fixedException);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if(fixedException != null)
