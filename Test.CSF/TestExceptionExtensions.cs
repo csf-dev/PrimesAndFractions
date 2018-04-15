@@ -50,7 +50,9 @@ namespace Test.CSF
         }
         catch(InvalidOperationException ex)
         {
-          fixedException = ExceptionExtensions.FixStackTraceUsingSerialization(ex);;
+#pragma warning disable CS0618 // Type or member is obsolete
+          fixedException = ExceptionExtensions.FixStackTraceUsingSerialization(ex); ;
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if(fixedException != null)
@@ -76,7 +78,9 @@ namespace Test.CSF
       }
       catch(CustomException ex)
       {
-        fixedException = ExceptionExtensions.FixStackTraceUsingSerialization(ex);;
+#pragma warning disable CS0618 // Type or member is obsolete
+        fixedException = ExceptionExtensions.FixStackTraceUsingSerialization(ex); ;
+#pragma warning restore CS0618 // Type or member is obsolete
       }
 
       Assert.IsNull(fixedException);
@@ -95,7 +99,9 @@ namespace Test.CSF
         }
         catch(InvalidOperationException ex)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
           fixedException = ex.FixStackTrace();
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if(fixedException != null)
@@ -123,7 +129,9 @@ namespace Test.CSF
         }
         catch(CustomSerializableException ex)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
           fixedException = ex.FixStackTrace();
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if(fixedException != null)
@@ -153,7 +161,9 @@ namespace Test.CSF
         }
         catch(CustomSerializableException ex)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
           success = ex.TryFixStackTrace(out fixedException);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if(fixedException != null)
@@ -167,31 +177,6 @@ namespace Test.CSF
         Assert.IsTrue(success, "Success of fix");
         throw;
       }
-    }
-
-    [Test]
-    public void TestTryFixStackTraceFailure()
-    {
-      if(!Util.ReflectionHelper.IsMono())
-      {
-        Assert.Ignore("This test is not valid when not running on the open source Mono framework.  When executing " +
-                      "against the official .NET framework, the 'private framework method' implementation for fixing " +
-                      "stack traces will work and thus 'TryFixStackTrace' will not fail as intended.");
-      }
-
-      bool success = false;
-      CustomException fixedException = null;
-
-      try
-      {
-        throw new CustomException();
-      }
-      catch(CustomException ex)
-      {
-        success = ex.TryFixStackTrace(out fixedException);
-      }
-
-      Assert.IsFalse(success);
     }
 
     #endregion

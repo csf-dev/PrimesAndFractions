@@ -611,12 +611,12 @@ namespace CSF
     /// </param>
     /// <returns>
     /// A <see cref="System.String"/>, the generated alphabetic reference.  This will equal <see cref="String.Empty"/>
-    /// in the scenario that both <paramref name="zeroBased"/> is false and the <paramref name="integerValue"/> is
+    /// in the scenario that both <paramref name="zeroBased"/> is false and the <paramref name="number"/> is
     /// zero.
     /// </returns>
     /// <exception cref="NotSupportedException">
     /// <para>
-    /// If both <paramref name="zeroBased"/> is true and <paramref name="integerValue"/> is less than zero, see the
+    /// If both <paramref name="zeroBased"/> is true and <paramref name="number"/> is less than zero, see the
     /// remarks for more information.
     /// </para>
     /// </exception>
