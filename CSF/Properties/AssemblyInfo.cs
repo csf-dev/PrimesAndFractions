@@ -40,4 +40,4 @@ using System;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 
-[assembly: AssemblyVersion("6.1.0")]
+[assembly: AssemblyVersion("6.1.1")]
