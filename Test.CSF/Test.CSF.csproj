@@ -56,6 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMoqDataAttribute.cs" />
+    <Compile Include="Collections\BagEqualityComparerTests.cs" />
+    <Compile Include="Collections\ListEqualityComparerTests.cs" />
+    <Compile Include="Collections\SetEqualityComparerTests.cs" />
     <Compile Include="TestInt32Extensions.cs" />
     <Compile Include="IO\TestFileSystemInfoExtensions.cs" />
     <Compile Include="TestFraction.cs" />
