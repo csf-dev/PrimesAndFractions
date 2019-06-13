@@ -52,17 +52,15 @@ namespace Test.CSF
     }
 
     [Test]
-    [ExpectedException(typeof(RequiresDefinedEnumerationConstantException))]
     public void TestParseAsCaseInsensitiveFailure()
     {
-      "FOO".ParseAs<SampleEnum>();
+      Assert.That(() => "FOO".ParseAs<SampleEnum>(), Throws.InstanceOf<RequiresDefinedEnumerationConstantException>());
     }
 
     [Test]
-    [ExpectedException(typeof(RequiresDefinedEnumerationConstantException))]
     public void TestParseAsFailure()
     {
-      "WONG!".ParseAs<SampleEnum>();
+      Assert.That(() => "WONG!".ParseAs<SampleEnum>(), Throws.InstanceOf<RequiresDefinedEnumerationConstantException>());
     }
 
     [Test]
@@ -98,17 +96,15 @@ namespace Test.CSF
     }
 
     [Test]
-    [ExpectedException(typeof(ArgumentException))]
     public void TestParseAsInvalidType()
     {
-      "Foo".ParseAs<int>();
+      Assert.That(() => "Foo".ParseAs<int>(), Throws.InstanceOf<ArgumentException>());
     }
 
     [Test]
-    [ExpectedException(typeof(ArgumentException))]
     public void TestTryParseAsInvalidType()
     {
-      "Foo".TryParseAs<int>();
+      Assert.That(() => "Foo".TryParseAs<int>(), Throws.InstanceOf<ArgumentException>());
     }
 
     [Test]

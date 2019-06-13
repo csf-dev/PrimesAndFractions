@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.IO;
 using NUnit.Framework;
 using CSF;
 using System.Reflection;
@@ -67,19 +68,17 @@ namespace Test.CSF
     }
 
     [Test]
-    [ExpectedException(typeof(NotSupportedException))]
     public void TestWithFlagsNotFlags()
     {
       SampleEnum testVal = SampleEnum.One | SampleEnum.Two;
-      testVal.WithFlags(SampleEnum.One, SampleEnum.Two, SampleEnum.Three);
+      Assert.That(() => testVal.WithFlags(SampleEnum.One, SampleEnum.Two, SampleEnum.Three), Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
-    [ExpectedException(typeof(ArgumentException))]
     public void TestWithFlagsNotEnumeration()
     {
       DateTime testVal = DateTime.Today;
-      testVal.WithFlags(DateTime.Now);
+      Assert.That(() => testVal.WithFlags(DateTime.Now), Throws.InstanceOf<ArgumentException>());
     }
 
     [Test]
