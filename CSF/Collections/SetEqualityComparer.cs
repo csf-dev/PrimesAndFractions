@@ -25,9 +25,8 @@ namespace CSF.Collections
             if (ReferenceEquals(x, null) || ReferenceEquals(y, null)) return false;
 
             var setOne = GetSet(x);
-            var setTwo = GetSet(y);
 
-            return setOne.SetEquals(setTwo);
+            return setOne.SetEquals(y);
         }
 
         public int GetHashCode(IEnumerable<TItem> obj)
@@ -40,10 +39,10 @@ namespace CSF.Collections
         ISet<TItem> GetSet(IEnumerable<TItem> collection)
         {
             var set = collection as HashSet<TItem>;
-            if (set == null || !set.Comparer.Equals(itemComparer))
-                return new HashSet<TItem>(collection, itemComparer);
+            if (set != null && set.Comparer.Equals(itemComparer))
+                return set;
 
-            return set;
+            return new HashSet<TItem>(collection, itemComparer);
         }
 
         public SetEqualityComparer()
