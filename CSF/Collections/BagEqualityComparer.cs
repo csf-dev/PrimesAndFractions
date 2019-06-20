@@ -7,7 +7,8 @@ namespace CSF.Collections
 {
     public class BagEqualityComparer<TItem> : IEqualityComparer, IEqualityComparer<IEnumerable<TItem>>
     {
-        readonly IEqualityComparer<TItem> itemComparer;
+        readonly IEqualityComparer<TItem> itemEqComparer;
+        readonly IComparer<TItem> itemComparer;
 
         bool IEqualityComparer.Equals(object x, object y)
         {
@@ -30,15 +31,15 @@ namespace CSF.Collections
             if (DoFiniteCollectionCountsDiffer(x, y))
                 return false;
 
-            if (typeof(IComparable).IsAssignableFrom(typeof(TItem)))
-                return AreCollectionsOfComparableItemsEqual(x.Cast<IComparable>(), y.Cast<IComparable>());
-
-            throw new System.NotImplementedException();
+            return AreCollectionsOfComparableItemsEqual(x, y);
         }
 
-        bool AreCollectionsOfComparableItemsEqual(IEnumerable<IComparable> x, IEnumerable<IComparable> y)
+        bool AreCollectionsOfComparableItemsEqual(IEnumerable<TItem> x, IEnumerable<TItem> y)
         {
-            throw new NotImplementedException();
+            var coll1 = x.OrderBy(i => i, itemComparer);
+            var coll2 = y.OrderBy(i => i, itemComparer);
+
+            return coll1.SequenceEqual(coll2, itemEqComparer);
         }
 
         bool? TryCompareAsSets(IEnumerable<TItem> x, IEnumerable<TItem> y)
@@ -46,9 +47,12 @@ namespace CSF.Collections
             var set1 = x as HashSet<TItem>;
             var set2 = y as HashSet<TItem>;
 
-            if (set1 != null && set2 != null)
+            if (set1 != null
+                && set2 != null
+                && set1.Comparer.Equals(set2.Comparer)
+                && set1.Comparer.Equals(itemComparer))
             {
-                var comparer = new SetEqualityComparer<TItem>(itemComparer);
+                var comparer = new SetEqualityComparer<TItem>(itemEqComparer);
                 return comparer.Equals(set1, set2);
             }
 
@@ -60,7 +64,9 @@ namespace CSF.Collections
             var coll1 = x as ICollection<TItem>;
             var coll2 = y as ICollection<TItem>;
 
-            if (coll1 != null && coll2 != null && coll1.Count != coll2.Count)
+            if (coll1 != null
+                && coll2 != null
+                && coll1.Count != coll2.Count)
                 return true;
 
             return false;
@@ -70,18 +76,15 @@ namespace CSF.Collections
         public int GetHashCode(IEnumerable<TItem> obj)
         {
             if (ReferenceEquals(obj, null)) return 0;
-            return obj.Aggregate(0, (acc, next) => acc ^ itemComparer.GetHashCode(next));
+            return obj.Aggregate(0, (acc, next) => acc ^ itemEqComparer.GetHashCode(next));
         }
 
-        public BagEqualityComparer()
-        {
-            itemComparer = EqualityComparer<TItem>.Default;
-        }
+        public BagEqualityComparer() : this(null, null) {}
 
-        public BagEqualityComparer(IEqualityComparer<TItem> itemComparer)
+        public BagEqualityComparer(IEqualityComparer<TItem> itemEqComparer = null, IComparer<TItem> itemComparer = null)
         {
-            if (itemComparer == null) throw new ArgumentNullException(nameof(itemComparer));
-            this.itemComparer = itemComparer;
+            this.itemEqComparer = itemEqComparer ?? EqualityComparer<TItem>.Default;
+            this.itemComparer = itemComparer ?? Comparer<TItem>.Default;
         }
     }
 }

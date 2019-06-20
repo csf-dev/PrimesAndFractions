@@ -78,12 +78,21 @@ namespace Test.CSF.Collections
         [Test]
         public void Equals_returns_result_respecting_alternative_item_equality_comparer()
         {
-            var sut = new BagEqualityComparer<string>(StringComparer.InvariantCultureIgnoreCase);
+            var sut = new BagEqualityComparer<string>(StringComparer.InvariantCultureIgnoreCase, StringComparer.InvariantCultureIgnoreCase);
 
             var collectionOne = new[] {"one", "two", "three"};
             var collectionTwo = new[] {"one", "two", "THREE"};
 
             Assert.That(sut.Equals(collectionOne, collectionTwo), Is.True);
+        }
+        
+        [Test, AutoMoqData]
+        public void Equals_returns_true_comparing_equivalent_object_collections_which_are_equatable_but_not_comparable(BagEqualityComparer<Pet> sut)
+        {
+            var coll1 = new[] {new Pet {Name = "A"}, new Pet {Name = "B"}, new Pet {Name = "C"},};
+            var coll2 = new[] {new Pet {Name = "B"}, new Pet {Name = "C"}, new Pet {Name = "A"},};
+
+            Assert.That(sut.Equals(coll1, coll2), Is.True);
         }
 
         #endregion
@@ -140,7 +149,7 @@ namespace Test.CSF.Collections
         [Test]
         public void GetHashCode_returns_same_value_for_collections_respecting_alternative_item_equality_comparer()
         {
-            var sut = new BagEqualityComparer<string>(StringComparer.InvariantCultureIgnoreCase);
+            var sut = new BagEqualityComparer<string>(StringComparer.InvariantCultureIgnoreCase, StringComparer.InvariantCultureIgnoreCase);
 
             var collectionOne = new[] {"one", "two", "three"};
             var collectionTwo = new[] {"one", "two", "THREE"};
@@ -149,6 +158,35 @@ namespace Test.CSF.Collections
             var result2 = sut.GetHashCode(collectionTwo);
 
             Assert.That(result1, Is.EqualTo(result2));
+        }
+
+        #endregion
+
+        #region contained type
+
+        public class Pet : IEquatable<Pet>
+        {
+            public string Name { get; set; }
+
+            public bool Equals(Pet other)
+            {
+                if (ReferenceEquals(null, other)) return false;
+                if (ReferenceEquals(this, other)) return true;
+                return string.Equals(Name, other.Name);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != this.GetType()) return false;
+                return Equals((Pet) obj);
+            }
+
+            public override int GetHashCode()
+            {
+                return (Name != null ? Name.GetHashCode() : 0);
+            }
         }
 
         #endregion
