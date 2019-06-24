@@ -5,6 +5,11 @@ using System.Linq;
 
 namespace CSF.Collections
 {
+    /// <summary>
+    /// Implementation of <c>IEqualityComparer&lt;T&gt;</c> which compares two enumerable objects for set equality.
+    /// That is, they must contain an equal collection of items, in any order (duplicate items are considered, however).
+    /// </summary>
+    /// <typeparam name="TItem">The type of item within the collections</typeparam>
     public class BagEqualityComparer<TItem> : IEqualityComparer, IEqualityComparer<IEnumerable<TItem>>
     {
         readonly IEqualityComparer<TItem> itemEqComparer;
@@ -12,7 +17,19 @@ namespace CSF.Collections
 
         bool IEqualityComparer.Equals(object x, object y)
         {
-            return Equals(x as IEnumerable<TItem>, y as IEnumerable<TItem>);
+            IEnumerable<TItem> a, b;
+
+            try
+            {
+                a = (IEnumerable<TItem>) x;
+                b = (IEnumerable<TItem>) y;
+            }
+            catch (InvalidCastException)
+            {
+                return false;
+            }
+
+            return Equals(a, b);
         }
 
         int IEqualityComparer.GetHashCode(object obj)
@@ -31,7 +48,10 @@ namespace CSF.Collections
             if (DoFiniteCollectionCountsDiffer(x, y))
                 return false;
 
-            return AreCollectionsOfComparableItemsEqual(x, y);
+            if(typeof(IComparable).IsAssignableFrom(typeof(TItem)))
+                return AreCollectionsOfComparableItemsEqual(x, y);
+
+            return !DoCollectionsDifferByElementEquality(x, y);
         }
 
         bool AreCollectionsOfComparableItemsEqual(IEnumerable<TItem> x, IEnumerable<TItem> y)
@@ -72,6 +92,52 @@ namespace CSF.Collections
             return false;
         }
 
+        bool DoCollectionsDifferByElementEquality(IEnumerable<TItem> first, IEnumerable<TItem> second)
+        {
+            int firstNullCount;
+            int secondNullCount;
+
+            var firstElementCounts = GetCountsOfDistinctItems(first, out firstNullCount);
+            var secondElementCounts = GetCountsOfDistinctItems(second, out secondNullCount);
+
+            // An optimization to avoid a full comparison, if the counts of contents do not match
+            if (firstNullCount != secondNullCount || firstElementCounts.Count != secondElementCounts.Count)
+                return true;
+
+            foreach (var kvp in firstElementCounts)
+            {
+                var firstElementCount = kvp.Value;
+                int secondElementCount;
+                secondElementCounts.TryGetValue(kvp.Key, out secondElementCount);
+
+                if (firstElementCount != secondElementCount)
+                    return true;
+            }
+
+            return false;
+        }
+
+        Dictionary<TItem, int> GetCountsOfDistinctItems(IEnumerable<TItem> enumerable, out int countOfNullItems)
+        {
+            var dictionary = new Dictionary<TItem, int>(itemEqComparer);
+            countOfNullItems = 0;
+
+            foreach (var element in enumerable)
+            {
+                if (ReferenceEquals(element, null))
+                {
+                    countOfNullItems ++;
+                    continue;
+                }
+
+                int timesThisElementSeen;
+                dictionary.TryGetValue(element, out timesThisElementSeen);
+                timesThisElementSeen++;
+                dictionary[element] = timesThisElementSeen;
+            }
+
+            return dictionary;
+        }
 
         public int GetHashCode(IEnumerable<TItem> obj)
         {

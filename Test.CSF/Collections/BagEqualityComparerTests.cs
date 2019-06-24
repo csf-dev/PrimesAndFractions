@@ -94,6 +94,15 @@ namespace Test.CSF.Collections
 
             Assert.That(sut.Equals(coll1, coll2), Is.True);
         }
+        
+        [Test, AutoMoqData]
+        public void Equals_returns_false_comparing_different_object_collections_which_are_equatable_but_not_comparable(BagEqualityComparer<Pet> sut)
+        {
+            var coll1 = new[] {new Pet {Name = "Z"}, new Pet {Name = "B"}, new Pet {Name = "C"},};
+            var coll2 = new[] {new Pet {Name = "B"}, new Pet {Name = "C"}, new Pet {Name = "A"},};
+
+            Assert.That(sut.Equals(coll1, coll2), Is.False);
+        }
 
         #endregion
 

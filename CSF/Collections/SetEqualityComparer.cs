@@ -5,13 +5,30 @@ using System.Linq;
 
 namespace CSF.Collections
 {
+    /// <summary>
+    /// Implementation of <c>IEqualityComparer&lt;T&gt;</c> which compares two enumerable objects for set equality.
+    /// That is, they must contain an equal collection of items, in any order, disregarding duplicate items.
+    /// </summary>
+    /// <typeparam name="TItem">The type of item within the collections</typeparam>
     public class SetEqualityComparer<TItem> : IEqualityComparer, IEqualityComparer<IEnumerable<TItem>>
     {
         readonly IEqualityComparer<TItem> itemComparer;
 
         bool IEqualityComparer.Equals(object x, object y)
         {
-            return Equals(x as IEnumerable<TItem>, y as IEnumerable<TItem>);
+            IEnumerable<TItem> a, b;
+
+            try
+            {
+                a = (IEnumerable<TItem>) x;
+                b = (IEnumerable<TItem>) y;
+            }
+            catch (InvalidCastException)
+            {
+                return false;
+            }
+
+            return Equals(a, b);
         }
 
         int IEqualityComparer.GetHashCode(object obj)

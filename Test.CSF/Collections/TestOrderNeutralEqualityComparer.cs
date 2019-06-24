@@ -38,9 +38,11 @@ namespace Test.CSF.Collections
     [Test]
     public void AreEqual_returns_true_for_collections_with_same_elements()
     {
-      IEqualityComparer comparer = new OrderNeutralEqualityComparer<string>();
+#pragma warning disable 618
+        IEqualityComparer comparer = new OrderNeutralEqualityComparer<string>();
+#pragma warning restore 618
 
-      IList<string> listOne = new string[] { "foo", "bar", "baz" };
+        IList<string> listOne = new string[] { "foo", "bar", "baz" };
       IList<string> listTwo = new string[] { "bar", "foo", "baz" };
 
       Assert.IsTrue(comparer.Equals(listOne, listTwo), "Lists are equal");
@@ -49,9 +51,11 @@ namespace Test.CSF.Collections
     [Test]
     public void AreEqual_returns_false_for_collections_with_different_elements()
     {
-      IEqualityComparer comparer = new OrderNeutralEqualityComparer<string>();
+#pragma warning disable 618
+        IEqualityComparer comparer = new OrderNeutralEqualityComparer<string>();
+#pragma warning restore 618
 
-      IList<string> listOne = new string[] { "foo", "bar", "baz" };
+        IList<string> listOne = new string[] { "foo", "bar", "baz" };
       IList<string> listThree = new string[] { "bar", "foo", "quux" };
 
       Assert.IsFalse(comparer.Equals(listOne, listThree), "Lists are not equal");
@@ -63,7 +67,9 @@ namespace Test.CSF.Collections
       // Arrange
       var arrayItems = new string[] { "foo", "bar", "baz" };
       var setItems = new HashSet<string>(arrayItems);
+#pragma warning disable 618
       var sut = new OrderNeutralEqualityComparer<string>();
+#pragma warning restore 618
 
       // Act
       var arrayHash = sut.GetHashCode(arrayItems);
