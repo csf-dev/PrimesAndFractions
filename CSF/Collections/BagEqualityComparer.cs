@@ -81,15 +81,8 @@ namespace CSF.Collections
 
         bool DoFiniteCollectionCountsDiffer(IEnumerable<TItem> x, IEnumerable<TItem> y)
         {
-            var coll1 = x as ICollection<TItem>;
-            var coll2 = y as ICollection<TItem>;
-
-            if (coll1 != null
-                && coll2 != null
-                && coll1.Count != coll2.Count)
-                return true;
-
-            return false;
+            var finiteCollectionComparer = new FiniteCollectionCountComparer<TItem>();
+            return !finiteCollectionComparer.Equals(x as ICollection<TItem>, y as ICollection<TItem>);
         }
 
         bool DoCollectionsDifferByElementEquality(IEnumerable<TItem> first, IEnumerable<TItem> second)
