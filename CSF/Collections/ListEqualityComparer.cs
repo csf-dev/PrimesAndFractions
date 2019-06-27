@@ -2,26 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 
 namespace CSF.Collections
 {
     public class ListEqualityComparer<TItem> : IEqualityComparer, IEqualityComparer<IEnumerable<TItem>>
     {
-        // Arbitrarily chosen prime number, used to introduce some unpredictability to hash codes
-        const int APrimeNumber = 137;
+        // Arbitrarily chosen prime numbers, useful in hashing functions
+        const int
+            FirstPrimeNumber = 19,
+            SecondPrimeNumber = 31;
 
         readonly IEqualityComparer<TItem> itemComparer;
 
-        bool IEqualityComparer.Equals(object x, object y)
-        {
-            return Equals(x as IEnumerable<TItem>, y as IEnumerable<TItem>);
-        }
+        bool IEqualityComparer.Equals(object x, object y) => NonGenericCollectionEqualityComparisons.Equals<TItem>(x, y, Equals);
 
-        int IEqualityComparer.GetHashCode(object obj)
-        {
-            return GetHashCode(obj as IEnumerable<TItem>);
-        }
+        int IEqualityComparer.GetHashCode(object obj) => NonGenericCollectionEqualityComparisons.GetHashCode<TItem>(obj, GetHashCode);
         
         bool DoFiniteCollectionCountsDiffer(IEnumerable<TItem> x, IEnumerable<TItem> y)
         {
@@ -43,20 +38,13 @@ namespace CSF.Collections
 
         public int GetHashCode(IEnumerable<TItem> obj)
         {
-            if (ReferenceEquals(obj, null)) return 0;
+            if (ReferenceEquals(obj, null))
+                throw new ArgumentNullException(nameof(obj));
 
-            var increment = 1;
-
-            return obj.Aggregate(0, (acc, next) =>
+            unchecked
             {
-                int multiplier;
-                unchecked
-                {
-                    multiplier = (int) Math.Pow(increment++, 2) * APrimeNumber;
-                }
-
-                return acc ^ itemComparer.GetHashCode(next) ^ multiplier;
-            });
+                return obj.Aggregate(FirstPrimeNumber, (acc, next) => acc * SecondPrimeNumber + itemComparer.GetHashCode(next));
+            }
         }
 
         public ListEqualityComparer() : this(null) {}

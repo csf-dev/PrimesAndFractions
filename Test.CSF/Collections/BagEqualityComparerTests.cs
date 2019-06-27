@@ -8,7 +8,7 @@ namespace Test.CSF.Collections
     public class BagEqualityComparerTests
     {
         #region Equals
-        
+
         [Test, AutoMoqData]
         public void Equals_returns_true_for_two_collections_which_are_equal(BagEqualityComparer<string> sut)
         {
@@ -107,6 +107,12 @@ namespace Test.CSF.Collections
         #endregion
 
         #region GetHashCode
+        
+        [Test, AutoMoqData]
+        public void GetHashCode_throws_ane_for_null_collection(BagEqualityComparer<string> sut)
+        {
+            Assert.That(() => sut.GetHashCode(null), Throws.ArgumentNullException);
+        }
 
         [Test, AutoMoqData]
         public void GetHashCode_returns_same_value_for_the_same_collection_hashed_twice(BagEqualityComparer<string> sut)

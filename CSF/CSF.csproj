@@ -44,6 +44,7 @@
     <Compile Include="Collections\BagEqualityComparer.cs" />
     <Compile Include="Collections\FiniteCollectionCountComparer.cs" />
     <Compile Include="Collections\ListEqualityComparer.cs" />
+    <Compile Include="Collections\NonGenericCollectionEqualityComparisons.cs" />
     <Compile Include="Collections\SetEqualityComparer.cs" />
     <Compile Include="Int32Extensions.cs" />
     <Compile Include="IO\FilenameExtensionBuilder.cs" />

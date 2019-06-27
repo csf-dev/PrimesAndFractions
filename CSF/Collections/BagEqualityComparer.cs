@@ -15,27 +15,9 @@ namespace CSF.Collections
         readonly IEqualityComparer<TItem> itemEqComparer;
         readonly IComparer<TItem> itemComparer;
 
-        bool IEqualityComparer.Equals(object x, object y)
-        {
-            IEnumerable<TItem> a, b;
+        bool IEqualityComparer.Equals(object x, object y) => NonGenericCollectionEqualityComparisons.Equals<TItem>(x, y, Equals);
 
-            try
-            {
-                a = (IEnumerable<TItem>) x;
-                b = (IEnumerable<TItem>) y;
-            }
-            catch (InvalidCastException)
-            {
-                return false;
-            }
-
-            return Equals(a, b);
-        }
-
-        int IEqualityComparer.GetHashCode(object obj)
-        {
-            return GetHashCode(obj as IEnumerable<TItem>);
-        }
+        int IEqualityComparer.GetHashCode(object obj) => NonGenericCollectionEqualityComparisons.GetHashCode<TItem>(obj, GetHashCode);
 
         public bool Equals(IEnumerable<TItem> x, IEnumerable<TItem> y)
         {
@@ -134,7 +116,9 @@ namespace CSF.Collections
 
         public int GetHashCode(IEnumerable<TItem> obj)
         {
-            if (ReferenceEquals(obj, null)) return 0;
+            if (ReferenceEquals(obj, null))
+                throw new ArgumentNullException(nameof(obj));
+
             return obj.Aggregate(0, (acc, next) => acc ^ itemEqComparer.GetHashCode(next));
         }
 

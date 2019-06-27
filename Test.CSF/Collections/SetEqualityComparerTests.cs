@@ -89,6 +89,12 @@ namespace Test.CSF.Collections
         #endregion
 
         #region GetHashCode
+                
+        [Test, AutoMoqData]
+        public void GetHashCode_throws_ane_for_null_collection(SetEqualityComparer<string> sut)
+        {
+            Assert.That(() => sut.GetHashCode(null), Throws.ArgumentNullException);
+        }
 
         [Test, AutoMoqData]
         public void GetHashCode_returns_same_value_for_the_same_collection_hashed_twice(SetEqualityComparer<string> sut)
