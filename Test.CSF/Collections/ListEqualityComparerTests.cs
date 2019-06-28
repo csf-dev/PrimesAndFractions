@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using CSF.Collections;
+using Moq;
 using NUnit.Framework;
 
 namespace Test.CSF.Collections
@@ -123,6 +125,21 @@ namespace Test.CSF.Collections
             var result2 = sut.GetHashCode(collection);
 
             Assert.That(result1, Is.EqualTo(result2));
+        }
+        
+        [Test, AutoMoqData]
+        public void GetHashCode_does_not_pass_null_items_to_equality_comparer_hash_code_method(IEqualityComparer<string> comparer)
+        {
+            var sut = new ListEqualityComparer<string>(comparer);
+            Mock.Get(comparer)
+                .Setup(x => x.GetHashCode(It.IsAny<string>()))
+                .Returns(1);
+            var collection = new[] {"one", null, "three"};
+
+            sut.GetHashCode(collection);
+
+            Mock.Get(comparer)
+                .Verify(x => x.GetHashCode(null), Times.Never);
         }
 
         [Test, AutoMoqData]
