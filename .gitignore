@@ -10,3 +10,4 @@ TestResult.formatted.xml
 packages/*/*
 *.nupkg
 .vs/
+*.DotSettings.user

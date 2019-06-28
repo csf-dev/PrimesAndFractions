@@ -42,7 +42,7 @@ namespace Test.CSF.IO
 
     #region setup
 
-    [TestFixtureSetUp]
+    [OneTimeSetUp]
     public void FixtureSetup()
     {
       var config = Util.ConfigurationHelper.GetSection<TestConfiguration>();
@@ -102,12 +102,11 @@ namespace Test.CSF.IO
     }
     
     [Test]
-    [ExpectedException(typeof(ArgumentException))]
     public void TestGetRelativeNotRooted()
     {
       FileInfo file = new FileInfo(@"C:\SomeDirectory\SomeFile.txt");
-      file.GetRelativePath(new DirectoryInfo(@"D:\"));
-      Assert.Fail("Test should not reach this point");
+
+      Assert.That(() => file.GetRelativePath(new DirectoryInfo(@"D:\")), Throws.InstanceOf<ArgumentException>());
     }
     
     [Test]

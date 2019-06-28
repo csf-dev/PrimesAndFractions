@@ -64,10 +64,9 @@ namespace Test.CSF
     }
     
     [Test]
-    [ExpectedException(typeof(ArgumentException))]
     public void TestGenerateAlphabeticReferenceException()
     {
-      Int32Extensions.GenerateAlphabeticReference(-1, true);
+      Assert.That(() => Int32Extensions.GenerateAlphabeticReference(-1, true), Throws.InstanceOf<ArgumentException>());
     }
     
     #endregion
@@ -101,26 +100,22 @@ namespace Test.CSF
     }
     
     [Test]
-    [ExpectedException(typeof(ArgumentNullException))]
     public void TestParseAlphabeticReferenceNull()
     {
-      Int32Extensions.ParseAlphabeticReference(null, true);
+      Assert.That(() => Int32Extensions.ParseAlphabeticReference(null, true), Throws.InstanceOf<ArgumentNullException>());
     }
     
     [Test]
-    [ExpectedException(typeof(FormatException),
-                       ExpectedMessage =  "An empty string may represent zero in non-zero-based scenarios but it " +
-                                          "is not permitted in zero-based scenarios.")]
     public void TestParseAlphabeticReferenceEmptyString()
     {
-      Int32Extensions.ParseAlphabeticReference(String.Empty, true);
+      Assert.That(() => Int32Extensions.ParseAlphabeticReference(String.Empty, true), Throws.InstanceOf<FormatException>());
     }
     
     [Test]
-    [ExpectedException(typeof(FormatException))]
     public void TestParseAlphabeticReferenceInvalid()
     {
-      Int32Extensions.ParseAlphabeticReference("a6c", true);
+      ;
+      Assert.That(() => Int32Extensions.ParseAlphabeticReference("a6c", true), Throws.InstanceOf<FormatException>());
     }
     
     [Test]
