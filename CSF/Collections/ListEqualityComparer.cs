@@ -2,21 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Common = CSF.Collections.CommonCollectionEqualityComparisonFunctions;
 
 namespace CSF.Collections
 {
     public class ListEqualityComparer<TItem> : IEqualityComparer, IEqualityComparer<IEnumerable<TItem>>
     {
-        // Arbitrarily chosen prime numbers, useful in hashing functions
-        const int
-            FirstPrimeNumber = 19,
-            SecondPrimeNumber = 31;
-
         readonly IEqualityComparer<TItem> itemComparer;
 
-        bool IEqualityComparer.Equals(object x, object y) => NonGenericCollectionEqualityComparisons.Equals<TItem>(x, y, Equals);
+        bool IEqualityComparer.Equals(object x, object y) => Common.Equals<TItem>(x, y, Equals);
 
-        int IEqualityComparer.GetHashCode(object obj) => NonGenericCollectionEqualityComparisons.GetHashCode<TItem>(obj, GetHashCode);
+        int IEqualityComparer.GetHashCode(object obj) => Common.GetHashCode<TItem>(obj, GetHashCode);
         
         bool DoFiniteCollectionCountsDiffer(IEnumerable<TItem> x, IEnumerable<TItem> y)
         {
@@ -43,7 +39,7 @@ namespace CSF.Collections
 
             unchecked
             {
-                return obj.Aggregate(FirstPrimeNumber, (acc, next) => acc * SecondPrimeNumber + itemComparer.GetHashCode(next));
+                return obj.Aggregate(19, (acc, next) => acc * 31 + Common.GetItemHashCode(next, itemComparer));
             }
         }
 

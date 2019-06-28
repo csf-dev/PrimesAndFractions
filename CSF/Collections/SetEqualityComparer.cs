@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Common = CSF.Collections.CommonCollectionEqualityComparisonFunctions;
 
 namespace CSF.Collections
 {
@@ -14,9 +15,9 @@ namespace CSF.Collections
     {
         readonly IEqualityComparer<TItem> itemComparer;
 
-        bool IEqualityComparer.Equals(object x, object y) => NonGenericCollectionEqualityComparisons.Equals<TItem>(x, y, Equals);
+        bool IEqualityComparer.Equals(object x, object y) => Common.Equals<TItem>(x, y, Equals);
 
-        int IEqualityComparer.GetHashCode(object obj) => NonGenericCollectionEqualityComparisons.GetHashCode<TItem>(obj, GetHashCode);
+        int IEqualityComparer.GetHashCode(object obj) => Common.GetHashCode<TItem>(obj, GetHashCode);
 
         public bool Equals(IEnumerable<TItem> x, IEnumerable<TItem> y)
         {
@@ -34,7 +35,7 @@ namespace CSF.Collections
                 throw new ArgumentNullException(nameof(obj));
 
             var set = GetSet(obj);
-            return set.Aggregate(0, (acc, next) => acc ^ itemComparer.GetHashCode(next));
+            return set.Aggregate(0, (acc, next) => acc ^ Common.GetItemHashCode(next, itemComparer));
         }
 
         ISet<TItem> GetSet(IEnumerable<TItem> collection)

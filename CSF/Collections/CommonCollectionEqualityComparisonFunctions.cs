@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CSF.Collections
 {
-    internal static class NonGenericCollectionEqualityComparisons
+    internal static class CommonCollectionEqualityComparisonFunctions
     {
         internal static bool Equals<TItem>(object x, object y, Func<IEnumerable<TItem>,IEnumerable<TItem>,bool> genericEqualityFunc)
         {
@@ -33,6 +33,14 @@ namespace CSF.Collections
             catch (InvalidCastException) { return 0; }
 
             return genericHashCodeFunc(collection);
+        }
+
+        internal static int GetItemHashCode<TItem>(TItem item, IEqualityComparer<TItem> itemComparer)
+        {
+            if (ReferenceEquals(item, null))
+                return 31;
+
+            return itemComparer.GetHashCode(item);
         }
     }
 }
