@@ -35,7 +35,7 @@ namespace CSF.Collections
     /// Equality comparer determines order-neutral equality between collections of items.  That is, that they contain
     /// the same items, irrespective of order.
     /// </summary>
-    [Obsolete("Deprecated in favor of BagEqualityComparer<TItem>, which offers improved functionality")]
+    [Obsolete("Deprecated, instead install NuGet package CSF.CollectionComparers")]
     public class OrderNeutralEqualityComparer<TCollection> : IEqualityComparer, IEqualityComparer<IEnumerable<TCollection>>
     {
         readonly BagEqualityComparer<TCollection> wrappedComparer;

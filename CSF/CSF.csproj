@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="Collections\BagEqualityComparer.cs" />
     <Compile Include="Collections\FiniteCollectionCountComparer.cs" />
-    <Compile Include="Collections\ListEqualityComparer.cs" />
     <Compile Include="Collections\CommonCollectionEqualityComparisonFunctions.cs" />
     <Compile Include="Collections\SetEqualityComparer.cs" />
     <Compile Include="Int32Extensions.cs" />

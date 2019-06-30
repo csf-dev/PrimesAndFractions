@@ -47,7 +47,9 @@ namespace Test.CSF.Collections
         "baz", "bar", "foo", "foo"
       };
 
+#pragma warning disable CS0618 // Type or member is obsolete
       Assert.IsTrue(collection1.AreContentsSameAs(collection2), "Contents are the same");
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 
     [Test]
@@ -57,7 +59,9 @@ namespace Test.CSF.Collections
         "foo", "foo", "bar", "baz"
       };
 
+#pragma warning disable CS0618 // Type or member is obsolete
       Assert.IsTrue(collection1.AreContentsSameAs(collection1), "Contents are the same");
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 
     [Test]
@@ -71,7 +75,9 @@ namespace Test.CSF.Collections
         "baz", "bar", "foo", "bar"
       };
 
+#pragma warning disable CS0618 // Type or member is obsolete
       Assert.IsFalse(collection1.AreContentsSameAs(collection2), "Contents are the same");
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 
     [Test]
@@ -85,7 +91,9 @@ namespace Test.CSF.Collections
         "baz", "bar", "foo", "foo"
       };
 
+#pragma warning disable CS0618 // Type or member is obsolete
       Assert.IsFalse(collection1.AreContentsSameAs(collection2), "Contents are the same");
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 
     [Test]
@@ -99,7 +107,9 @@ namespace Test.CSF.Collections
         "floop", "fwoop", "foo", "foo"
       };
 
+#pragma warning disable CS0618 // Type or member is obsolete
       Assert.IsTrue(collection1.AreContentsSameAs(collection2, new FirstCharacterEqualityComparer()),
+#pragma warning restore CS0618 // Type or member is obsolete
                     "Contents are the same");
     }
 

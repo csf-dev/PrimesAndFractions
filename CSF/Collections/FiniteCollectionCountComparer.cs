@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CSF.Collections
 {
-    public class FiniteCollectionCountComparer<TItem> : IEqualityComparer<ICollection<TItem>>, IEqualityComparer
+    internal class FiniteCollectionCountComparer<TItem> : IEqualityComparer<ICollection<TItem>>, IEqualityComparer
     {
         public bool Equals(ICollection<TItem> x, ICollection<TItem> y)
         {

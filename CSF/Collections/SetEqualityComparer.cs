@@ -11,7 +11,7 @@ namespace CSF.Collections
     /// That is, they must contain an equal collection of items, in any order, disregarding duplicate items.
     /// </summary>
     /// <typeparam name="TItem">The type of item within the collections</typeparam>
-    public class SetEqualityComparer<TItem> : IEqualityComparer, IEqualityComparer<IEnumerable<TItem>>
+    internal class SetEqualityComparer<TItem> : IEqualityComparer, IEqualityComparer<IEnumerable<TItem>>
     {
         readonly IEqualityComparer<TItem> itemComparer;
 
@@ -47,12 +47,12 @@ namespace CSF.Collections
             return new HashSet<TItem>(collection, itemComparer);
         }
 
-        public SetEqualityComparer()
+    internal SetEqualityComparer()
         {
             itemComparer = EqualityComparer<TItem>.Default;
         }
 
-        public SetEqualityComparer(IEqualityComparer<TItem> itemComparer)
+    internal SetEqualityComparer(IEqualityComparer<TItem> itemComparer)
         {
             if (itemComparer == null) throw new ArgumentNullException(nameof(itemComparer));
             this.itemComparer = itemComparer;

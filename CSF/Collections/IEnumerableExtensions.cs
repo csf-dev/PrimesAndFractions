@@ -55,6 +55,7 @@ namespace CSF.Collections
     /// <typeparam name='T'>
     /// The type of item contained within the collections.
     /// </typeparam>
+    [Obsolete("This functionality will be removed in a future release.  Instead use an equality comparer from the NuGet package CSF.CollectionComparers")]
     public static bool AreContentsSameAs<T>(this IEnumerable<T> source, IEnumerable<T> compareWith)
     {
       return source.AreContentsSameAs<T>(compareWith, null);
@@ -79,6 +80,7 @@ namespace CSF.Collections
     /// <typeparam name='T'>
     /// The type of item contained within the collections.
     /// </typeparam>
+    [Obsolete("This functionality will be removed in a future release.  Instead use an equality comparer from the NuGet package CSF.CollectionComparers")]
     public static bool AreContentsSameAs<T>(this IEnumerable<T> source,
                                             IEnumerable<T> compareWith,
                                             IEqualityComparer<T> equalityComparer)
