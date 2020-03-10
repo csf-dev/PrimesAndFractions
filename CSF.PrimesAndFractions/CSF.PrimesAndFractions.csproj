@@ -6,7 +6,7 @@
     <PackageId>CSF.PrimesAndFractions</PackageId>
     <Authors>craigfowler</Authors>
     <Description>A C# library for dealing with prime numbers, prime factors and fractions</Description>
-    <ReleaseVersion>3.0.0</ReleaseVersion>
+    <ReleaseVersion>6.1.1</ReleaseVersion>
     <Version>$(ReleaseVersion)</Version>
     <PackageVersion>$(ReleaseVersion)</PackageVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -28,18 +28,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <EmbeddedResource Condition=" '$(EnableDefaultEmbeddedResourceItems)' == 'true' " Update="Resources\ExceptionMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
-      <LogicalName>ExceptionMessages.resx.resources</LogicalName>
-    </EmbeddedResource>
+    <EmbeddedResource Remove="Resources\ExceptionMessages.resx" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Resources\ExceptionMessages.Designer.cs">
-      <DependentUpon>ExceptionMessages.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
   <Import Project="..\Tools\EnableNet45BuildOnUnix.targets" />
 </Project>
