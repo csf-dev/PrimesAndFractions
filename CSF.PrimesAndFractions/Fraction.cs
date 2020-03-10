@@ -32,7 +32,7 @@ namespace CSF
 {
     /// <summary>
     /// <para>
-    /// Representation of a fraction, a rational number with an <see cref="Int32"/> numerator and an <see cref="Int32"/>
+    /// Representation of a fraction, a rational number with an <see cref="Int64"/> numerator and an <see cref="Int64"/>
     /// denominator.  This type is immutable.
     /// </para>
     /// </summary>
@@ -51,7 +51,7 @@ namespace CSF
 
         #region fields
 
-        private int _numerator, _denominator;
+        private long _numerator, _denominator;
 
         #endregion
 
@@ -60,7 +60,7 @@ namespace CSF
         /// <summary>
         /// <para>Read-only.  Gets the numerator for the current instance.</para>
         /// </summary>
-        public int Numerator
+        public long Numerator
         {
             get
             {
@@ -75,7 +75,7 @@ namespace CSF
         /// <summary>
         /// <para>Read-only.  Gets the denoninator for the current instance.</para>
         /// </summary>
-        public int Denominator
+        public long Denominator
         {
             get
             {
@@ -149,11 +149,14 @@ namespace CSF
         /// <para>Gets a hash code for the current instance.</para>
         /// </summary>
         /// <returns>
-        /// A <see cref="System.Int32"/>
+        /// A <see cref="System.Int64"/>
         /// </returns>
         public override int GetHashCode()
         {
-            return Numerator ^ Denominator;
+            unchecked
+            {
+                return Numerator.GetHashCode() ^ Denominator.GetHashCode();
+            }
         }
 
         /// <summary>
@@ -164,8 +167,8 @@ namespace CSF
         /// </returns>
         public Fraction Simplify()
         {
-            int newNumerator = Numerator, newDenominator = Denominator;
-            IEnumerable<int> commonFactors;
+            long newNumerator = Numerator, newDenominator = Denominator;
+            IEnumerable<long> commonFactors;
 
             if (newNumerator == 0)
             {
@@ -174,7 +177,8 @@ namespace CSF
             }
             else
             {
-                commonFactors = PrimeFactoriser.Default.GetCommonPrimeFactors(Numerator, Denominator);
+                var factorsProvider = CommonPrimeFactorProvider.Default;
+                commonFactors = factorsProvider.GetPrimeFactors(Numerator, Denominator);
                 foreach (int factor in commonFactors)
                 {
                     newNumerator = newNumerator / factor;
@@ -257,13 +261,13 @@ namespace CSF
         }
 
         /// <summary>
-        /// <para>Creates and returns a <see cref="System.Int32"/> representation of the current instance.</para>
+        /// <para>Creates and returns a <see cref="System.Int64"/> representation of the current instance.</para>
         /// </summary>
         /// <remarks>
         /// <para>This is only valid where <see cref="SimplifiesToInteger"/> is true.</para>
         /// </remarks>
         /// <returns>
-        /// A <see cref="System.Int32"/>
+        /// A <see cref="System.Int64"/>
         /// </returns>
         public int ToInteger()
         {
@@ -283,12 +287,12 @@ namespace CSF
         /// <para>Initialises this instance.</para>
         /// </summary>
         /// <param name="numerator">
-        /// A <see cref="System.Int32"/>
+        /// A <see cref="System.Int64"/>
         /// </param>
         /// <param name="denominator">
-        /// A <see cref="System.Int32"/>
+        /// A <see cref="System.Int64"/>
         /// </param>
-        public Fraction(int numerator, int denominator)
+        public Fraction(long numerator, long denominator)
         {
             if (denominator == 0)
             {
@@ -310,7 +314,7 @@ namespace CSF
         /// <remarks>
         /// <para>
         /// Both X and Y in the specification must be integers (positive or negative) and within the range of a signed
-        /// <see cref="System.Int32"/>.
+        /// <see cref="System.Int64"/>.
         /// </para>
         /// </remarks>
         /// <param name="specification">
@@ -335,8 +339,8 @@ namespace CSF
                 throw new FormatException("The string must a correctly-formatted fraction.");
             }
 
-            return new Fraction(Int32.Parse(specificationMatch.Groups[1].Value),
-                                Int32.Parse(specificationMatch.Groups[2].Value));
+            return new Fraction(Int64.Parse(specificationMatch.Groups[1].Value),
+                                Int64.Parse(specificationMatch.Groups[2].Value));
         }
 
         #endregion
