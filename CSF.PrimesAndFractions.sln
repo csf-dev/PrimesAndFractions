@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF", "CSF\CSF.csproj", "{E563D7BC-1AB1-4AFB-8533-51315437C6E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.PrimesAndFractions", "CSF.PrimesAndFractions\CSF.PrimesAndFractions.csproj", "{E563D7BC-1AB1-4AFB-8533-51315437C6E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.CSF", "Test.CSF\Test.CSF.csproj", "{11DCF35A-6E2A-4C62-B536-14B83FF5AE07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.PrimesAndFractions.Tests", "CSF.PrimesAndFractions.Tests\CSF.PrimesAndFractions.Tests.csproj", "{11DCF35A-6E2A-4C62-B536-14B83FF5AE07}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{F4750996-4D3A-422E-868A-89385EA7349C}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\EnableNet45BuildOnUnix.targets = Tools\EnableNet45BuildOnUnix.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
