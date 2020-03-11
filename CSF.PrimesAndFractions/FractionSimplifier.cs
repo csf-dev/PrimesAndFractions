@@ -24,13 +24,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Linq;
+
 namespace CSF
 {
     public class FractionSimplifier : ISimplifiesFraction
     {
+        readonly IGetsCommonPrimeFactors factoriser;
+
         public Fraction Simplify(Fraction input, bool preferVulgarFraction = false)
         {
-            throw new NotImplementedException();
+            // We can perform an optimisation if the numerator is zero
+            if (input.Numerator == 0 && !preferVulgarFraction)
+                return new Fraction(input.AbsoluteInteger, input.IsNegative);
+            if (input.Numerator == 0)
+                return new Fraction(0, input.AbsoluteInteger, 1, input.IsNegative);
+
+            var primeFactors = factoriser.GetPrimeFactors(input.Numerator, input.Denominator);
+            var highestCommonFactor = primeFactors.Aggregate(1L, (acc, next) => acc * next);
+
+            var integer = preferVulgarFraction ? 0L : (input.AbsoluteInteger + (long) Math.Floor((double) input.Numerator / (double) input.Denominator));
+            var numerator = input.Numerator / highestCommonFactor;
+            var denominator = input.Denominator/ highestCommonFactor;
+
+            if (preferVulgarFraction)
+                numerator = numerator + input.AbsoluteInteger * denominator;
+            else
+                numerator = numerator % denominator;
+
+            return new Fraction(integer, numerator, denominator, input.IsNegative);
+        }
+
+        public FractionSimplifier(IGetsCommonPrimeFactors factoriser = null)
+        {
+            this.factoriser = factoriser ?? CommonPrimeFactorProvider.Default;
         }
     }
 }
