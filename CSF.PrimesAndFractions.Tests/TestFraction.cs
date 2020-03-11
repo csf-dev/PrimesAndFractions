@@ -27,6 +27,7 @@
 using System;
 using NUnit.Framework;
 using CSF;
+using Moq;
 
 namespace Test.CSF
 {
@@ -55,6 +56,7 @@ namespace Test.CSF
     public void TestToDecimal()
     {
       Fraction fraction = new Fraction(8, 50);
+            Fraction.Parser = Mock.Of<IParsesFraction>();
       Assert.AreEqual(0.16m, fraction.ToDecimal(), "Correct decimal value");
     }
     

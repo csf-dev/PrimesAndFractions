@@ -30,5 +30,12 @@
   <ItemGroup>
     <EmbeddedResource Remove="Resources\ExceptionMessages.resx" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Fraction.old.cs" />
+    <Compile Remove="Old fraction class.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Old fraction class.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
+  </ItemGroup>
   <Import Project="..\Tools\EnableNet45BuildOnUnix.targets" />
 </Project>
