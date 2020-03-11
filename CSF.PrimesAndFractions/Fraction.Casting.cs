@@ -38,20 +38,36 @@ namespace CSF
 
         public static explicit operator float(Fraction f) => f.ToSingle();
 
-        public static explicit operator sbyte(Fraction f) => (sbyte) (f.Simplify().AbsoluteInteger * f.Multiplier);
+        public static explicit operator sbyte(Fraction f) => (sbyte) (f.Simplify(false).AbsoluteInteger * f.Multiplier);
 
-        public static explicit operator short(Fraction f) => (short) (f.Simplify().AbsoluteInteger * f.Multiplier);
+        public static explicit operator short(Fraction f) => (short) (f.Simplify(false).AbsoluteInteger * f.Multiplier);
 
-        public static explicit operator int(Fraction f) => (int) f.Simplify().AbsoluteInteger * (int) f.Multiplier;
+        public static explicit operator int(Fraction f) => (int) f.Simplify(false).AbsoluteInteger * (int) f.Multiplier;
 
-        public static explicit operator long(Fraction f) => f.Simplify().AbsoluteInteger * f.Multiplier;
+        public static explicit operator long(Fraction f) => f.Simplify(false).AbsoluteInteger * f.Multiplier;
 
-        public static explicit operator byte(Fraction f) => (byte) f.Simplify().AbsoluteInteger;
+        public static explicit operator byte(Fraction f) => (byte) f.Simplify(false).AbsoluteInteger;
 
-        public static explicit operator ushort(Fraction f) => (ushort) f.Simplify().AbsoluteInteger;
+        public static explicit operator ushort(Fraction f) => (ushort) f.Simplify(false).AbsoluteInteger;
 
-        public static explicit operator uint(Fraction f) => (uint) f.Simplify().AbsoluteInteger;
+        public static explicit operator uint(Fraction f) => (uint) f.Simplify(false).AbsoluteInteger;
 
-        public static explicit operator ulong(Fraction f) => (ulong) f.Simplify().AbsoluteInteger;
+        public static explicit operator ulong(Fraction f) => (ulong) f.Simplify(false).AbsoluteInteger;
+
+        public static implicit operator Fraction(sbyte n) => new Fraction(n);
+
+        public static implicit operator Fraction(short n) => new Fraction(n);
+
+        public static implicit operator Fraction(int n) => new Fraction(n);
+
+        public static implicit operator Fraction(long n) => new Fraction(n);
+
+        public static implicit operator Fraction(byte n) => new Fraction(n);
+
+        public static implicit operator Fraction(ushort n) => new Fraction(n);
+
+        public static implicit operator Fraction(uint n) => new Fraction(n);
+
+        public static explicit operator Fraction(ulong n) => new Fraction((long) n);
     }
 }

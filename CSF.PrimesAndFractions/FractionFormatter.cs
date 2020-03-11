@@ -28,9 +28,52 @@ namespace CSF
 {
     public class FractionFormatter : IFormatsFraction
     {
+        internal const string
+            VulgarFormat = "v",
+            StandardFormat = "s",
+            StandardFormatWithoutSimplification = "S",
+            LeadingZeroFormat = "z",
+            LeadingZeroFormatWithoutSimplification = "Z";
+
+        readonly ISimplifiesFraction simplifier;
+
         public string Format(Fraction fraction, string formatType = null)
         {
-            throw new NotImplementedException();
+            Fraction simplified;
+
+            switch(formatType)
+            {
+            case StandardFormatWithoutSimplification:
+                return Format(fraction, false);
+            case LeadingZeroFormatWithoutSimplification:
+                return Format(fraction, true);
+            case StandardFormat:
+            case null:
+                simplified = simplifier.Simplify(fraction);
+                return Format(simplified, false);
+            case LeadingZeroFormat:
+                simplified = simplifier.Simplify(fraction);
+                return Format(simplified, true);
+            case VulgarFormat:
+                simplified = simplifier.Simplify(fraction, true);
+                return Format(simplified, false);
+            default:
+                throw new ArgumentException("The format type must be a supported value.", nameof(formatType));
+            }
+        }
+
+        string Format(Fraction fraction, bool leadingZero)
+        {
+            var sign = fraction.IsNegative ? "-" : String.Empty;
+            var integer = (fraction.AbsoluteInteger == 0L) ? (leadingZero ? "0" : String.Empty) : fraction.AbsoluteInteger.ToString();
+            var spacer = (sign.Length > 0 || integer.Length > 0) ? " " : String.Empty;
+
+            return $"{sign}{integer}{spacer}{fraction.Numerator}/{fraction.Denominator}";
+        }
+
+        public FractionFormatter(ISimplifiesFraction simplifier)
+        {
+            this.simplifier = simplifier ?? throw new ArgumentNullException(nameof(simplifier));
         }
     }
 }

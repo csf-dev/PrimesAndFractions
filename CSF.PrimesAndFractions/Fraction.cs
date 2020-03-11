@@ -72,8 +72,20 @@ namespace CSF
 
         public bool Equals(Fraction other)
         {
-            var thisSimplified = Simplify();
-            var otherSimplified = other.Simplify();
+            // As an optimisation, if the fractions are equal without
+            // simplification then we can return true immediately.
+            if (   IsNegative == other.IsNegative
+                && AbsoluteInteger == other.AbsoluteInteger
+                && Denominator == other.Denominator
+                && Numerator == other.Numerator)
+            {
+                return true;
+            }
+
+            // Simplifying both fractions will ensure that if they are equal,
+            // they will have the exact same values in their four stateful properties.
+            var thisSimplified = Simplify(false);
+            var otherSimplified = other.Simplify(false);
 
             return thisSimplified.IsNegative == otherSimplified.IsNegative
                 && thisSimplified.AbsoluteInteger == otherSimplified.AbsoluteInteger
@@ -100,7 +112,8 @@ namespace CSF
             }
         }
 
-        public override string ToString() => Formatter.Format(this);
+        public override string ToString()
+            => Formatter.Format(this, FractionFormatter.StandardFormatWithoutSimplification);
 
         bool GetIsNegative(long absoluteInteger, long numerator, long denominator, bool? isNegative)
         {
@@ -142,8 +155,8 @@ namespace CSF
         internal static void ResetServices()
         {
             Parser = new FractionParser();
-            Formatter = new FractionFormatter();
             Simplifier = new FractionSimplifier();
+            Formatter = new FractionFormatter(Simplifier);
         }
 
         public static Fraction Parse(string fractionString) => Parser.Parse(fractionString);

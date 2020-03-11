@@ -24,13 +24,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Text.RegularExpressions;
+
 namespace CSF
 {
     public class FractionParser : IParsesFraction
     {
+        const string FractionPattern = @"^\s*(-)?\s*(\d+)?\s+(\d+)\s*/\s*(\d+)\s*$";
+        static readonly Regex FractionMatcher = new Regex(FractionPattern, RegexOptions.CultureInvariant);
+
         public Fraction Parse(string fractionString)
         {
-            throw new NotImplementedException();
+            if (fractionString == null)
+                throw new ArgumentNullException(nameof(fractionString));
+            var match = FractionMatcher.Match(fractionString);
+
+            if (!match.Success)
+                throw new FormatException("The specified string must be a fraction in string format.");
+
+            var negativeVal = match.Groups[1].Value;
+            var integerVal = match.Groups[2].Value;
+            var numeratorVal = match.Groups[3].Value;
+            var denominatorVal = match.Groups[4].Value;
+
+            var isNegative = negativeVal.Length > 0;
+            var integer = (integerVal.Length > 0) ? Int64.Parse(integerVal) : 0L;
+            var numerator = Int64.Parse(numeratorVal);
+            var denominator = Int64.Parse(denominatorVal);
+
+            return new Fraction(integer, numerator, denominator, isNegative);
         }
     }
 }
