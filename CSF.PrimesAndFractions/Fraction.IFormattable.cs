@@ -1,5 +1,5 @@
 ﻿//
-// FractionF.cs
+// Fraction.IFormattable.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -26,11 +26,7 @@
 using System;
 namespace CSF
 {
-    public partial struct Fraction : IEquatable<Fraction>,
-                                     IComparable<Fraction>,
-                                     IComparable,
-                                     IConvertible,
-                                     IFormattable
+    public partial struct Fraction : IFormattable
     {
         public string ToString(string format, IFormatProvider formatProvider)
         {

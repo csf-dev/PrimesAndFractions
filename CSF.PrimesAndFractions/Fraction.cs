@@ -26,11 +26,7 @@
 using System;
 namespace CSF
 {
-    public partial struct Fraction :  IEquatable<Fraction>,
-                                      IComparable<Fraction>,
-                                      IComparable,
-                                      IConvertible,
-                                      IFormattable
+    public partial struct Fraction :  IEquatable<Fraction>
     {
         // An arbitrary prime number for the purpose of deriving a hash code
         const int hashPrime = 137;

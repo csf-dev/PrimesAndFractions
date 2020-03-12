@@ -1,5 +1,5 @@
 ﻿//
-// FractionC.cs
+// Fraction.Casting.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -26,11 +26,7 @@
 using System;
 namespace CSF
 {
-    public partial struct Fraction : IEquatable<Fraction>,
-                                     IComparable<Fraction>,
-                                     IComparable,
-                                     IConvertible,
-                                     IFormattable
+    public partial struct Fraction
     {
         public static implicit operator decimal(Fraction f) => f.ToDecimal();
 

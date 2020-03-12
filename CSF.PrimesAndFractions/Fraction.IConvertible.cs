@@ -1,5 +1,5 @@
 ﻿//
-// FractionC.cs
+// Fraction.IConvertible.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -26,13 +26,14 @@
 using System;
 namespace CSF
 {
-    public partial struct Fraction : IEquatable<Fraction>,
-                                     IComparable<Fraction>,
-                                     IComparable,
-                                     IConvertible,
-                                     IFormattable
+    public partial struct Fraction
+#if !NETSTANDARD1_0
+        : IConvertible
+#endif
     {
+#if !NETSTANDARD1_0
         public TypeCode GetTypeCode() => TypeCode.Object;
+#endif
 
         public bool ToBoolean(IFormatProvider provider)
             => (AbsoluteInteger > 0L) || (Numerator > 0L) && !IsNegative;

@@ -1,5 +1,5 @@
 ﻿//
-// Fraction2.cs
+// Fraction.IComparable.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -26,11 +26,8 @@
 using System;
 namespace CSF
 {
-    public partial struct Fraction : IEquatable<Fraction>,
-                                     IComparable<Fraction>,
-                                     IComparable,
-                                     IConvertible,
-                                     IFormattable
+    public partial struct Fraction : IComparable<Fraction>,
+                                     IComparable
     {
         public int CompareTo(Fraction other)
         {
