@@ -28,11 +28,23 @@ using System.Text.RegularExpressions;
 
 namespace CSF
 {
+    /// <summary>
+    /// A concrete class which uses Regex to parse a string which represents a fraction,
+    /// create and return an instance of the <see cref="Fraction"/> type based upon the string.
+    /// </summary>
     public class FractionParser : IParsesFraction
     {
         const string FractionPattern = @"^\s*(-)?\s*(\d+)?\s+(\d+)\s*/\s*(\d+)\s*$";
         static readonly Regex FractionMatcher = new Regex(FractionPattern, RegexOptions.CultureInvariant);
 
+        /// <summary>
+        /// Parses a specified string which represents a formatted fraction value and returns a
+        /// <see cref="Fraction"/> created from that string.
+        /// </summary>
+        /// <returns>The parsed fraction.</returns>
+        /// <param name="fractionString">A string which represents a fraction.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="fractionString"/> is <c>null</c>.</exception>
+        /// <exception cref="FormatException">If the <paramref name="fractionString"/> is not a correctly-formatted string that represents a fraction.</exception>
         public Fraction Parse(string fractionString)
         {
             if (fractionString == null)

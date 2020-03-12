@@ -26,8 +26,20 @@
 using System;
 namespace CSF
 {
+    /// <summary>
+    /// An object which can parse a string which represents a fraction and return instances of
+    /// the <see cref="Fraction"/> type.
+    /// </summary>
     public interface IParsesFraction
     {
+        /// <summary>
+        /// Parses a specified string which represents a formatted fraction value and returns a
+        /// <see cref="Fraction"/> created from that string.
+        /// </summary>
+        /// <returns>The parsed fraction.</returns>
+        /// <param name="fractionString">A string which represents a fraction.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="fractionString"/> is <c>null</c>.</exception>
+        /// <exception cref="FormatException">If the <paramref name="fractionString"/> is not a correctly-formatted string that represents a fraction.</exception>
         Fraction Parse(string fractionString);
     }
 }
