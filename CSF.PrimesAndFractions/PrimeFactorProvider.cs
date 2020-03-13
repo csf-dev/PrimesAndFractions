@@ -51,15 +51,20 @@ namespace CSF
         /// <param name="number">A number for which to get the prime factors.</param>
         public IEnumerable<long> GetPrimeFactors(long number)
         {
-            /* A future plan for this method would be to cache the primes that this instance has already generated.
-             * Then, future calls will use the cache as much as possible rather than generating the prime numbers afresh
-             * on every call.  This is particularly annoying because this method operates recursively.
-             */
-            var first = primeNumberProvider.GetPrimeNumbers(number)
-                        .TakeWhile(x => x <= Math.Sqrt(number))
-                        .FirstOrDefault(x => number % x == 0);
+            var output = new List<long>();
 
-            return (first == 0) ? new[] { number } : new[] { first }.Concat(GetPrimeFactors(number / first));
+            for(long currentValue = number, factor = 1L;
+                factor != default(long);
+                currentValue = currentValue / (factor != default(long)? factor : 1L))
+            {
+                factor = primeNumberProvider.GetPrimeNumbers(currentValue)
+                    .TakeWhile(x => x <= Math.Sqrt(currentValue))
+                    .FirstOrDefault(x => currentValue % x == 0);
+
+                output.Add((factor == default(long)) ? currentValue : factor);
+            }
+
+            return output;
         }
 
         /// <summary>
