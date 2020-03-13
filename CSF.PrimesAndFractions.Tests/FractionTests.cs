@@ -444,5 +444,154 @@ namespace CSF.Tests
         }
 
         #endregion
+
+        #region Casting
+
+        [Test]
+        public void A_fraction_implicitly_casts_to_decimal()
+        {
+            var fraction = new Fraction(-5);
+            decimal num = fraction;
+            Assert.That(num, Is.EqualTo(-5m));
+        }
+
+        [Test]
+        public void A_fraction_explicitly_casts_to_double()
+        {
+            var fraction = new Fraction(-5);
+            double num = (double) fraction;
+            Assert.That(num, Is.EqualTo(-5));
+        }
+
+        [Test]
+        public void A_fraction_explicitly_casts_to_float()
+        {
+            var fraction = new Fraction(-5);
+            float num = (float)fraction;
+            Assert.That(num, Is.EqualTo(-5));
+        }
+
+        [Test]
+        public void A_fraction_explicitly_casts_to_sbyte()
+        {
+            var fraction = new Fraction(-5);
+            sbyte num = (sbyte)fraction;
+            Assert.That(num, Is.EqualTo(-5));
+        }
+
+        [Test]
+        public void A_fraction_explicitly_casts_to_short()
+        {
+            var fraction = new Fraction(-5);
+            short num = (short)fraction;
+            Assert.That(num, Is.EqualTo(-5));
+        }
+
+        [Test]
+        public void A_fraction_explicitly_casts_to_int()
+        {
+            var fraction = new Fraction(-5);
+            int num = (int)fraction;
+            Assert.That(num, Is.EqualTo(-5));
+        }
+
+        [Test]
+        public void A_fraction_explicitly_casts_to_long()
+        {
+            var fraction = new Fraction(-5);
+            long num = (long)fraction;
+            Assert.That(num, Is.EqualTo(-5));
+        }
+
+        [Test]
+        public void A_fraction_explicitly_casts_to_byte()
+        {
+            var fraction = new Fraction(5);
+            byte num = (byte)fraction;
+            Assert.That(num, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void A_fraction_explicitly_casts_to_ushort()
+        {
+            var fraction = new Fraction(5);
+            ushort num = (ushort)fraction;
+            Assert.That(num, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void A_fraction_explicitly_casts_to_uint()
+        {
+            var fraction = new Fraction(5);
+            uint num = (uint)fraction;
+            Assert.That(num, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void A_fraction_explicitly_casts_to_ulong()
+        {
+            var fraction = new Fraction(5);
+            ulong num = (ulong)fraction;
+            Assert.That(num, Is.EqualTo(5));
+        }
+
+        [Test, AutoMoqData]
+        public void A_fraction_may_implicitly_cast_from_sbyte(sbyte number)
+        {
+            Fraction fraction = number;
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+        }
+
+        [Test, AutoMoqData]
+        public void A_fraction_may_implicitly_cast_from_short(short number)
+        {
+            Fraction fraction = number;
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+        }
+
+        [Test, AutoMoqData]
+        public void A_fraction_may_implicitly_cast_from_int(int number)
+        {
+            Fraction fraction = number;
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+        }
+
+        [Test, AutoMoqData]
+        public void A_fraction_may_implicitly_cast_from_long(long number)
+        {
+            Fraction fraction = number;
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+        }
+
+        [Test, AutoMoqData]
+        public void A_fraction_may_implicitly_cast_from_byte(byte number)
+        {
+            Fraction fraction = number;
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+        }
+
+        [Test, AutoMoqData]
+        public void A_fraction_may_implicitly_cast_from_ushort(ushort number)
+        {
+            Fraction fraction = number;
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+        }
+
+        [Test, AutoMoqData]
+        public void A_fraction_may_implicitly_cast_from_uint(uint number)
+        {
+            Fraction fraction = number;
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+        }
+
+        [Test]
+        public void A_fraction_may_implicitly_cast_from_ulong()
+        {
+            ulong number = 1234567;
+            Fraction fraction = (Fraction) number;
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+        }
+
+        #endregion
     }
 }
