@@ -1,5 +1,5 @@
 ﻿//
-// IGetsPrimeNumbers.cs
+// Fraction.IFormattable.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -23,22 +23,23 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System.Collections.Generic;
-
+using System;
 namespace CSF
 {
-    /// <summary>
-    /// A service which is capable of getting/generating prime numbers from two (the first prime number)
-    /// up to an arbitrary upper limit.
-    /// </summary>
-    public interface IGetsPrimeNumbers
+    public partial struct Fraction : IFormattable
     {
         /// <summary>
-        /// Gets a sequence of all prime numbers starting with the first prime number (two) and ending
-        /// with the highest prime number which is equal to or less than the specified <paramref name="upperLimit"/>.
+        /// Gets a string representation of the current instance, using the specified format provider,
+        /// which should be able to return an instance of <see cref="IFormatsFraction"/>.
         /// </summary>
-        /// <returns>An ordered sequence of prime numbers.</returns>
-        /// <param name="upperLimit">The highest numeric value for which to get prime numbers; this method will not get any prime numbers which are greater than this number.</param>
-        IEnumerable<long> GetPrimeNumbers(long upperLimit);
+        /// <returns>The string representation.</returns>
+        /// <param name="format">The format specifier.</param>
+        /// <param name="formatProvider">A format provider, which should be able to return an <see cref="IFormatsFraction"/>.</param>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            var formatter = formatProvider.GetFormat(typeof(IFormatsFraction)) as IFormatsFraction;
+            if (formatter == null) return ToString();
+            return formatter.Format(this, format);
+        }
     }
 }

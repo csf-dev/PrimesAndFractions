@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <ReleaseVersion>6.1.1</ReleaseVersion>
     <RootNamespace>CSF.Tests</RootNamespace>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\CSF-Software-OSS.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
@@ -24,5 +26,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.PrimesAndFractions\CSF.PrimesAndFractions.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="TestFraction.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestFraction.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
   </ItemGroup>
 </Project>

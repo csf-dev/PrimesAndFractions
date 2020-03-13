@@ -1,5 +1,5 @@
 ﻿//
-// IGetsPrimeNumbers.cs
+// AssemblyInfo.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -23,22 +23,5 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System.Collections.Generic;
 
-namespace CSF
-{
-    /// <summary>
-    /// A service which is capable of getting/generating prime numbers from two (the first prime number)
-    /// up to an arbitrary upper limit.
-    /// </summary>
-    public interface IGetsPrimeNumbers
-    {
-        /// <summary>
-        /// Gets a sequence of all prime numbers starting with the first prime number (two) and ending
-        /// with the highest prime number which is equal to or less than the specified <paramref name="upperLimit"/>.
-        /// </summary>
-        /// <returns>An ordered sequence of prime numbers.</returns>
-        /// <param name="upperLimit">The highest numeric value for which to get prime numbers; this method will not get any prime numbers which are greater than this number.</param>
-        IEnumerable<long> GetPrimeNumbers(long upperLimit);
-    }
-}
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("CSF.PrimesAndFractions.Tests, PublicKey=002400000480000094000000060200000024000052534131000400000100010003331100a00b920774957d74ffb893246965b5bf7e7ad64ce0de1b64ba9deab730823c1106dcecf7b7c44f495111be41fe1566f1bc80756da0ddfebad47ea40dc6f3cd53ca0bb802907376bf4f52d531ba3a44355cba907ffa3c6269c2db5e55f5f9a92fc87047f3a980afa0efcc369be9f754a0fad2eef1d35cb4b84469b0a8")]

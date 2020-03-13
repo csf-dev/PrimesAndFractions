@@ -1,5 +1,5 @@
 ﻿//
-// IGetsPrimeNumbers.cs
+// IParsesFraction.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -23,22 +23,23 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System.Collections.Generic;
-
+using System;
 namespace CSF
 {
     /// <summary>
-    /// A service which is capable of getting/generating prime numbers from two (the first prime number)
-    /// up to an arbitrary upper limit.
+    /// An object which can parse a string which represents a fraction and return instances of
+    /// the <see cref="Fraction"/> type.
     /// </summary>
-    public interface IGetsPrimeNumbers
+    public interface IParsesFraction
     {
         /// <summary>
-        /// Gets a sequence of all prime numbers starting with the first prime number (two) and ending
-        /// with the highest prime number which is equal to or less than the specified <paramref name="upperLimit"/>.
+        /// Parses a specified string which represents a formatted fraction value and returns a
+        /// <see cref="Fraction"/> created from that string.
         /// </summary>
-        /// <returns>An ordered sequence of prime numbers.</returns>
-        /// <param name="upperLimit">The highest numeric value for which to get prime numbers; this method will not get any prime numbers which are greater than this number.</param>
-        IEnumerable<long> GetPrimeNumbers(long upperLimit);
+        /// <returns>The parsed fraction.</returns>
+        /// <param name="fractionString">A string which represents a fraction.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="fractionString"/> is <c>null</c>.</exception>
+        /// <exception cref="FormatException">If the <paramref name="fractionString"/> is not a correctly-formatted string that represents a fraction.</exception>
+        Fraction Parse(string fractionString);
     }
 }

@@ -1,5 +1,5 @@
 ﻿//
-// IGetsPrimeNumbers.cs
+// ISimplifiesFraction.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -23,22 +23,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System.Collections.Generic;
 
 namespace CSF
 {
     /// <summary>
-    /// A service which is capable of getting/generating prime numbers from two (the first prime number)
-    /// up to an arbitrary upper limit.
+    /// An object which can simplify a fraction, by reducing its denominator to the
+    /// lowest possible value.
     /// </summary>
-    public interface IGetsPrimeNumbers
+    public interface ISimplifiesFraction
     {
         /// <summary>
-        /// Gets a sequence of all prime numbers starting with the first prime number (two) and ending
-        /// with the highest prime number which is equal to or less than the specified <paramref name="upperLimit"/>.
+        /// Simplify the specified fraction, optionally preferring the use of vulgar fractions.
         /// </summary>
-        /// <returns>An ordered sequence of prime numbers.</returns>
-        /// <param name="upperLimit">The highest numeric value for which to get prime numbers; this method will not get any prime numbers which are greater than this number.</param>
-        IEnumerable<long> GetPrimeNumbers(long upperLimit);
+        /// <returns>The simplified fraction.</returns>
+        /// <param name="input">The fraction to simplify.</param>
+        /// <param name="preferVulgarFraction">If set to <c>true</c> then vulgar fractions are preferred over composite/mixed whole-number and fractional parts.</param>
+        Fraction Simplify(Fraction input, bool preferVulgarFraction = false);
     }
 }
