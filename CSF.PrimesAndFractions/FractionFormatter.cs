@@ -65,10 +65,21 @@ namespace CSF
         string Format(Fraction fraction, bool leadingZero)
         {
             var sign = fraction.IsNegative ? "-" : String.Empty;
-            var integer = (fraction.AbsoluteInteger == 0L) ? (leadingZero ? "0" : String.Empty) : fraction.AbsoluteInteger.ToString();
+            var integer = GetIntegerRepresentation(fraction, leadingZero);
             var spacer = (sign.Length > 0 || integer.Length > 0) ? " " : String.Empty;
 
             return $"{sign}{integer}{spacer}{fraction.Numerator}/{fraction.Denominator}";
+        }
+
+        string GetIntegerRepresentation(Fraction fraction, bool leadingZero)
+        {
+            if (fraction.AbsoluteInteger == 0L && leadingZero)
+                return "0";
+
+            if (fraction.AbsoluteInteger == 0L)
+                return String.Empty;
+
+            return fraction.AbsoluteInteger.ToString();
         }
 
         public FractionFormatter(ISimplifiesFraction simplifier)
