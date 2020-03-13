@@ -539,57 +539,192 @@ namespace CSF.Tests
         public void A_fraction_may_implicitly_cast_from_sbyte(sbyte number)
         {
             Fraction fraction = number;
-            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(Math.Abs(number)));
         }
 
         [Test, AutoMoqData]
         public void A_fraction_may_implicitly_cast_from_short(short number)
         {
             Fraction fraction = number;
-            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(Math.Abs(number)));
         }
 
         [Test, AutoMoqData]
         public void A_fraction_may_implicitly_cast_from_int(int number)
         {
             Fraction fraction = number;
-            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(Math.Abs(number)));
         }
 
         [Test, AutoMoqData]
         public void A_fraction_may_implicitly_cast_from_long(long number)
         {
             Fraction fraction = number;
-            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(Math.Abs(number)));
         }
 
         [Test, AutoMoqData]
         public void A_fraction_may_implicitly_cast_from_byte(byte number)
         {
             Fraction fraction = number;
-            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(Math.Abs(number)));
         }
 
         [Test, AutoMoqData]
         public void A_fraction_may_implicitly_cast_from_ushort(ushort number)
         {
             Fraction fraction = number;
-            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(Math.Abs(number)));
         }
 
         [Test, AutoMoqData]
         public void A_fraction_may_implicitly_cast_from_uint(uint number)
         {
             Fraction fraction = number;
-            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(Math.Abs(number)));
         }
 
         [Test]
-        public void A_fraction_may_implicitly_cast_from_ulong()
+        public void A_fraction_may_explicitly_cast_from_ulong()
         {
             ulong number = 1234567;
             Fraction fraction = (Fraction) number;
-            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(number));
+            Assert.That(fraction.AbsoluteInteger, Is.EqualTo(1234567));
+        }
+
+        #endregion
+
+        #region IComparable
+
+        [Test, AutoMoqData]
+        public void CompareTo_returns_zero_for_two_equal_fractions()
+        {
+            var first = new Fraction(3, 3, 5);
+            var second = new Fraction(3, 3, 5);
+
+            Assert.That(() => first.CompareTo((object) second), Is.EqualTo(0));
+        }
+
+        [Test, AutoMoqData]
+        public void CompareTo_returns_negative_one_if_first_is_less_than_second()
+        {
+            var first = new Fraction(3, 2, 5);
+            var second = new Fraction(3, 3, 5);
+
+            Assert.That(() => first.CompareTo((object) second), Is.EqualTo(-1));
+        }
+
+        [Test, AutoMoqData]
+        public void CompareTo_returns_positive_one_if_first_is_greater_than_second()
+        {
+            var first = new Fraction(3, 4, 5);
+            var second = new Fraction(3, 3, 5);
+
+            Assert.That(() => first.CompareTo((object) second), Is.EqualTo(1));
+        }
+
+        [Test, AutoMoqData]
+        public void CompareTo_throws_ArgumentException_if_second_is_not_a_fraction()
+        {
+            var first = new Fraction(3, 4, 5);
+
+            Assert.That(() => first.CompareTo("A string"), Throws.InstanceOf<ArgumentException>());
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_LT_returns_true_if_first_is_less_than_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 4, 5);
+            Assert.That(() => first < second, Is.True);
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_LT_returns_false_if_first_is_equal_to_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 3, 5);
+            Assert.That(() => first < second, Is.False);
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_LT_returns_false_if_first_is_greater_than_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 2, 5);
+            Assert.That(() => first < second, Is.False);
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_GT_returns_false_if_first_is_less_than_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 4, 5);
+            Assert.That(() => first > second, Is.False);
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_GT_returns_false_if_first_is_equal_to_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 3, 5);
+            Assert.That(() => first > second, Is.False);
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_GT_returns_true_if_first_is_greater_than_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 2, 5);
+            Assert.That(() => first > second, Is.True);
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_LTE_returns_true_if_first_is_less_than_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 4, 5);
+            Assert.That(() => first <= second, Is.True);
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_LTE_returns_true_if_first_is_equal_to_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 3, 5);
+            Assert.That(() => first <= second, Is.True);
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_LTE_returns_false_if_first_is_greater_than_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 2, 5);
+            Assert.That(() => first <= second, Is.False);
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_GTE_returns_false_if_first_is_less_than_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 4, 5);
+            Assert.That(() => first >= second, Is.False);
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_GTE_returns_true_if_first_is_equal_to_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 3, 5);
+            Assert.That(() => first >= second, Is.True);
+        }
+
+        [Test, AutoMoqData]
+        public void Operator_GTE_returns_true_if_first_is_greater_than_second()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 2, 5);
+            Assert.That(() => first >= second, Is.True);
         }
 
         #endregion

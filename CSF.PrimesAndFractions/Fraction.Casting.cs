@@ -28,42 +28,159 @@ namespace CSF
 {
     public partial struct Fraction
     {
+        /// <summary>
+        /// Implicitly casts the fraction to a decimal number.
+        /// </summary>
+        /// <returns>The value of the fraction.</returns>
+        /// <param name="f">The fraction to cast.</param>
         public static implicit operator decimal(Fraction f) => f.ToDecimal();
 
+        /// <summary>
+        /// Explicitly casts the fraction to a double-precision floating point number.
+        /// </summary>
+        /// <returns>The value of the fraction.</returns>
+        /// <param name="f">The fraction to cast.</param>
         public static explicit operator double(Fraction f) => f.ToDouble();
 
+        /// <summary>
+        /// Explicitly casts the fraction to a single-precision floating point number.
+        /// </summary>
+        /// <returns>The value of the fraction.</returns>
+        /// <param name="f">The fraction to cast.</param>
         public static explicit operator float(Fraction f) => f.ToSingle();
 
+        /// <summary>
+        /// Explicitly casts the fraction to a signed byte.
+        /// Note that this cast causes loss of data; only the whole-number part
+        /// will be retained.
+        /// </summary>
+        /// <returns>The value of the fraction.</returns>
+        /// <param name="f">The fraction to cast.</param>
         public static explicit operator sbyte(Fraction f) => (sbyte) (f.Simplify(false).AbsoluteInteger * f.Multiplier);
 
+        /// <summary>
+        /// Explicitly casts the fraction to a signed 16-bit integer.
+        /// Note that this cast causes loss of data; only the whole-number part
+        /// will be retained.
+        /// </summary>
+        /// <returns>The value of the fraction.</returns>
+        /// <param name="f">The fraction to cast.</param>
         public static explicit operator short(Fraction f) => (short) (f.Simplify(false).AbsoluteInteger * f.Multiplier);
 
+        /// <summary>
+        /// Explicitly casts the fraction to a signed 32-bit integer.
+        /// Note that this cast causes loss of data; only the whole-number part
+        /// will be retained.
+        /// </summary>
+        /// <returns>The value of the fraction.</returns>
+        /// <param name="f">The fraction to cast.</param>
         public static explicit operator int(Fraction f) => (int) f.Simplify(false).AbsoluteInteger * (int) f.Multiplier;
 
+        /// <summary>
+        /// Explicitly casts the fraction to a signed 64-bit integer.
+        /// Note that this cast causes loss of data; only the whole-number part
+        /// will be retained.
+        /// </summary>
+        /// <returns>The value of the fraction.</returns>
+        /// <param name="f">The fraction to cast.</param>
         public static explicit operator long(Fraction f) => f.Simplify(false).AbsoluteInteger * f.Multiplier;
 
+        /// <summary>
+        /// Explicitly casts the fraction to an unsigned byte.
+        /// Note that this cast causes loss of data; only the whole-number part
+        /// will be retained and only the absolute value (negative numbers will be
+        /// converted to positive).
+        /// </summary>
+        /// <returns>The value of the fraction.</returns>
+        /// <param name="f">The fraction to cast.</param>
         public static explicit operator byte(Fraction f) => (byte) f.Simplify(false).AbsoluteInteger;
 
+        /// <summary>
+        /// Explicitly casts the fraction to an unsigned 16-bit integer.
+        /// Note that this cast causes loss of data; only the whole-number part
+        /// will be retained and only the absolute value (negative numbers will be
+        /// converted to positive).
+        /// </summary>
+        /// <returns>The value of the fraction.</returns>
+        /// <param name="f">The fraction to cast.</param>
         public static explicit operator ushort(Fraction f) => (ushort) f.Simplify(false).AbsoluteInteger;
 
+        /// <summary>
+        /// Explicitly casts the fraction to an unsigned 32-bit integer.
+        /// Note that this cast causes loss of data; only the whole-number part
+        /// will be retained and only the absolute value (negative numbers will be
+        /// converted to positive).
+        /// </summary>
+        /// <returns>The value of the fraction.</returns>
+        /// <param name="f">The fraction to cast.</param>
         public static explicit operator uint(Fraction f) => (uint) f.Simplify(false).AbsoluteInteger;
 
+        /// <summary>
+        /// Explicitly casts the fraction to an unsigned 64-bit integer.
+        /// Note that this cast causes loss of data; only the whole-number part
+        /// will be retained and only the absolute value (negative numbers will be
+        /// converted to positive).
+        /// </summary>
+        /// <returns>The value of the fraction.</returns>
+        /// <param name="f">The fraction to cast.</param>
         public static explicit operator ulong(Fraction f) => (ulong) f.Simplify(false).AbsoluteInteger;
 
+        /// <summary>
+        /// Implicitly casts a signed byte as a fraction.
+        /// </summary>
+        /// <returns>A fraction with the same value as the input number.</returns>
+        /// <param name="n">The number to cast.</param>
         public static implicit operator Fraction(sbyte n) => new Fraction(n);
 
+        /// <summary>
+        /// Implicitly casts a signed 16-bit integer as a fraction.
+        /// </summary>
+        /// <returns>A fraction with the same value as the input number.</returns>
+        /// <param name="n">The number to cast.</param>
         public static implicit operator Fraction(short n) => new Fraction(n);
 
+        /// <summary>
+        /// Implicitly casts a signed 32-bit integer as a fraction.
+        /// </summary>
+        /// <returns>A fraction with the same value as the input number.</returns>
+        /// <param name="n">The number to cast.</param>
         public static implicit operator Fraction(int n) => new Fraction(n);
 
+        /// <summary>
+        /// Implicitly casts a signed 64-bit integer as a fraction.
+        /// </summary>
+        /// <returns>A fraction with the same value as the input number.</returns>
+        /// <param name="n">The number to cast.</param>
         public static implicit operator Fraction(long n) => new Fraction(n);
 
+        /// <summary>
+        /// Implicitly casts an unsigned byte as a fraction.
+        /// </summary>
+        /// <returns>A fraction with the same value as the input number.</returns>
+        /// <param name="n">The number to cast.</param>
         public static implicit operator Fraction(byte n) => new Fraction(n);
 
+        /// <summary>
+        /// Implicitly casts an unsigned 16-bit integer as a fraction.
+        /// </summary>
+        /// <returns>A fraction with the same value as the input number.</returns>
+        /// <param name="n">The number to cast.</param>
         public static implicit operator Fraction(ushort n) => new Fraction(n);
 
+        /// <summary>
+        /// Implicitly casts an unsigned 32-bit integer as a fraction.
+        /// </summary>
+        /// <returns>A fraction with the same value as the input number.</returns>
+        /// <param name="n">The number to cast.</param>
         public static implicit operator Fraction(uint n) => new Fraction(n);
 
+        /// <summary>
+        /// Explicitly casts an unsigned 64-bit integer as a fraction.
+        /// Note that this cast could cause loss of data, if the input number is greater
+        /// than <see cref="Int64.MaxValue"/>.
+        /// </summary>
+        /// <returns>A fraction with the same value as the input number.</returns>
+        /// <param name="n">The number to cast.</param>
         public static explicit operator Fraction(ulong n) => new Fraction((long) n);
     }
 }

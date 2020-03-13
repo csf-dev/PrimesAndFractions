@@ -83,17 +83,41 @@ namespace CSF
 
         #region Comparison
 
-        public static bool operator >(Fraction first, Fraction second)
-            => first.CompareTo(second) > 0;
+        /// <summary>
+        /// Determines whether one specified <see cref="CSF.Fraction"/> is greater than another
+        /// specfied <see cref="CSF.Fraction"/>.
+        /// </summary>
+        /// <param name="first">The first <see cref="CSF.Fraction"/> to compare.</param>
+        /// <param name="second">The second <see cref="CSF.Fraction"/> to compare.</param>
+        /// <returns><c>true</c> if <c>first</c> is greater than <c>second</c>; otherwise, <c>false</c>.</returns>
+        public static bool operator >(Fraction first, Fraction second) => first.CompareTo(second) > 0;
 
-        public static bool operator <(Fraction first, Fraction second)
-            => first.CompareTo(second) < 0;
+        /// <summary>
+        /// Determines whether one specified <see cref="CSF.Fraction"/> is lower than another
+        /// specfied <see cref="CSF.Fraction"/>.
+        /// </summary>
+        /// <param name="first">The first <see cref="CSF.Fraction"/> to compare.</param>
+        /// <param name="second">The second <see cref="CSF.Fraction"/> to compare.</param>
+        /// <returns><c>true</c> if <c>first</c> is lower than <c>second</c>; otherwise, <c>false</c>.</returns>
+        public static bool operator <(Fraction first, Fraction second) => first.CompareTo(second) < 0;
 
-        public static bool operator >=(Fraction first, Fraction second)
-            => first.CompareTo(second) >= 0;
+        /// <summary>
+        /// Determines whether one specified <see cref="CSF.Fraction"/> is greater than or equal to another
+        /// specfied <see cref="CSF.Fraction"/>.
+        /// </summary>
+        /// <param name="first">The first <see cref="CSF.Fraction"/> to compare.</param>
+        /// <param name="second">The second <see cref="CSF.Fraction"/> to compare.</param>
+        /// <returns><c>true</c> if <c>first</c> is greater than or equal to <c>second</c>; otherwise, <c>false</c>.</returns>
+        public static bool operator >=(Fraction first, Fraction second) => first.CompareTo(second) >= 0;
 
-        public static bool operator <=(Fraction first, Fraction second)
-            => first.CompareTo(second) <= 0;
+        /// <summary>
+        /// Determines whether one specified <see cref="CSF.Fraction"/> is lower than or equal to another
+        /// specfied <see cref="CSF.Fraction"/>.
+        /// </summary>
+        /// <param name="first">The first <see cref="CSF.Fraction"/> to compare.</param>
+        /// <param name="second">The second <see cref="CSF.Fraction"/> to compare.</param>
+        /// <returns><c>true</c> if <c>first</c> is lower than or equal to <c>second</c>; otherwise, <c>false</c>.</returns>
+        public static bool operator <=(Fraction first, Fraction second) => first.CompareTo(second) <= 0;
 
         #endregion
     }

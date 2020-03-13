@@ -29,17 +29,40 @@ namespace CSF
     public partial struct Fraction : IComparable<Fraction>,
                                      IComparable
     {
+        /// <summary>
+        /// Compares the current instance to another <see cref="Fraction"/> to determine whether it is
+        /// greater-than, less-than or equal-to the other instance.
+        /// </summary>
+        /// <returns>
+        /// <c>-1</c> if the current instance is less than <paramref name="other"/>,
+        /// <c>0</c> if the current instance is equal to <paramref name="other"/>
+        /// or <c>1</c> is the current instance is greater than <paramref name="other"/>.
+        /// </returns>
+        /// <param name="other">The other fraction against which to compare.</param>
         public int CompareTo(Fraction other)
         {
-            var thisDouble = ToDouble();
-            var otherDouble = other.ToDouble();
+            var thisDecimal = ToDecimal();
+            var otherDecimal = other.ToDecimal();
 
-            var diff = thisDouble - otherDouble;
-            if (diff < 0d) return -1;
-            if (diff > 0d) return 1;
+            var diff = thisDecimal - otherDecimal;
+            if (diff < 0m) return -1;
+            if (diff > 0m) return 1;
             return 0;
         }
 
+        /// <summary>
+        /// Compares the current instance to another object to determine whether it is
+        /// greater-than, less-than or equal-to the other instance.
+        /// </summary>
+        /// <returns>
+        /// <c>-1</c> if the current instance is less than <paramref name="obj"/>,
+        /// <c>0</c> if the current instance is equal to <paramref name="obj"/>
+        /// or <c>1</c> is the current instance is greater than <paramref name="obj"/>.
+        /// </returns>
+        /// <param name="obj">The other object (which must be a <see cref="Fraction"/>) against which to compare.</param>
+        /// <exception cref="ArgumentException">
+        /// If the <paramref name="obj"/> is not a <see cref="Fraction"/>.
+        /// </exception>
         public int CompareTo(object obj)
         {
             if (obj is Fraction fraction) return CompareTo(fraction);
