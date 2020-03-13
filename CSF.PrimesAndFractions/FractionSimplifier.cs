@@ -28,10 +28,20 @@ using System.Linq;
 
 namespace CSF
 {
+    /// <summary>
+    /// An object which simplifies fractions by dividing the numerator and denominator by
+    /// the prime factors which are common to both.
+    /// </summary>
     public class FractionSimplifier : ISimplifiesFraction
     {
         readonly IGetsCommonPrimeFactors factoriser;
 
+        /// <summary>
+        /// Simplify the specified fraction, optionally preferring the use of vulgar fractions.
+        /// </summary>
+        /// <returns>The simplified fraction.</returns>
+        /// <param name="input">The fraction to simplify.</param>
+        /// <param name="preferVulgarFraction">If set to <c>true</c> then vulgar fractions are preferred over composite/mixed whole-number and fractional parts.</param>
         public Fraction Simplify(Fraction input, bool preferVulgarFraction = false)
         {
             // We can perform an optimisation if the numerator is zero

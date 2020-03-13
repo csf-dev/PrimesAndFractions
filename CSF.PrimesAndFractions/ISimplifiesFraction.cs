@@ -23,11 +23,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
+
 namespace CSF
 {
+    /// <summary>
+    /// An object which can simplify a fraction, by reducing its denominator to the
+    /// lowest possible value.
+    /// </summary>
     public interface ISimplifiesFraction
     {
+        /// <summary>
+        /// Simplify the specified fraction, optionally preferring the use of vulgar fractions.
+        /// </summary>
+        /// <returns>The simplified fraction.</returns>
+        /// <param name="input">The fraction to simplify.</param>
+        /// <param name="preferVulgarFraction">If set to <c>true</c> then vulgar fractions are preferred over composite/mixed whole-number and fractional parts.</param>
         Fraction Simplify(Fraction input, bool preferVulgarFraction = false);
     }
 }
