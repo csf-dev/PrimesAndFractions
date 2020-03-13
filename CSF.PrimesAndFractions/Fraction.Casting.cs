@@ -29,11 +29,11 @@ namespace CSF
     public partial struct Fraction
     {
         /// <summary>
-        /// Implicitly casts the fraction to a decimal number.
+        /// Explicitly casts the fraction to a decimal number.
         /// </summary>
         /// <returns>The value of the fraction.</returns>
         /// <param name="f">The fraction to cast.</param>
-        public static implicit operator decimal(Fraction f) => f.ToDecimal();
+        public static explicit operator decimal(Fraction f) => f.ToDecimal();
 
         /// <summary>
         /// Explicitly casts the fraction to a double-precision floating point number.

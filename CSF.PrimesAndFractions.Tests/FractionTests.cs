@@ -471,10 +471,10 @@ namespace CSF.Tests
         #region Casting
 
         [Test]
-        public void A_fraction_implicitly_casts_to_decimal()
+        public void A_fraction_explicitly_casts_to_decimal()
         {
             var fraction = new Fraction(-5);
-            decimal num = fraction;
+            decimal num = (decimal) fraction;
             Assert.That(num, Is.EqualTo(-5m));
         }
 
@@ -824,6 +824,18 @@ namespace CSF.Tests
             var expected = new Fraction(2, 3, 10);
 
             Assert.That(() => first / second, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void Operator_Multiply_can_be_used_with_regular_numbers()
+        {
+            Assert.That(() => new Fraction(1, 2) * 8, Is.EqualTo(new Fraction(4)));
+        }
+
+        [Test]
+        public void Operator_Equals_can_be_used_with_regular_numbers()
+        {
+            Assert.That(() => new Fraction(4, 2) == 2, Is.True);
         }
 
         #endregion
