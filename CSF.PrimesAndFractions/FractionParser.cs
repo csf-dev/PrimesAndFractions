@@ -34,7 +34,7 @@ namespace CSF
     /// </summary>
     public class FractionParser : IParsesFraction
     {
-        const string FractionPattern = @"^\s*(-)?\s*(\d+)?\s+(\d+)\s*/\s*(\d+)\s*$";
+        const string FractionPattern = @"^\s*(-)?\s*(?:(\d+)\s+)?(\d+)\s*/\s*(\d+)\s*$";
         static readonly Regex FractionMatcher = new Regex(FractionPattern, RegexOptions.CultureInvariant);
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace CSF
             var match = FractionMatcher.Match(fractionString);
 
             if (!match.Success)
-                throw new FormatException("The specified string must be a fraction in string format.");
+                throw new FormatException($"The specified string must be a fraction in string format.\nInvalid fraction:{fractionString}");
 
             var negativeVal = match.Groups[1].Value;
             var integerVal = match.Groups[2].Value;

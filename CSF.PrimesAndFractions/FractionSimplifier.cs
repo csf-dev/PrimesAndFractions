@@ -65,6 +65,10 @@ namespace CSF
             return new Fraction(integer, numerator, denominator, input.IsNegative);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FractionSimplifier"/> class.
+        /// </summary>
+        /// <param name="factoriser">Factoriser.</param>
         public FractionSimplifier(IGetsCommonPrimeFactors factoriser = null)
         {
             this.factoriser = factoriser ?? CommonPrimeFactorProvider.Default;
