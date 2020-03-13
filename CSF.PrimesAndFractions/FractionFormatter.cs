@@ -26,6 +26,10 @@
 using System;
 namespace CSF
 {
+    /// <summary>
+    /// A formatting service for <see cref="Fraction"/> objects, which gets string representations of
+    /// the fraction amount.
+    /// </summary>
     public class FractionFormatter : IFormatsFraction
     {
         internal const string
@@ -37,6 +41,42 @@ namespace CSF
 
         readonly ISimplifiesFraction simplifier;
 
+        /// <summary>
+        /// Gets a string representation of a <see cref="Fraction"/>, optionally
+        /// using a format specifier.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the <paramref name="formatType"/> is <c>null</c> or <c>s</c> then the standard format is used.
+        /// This will first <see cref="Fraction.Simplify(bool)"/> the fraction (using a parameter of
+        /// <c>false</c>) before creating the formatted string.  If there is no whole-number component to the
+        /// fraction (IE: its absolute value is less than one) then no leading zero will be displayed.
+        /// For example <c>6/8</c> would become <c>3/4</c>.
+        /// </para>
+        /// <para>
+        /// If the <paramref name="formatType"/> is <c>z</c> or <c>Z</c> then the result will be the same
+        /// as using the standard format (above), except that a leading zero will be added, if there is no
+        /// whole-number component to the fraction, for example <c>0 3/4</c>.
+        /// Additionally, if an uppercase <c>Z</c> is used, then the fraction will not be simplified before
+        /// formatting.  For example <c>6/8</c> would become <c>0 6/8</c>.
+        /// </para>
+        /// <para>
+        /// If the <paramref name="formatType"/> is an uppercase <c>S</c> then the result will be the same
+        /// as the standard format, except the fraction will not be simplified before it is formatted.
+        /// For example <c>6/8</c> would remain <c>6/8</c>.
+        /// </para>
+        /// <para>
+        /// If the <paramref name="formatType"/> is <c>v</c> then vulgar fractions will be preferred over
+        /// composite (whole-number and fractions parts) representations.
+        /// For example <c>3 3/4</c> would become <c>15/4</c>.
+        /// </para>
+        /// </remarks>
+        /// <returns>The formatted string.</returns>
+        /// <param name="fraction">The fraction to format.</param>
+        /// <param name="formatType">
+        /// An optional format type specifier, which (if provided) must be one of
+        /// <c>v, s, S, z, Z</c>.
+        /// </param>
         public string Format(Fraction fraction, string formatType = null)
         {
             Fraction simplified;
@@ -66,7 +106,7 @@ namespace CSF
         {
             var sign = fraction.IsNegative ? "-" : String.Empty;
             var integer = GetIntegerRepresentation(fraction, leadingZero);
-            var spacer = (sign.Length > 0 || integer.Length > 0) ? " " : String.Empty;
+            var spacer = (integer.Length > 0) ? " " : String.Empty;
 
             return $"{sign}{integer}{spacer}{fraction.Numerator}/{fraction.Denominator}";
         }
@@ -82,9 +122,13 @@ namespace CSF
             return fraction.AbsoluteInteger.ToString();
         }
 
-        public FractionFormatter(ISimplifiesFraction simplifier)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FractionFormatter"/> class.
+        /// </summary>
+        /// <param name="simplifier">A service which simplifies fractions.</param>
+        public FractionFormatter(ISimplifiesFraction simplifier = null)
         {
-            this.simplifier = simplifier ?? throw new ArgumentNullException(nameof(simplifier));
+            this.simplifier = simplifier ?? new FractionSimplifier();
         }
     }
 }
