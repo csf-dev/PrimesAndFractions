@@ -37,7 +37,7 @@ namespace CSF
         /// <param name="formatProvider">A format provider, which should be able to return an <see cref="IFormatsFraction"/>.</param>
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            var formatter = formatProvider.GetFormat(typeof(IFormatsFraction)) as IFormatsFraction;
+            var formatter = formatProvider?.GetFormat(typeof(IFormatsFraction)) as IFormatsFraction;
             if (formatter == null) return ToString();
             return formatter.Format(this, format);
         }
