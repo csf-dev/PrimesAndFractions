@@ -26,8 +26,19 @@
 using System;
 namespace CSF
 {
+    /// <summary>
+    /// An object which can create a string representation of a <see cref="Fraction"/>
+    /// object, using a specified formatting type.
+    /// </summary>
     public interface IFormatsFraction
     {
+        /// <summary>
+        /// Gets a string representation of the <see cref="Fraction"/> using the specified
+        /// format type.
+        /// </summary>
+        /// <returns>The formatted string representation of the specified fraction.</returns>
+        /// <param name="fraction">The fraction to format.</param>
+        /// <param name="formatType">A format type specifier.</param>
         string Format(Fraction fraction, string formatType = null);
     }
 }

@@ -28,6 +28,13 @@ namespace CSF
 {
     public partial struct Fraction : IFormattable
     {
+        /// <summary>
+        /// Gets a string representation of the current instance, using the specified format provider,
+        /// which should be able to return an instance of <see cref="IFormatsFraction"/>.
+        /// </summary>
+        /// <returns>The string representation.</returns>
+        /// <param name="format">The format specifier.</param>
+        /// <param name="formatProvider">A format provider, which should be able to return an <see cref="IFormatsFraction"/>.</param>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             var formatter = formatProvider.GetFormat(typeof(IFormatsFraction)) as IFormatsFraction;

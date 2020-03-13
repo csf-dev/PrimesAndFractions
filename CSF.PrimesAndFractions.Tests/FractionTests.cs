@@ -443,6 +443,29 @@ namespace CSF.Tests
             Assert.That(() => sut.ToString(), Is.EqualTo(expected));
         }
 
+        [Test, AutoMoqData]
+        public void ToString_formattable_uses_a_formatter_if_it_is_the_correct_interface(IFormatsFraction formatter,
+                                                                                         IFormatProvider provider,
+                                                                                         Fraction sut,
+                                                                                         string format,
+                                                                                         string expected)
+        {
+            Mock.Get(provider).Setup(x => x.GetFormat(typeof(IFormatsFraction))).Returns(formatter);
+            Mock.Get(formatter).Setup(x => x.Format(sut, format)).Returns(expected);
+
+            Assert.That(() => sut.ToString(format, provider), Is.EqualTo(expected));
+        }
+
+        [Test, AutoMoqData]
+        public void ToString_formattable_uses_default_format_if_it_is_not_the_correct_interface(IFormatProvider provider,
+                                                                                                Fraction sut,
+                                                                                                string format)
+        {
+            Mock.Get(provider).Setup(x => x.GetFormat(typeof(IFormatsFraction))).Returns(() => null);
+
+            Assert.That(() => sut.ToString(format, provider), Is.EqualTo(sut.ToString()));
+        }
+
         #endregion
 
         #region Casting
@@ -725,6 +748,82 @@ namespace CSF.Tests
             var first = new Fraction(2, 3, 5);
             var second = new Fraction(2, 2, 5);
             Assert.That(() => first >= second, Is.True);
+        }
+
+        #endregion
+
+        #region Operators
+
+        [Test]
+        public void Operator_Equals_returns_true_for_equal_fractions()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 3, 5);
+            Assert.That(() => first == second, Is.True);
+        }
+
+        [Test]
+        public void Operator_Equals_returns_false_for_unequal_fractions()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 4, 5);
+            Assert.That(() => first == second, Is.False);
+        }
+
+        [Test]
+        public void Operator_NotEquals_returns_false_for_equal_fractions()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 3, 5);
+            Assert.That(() => first != second, Is.False);
+        }
+
+        [Test]
+        public void Operator_NotEquals_returns_true_for_unequal_fractions()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 4, 5);
+            Assert.That(() => first != second, Is.True);
+        }
+
+        [Test]
+        public void Operator_Add_returns_correct_result()
+        {
+            var first = new Fraction(2, 3, 5);
+            var second = new Fraction(2, 8, 10);
+            var expected = new Fraction(5, 2, 5);
+
+            Assert.That(() => first + second, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void Operator_Subtract_returns_correct_result()
+        {
+            var first = new Fraction(2, 4, 5);
+            var second = new Fraction(2, 6, 10);
+            var expected = new Fraction(1, 5);
+
+            Assert.That(() => first - second, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void Operator_Multiply_returns_correct_result()
+        {
+            var first = new Fraction(2, 3, 10);
+            var second = new Fraction(2, 4, 10);
+            var expected = new Fraction(5, 13, 25);
+
+            Assert.That(() => first * second, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void Operator_Divide_returns_correct_result()
+        {
+            var first = new Fraction(5, 13, 25);
+            var second = new Fraction(2, 4, 10);
+            var expected = new Fraction(2, 3, 10);
+
+            Assert.That(() => first / second, Is.EqualTo(expected));
         }
 
         #endregion
