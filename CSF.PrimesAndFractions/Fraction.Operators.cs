@@ -28,9 +28,15 @@ namespace CSF
 {
     public partial struct Fraction
     {
+        #region Equality
+
         public static bool operator ==(Fraction a, Fraction b) => a.Equals(b);
 
         public static bool operator !=(Fraction a, Fraction b) => !(a == b);
+
+        #endregion
+
+        #region Arithmetic
 
         public static Fraction operator +(Fraction a, Fraction b)
         {
@@ -72,5 +78,23 @@ namespace CSF
             var invertedB = new Fraction(vulgarB.Denominator, vulgarB.Numerator, vulgarB.IsNegative);
             return a * invertedB;
         }
+
+        #endregion
+
+        #region Comparison
+
+        public static bool operator >(Fraction first, Fraction second)
+            => first.CompareTo(second) > 0;
+
+        public static bool operator <(Fraction first, Fraction second)
+            => first.CompareTo(second) < 0;
+
+        public static bool operator >=(Fraction first, Fraction second)
+            => first.CompareTo(second) >= 0;
+
+        public static bool operator <=(Fraction first, Fraction second)
+            => first.CompareTo(second) <= 0;
+
+        #endregion
     }
 }
