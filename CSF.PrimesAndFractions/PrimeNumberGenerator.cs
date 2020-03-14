@@ -24,6 +24,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -55,24 +56,31 @@ namespace CSF
         {
             using (var cache = cacheProvider.GetCache())
             {
-                foreach (var number in cache.Contents)
+                var cachedPrimes = cache.Contents;
+
+                foreach (var number in cachedPrimes)
                 {
                     if (number > upperLimit) yield break;
                     yield return number;
                 }
 
-                long sqrt = 1;
+                long sqrt;
+                if (cachedPrimes.Any())
+                    sqrt = (long)Math.Abs(Math.Sqrt(cachedPrimes.Last()));
+                else
+                    sqrt = 1;
+
                 var generatedPrimes = GetCandidatesForPrimeNumbers(upperLimit)
                     .Where(x =>
                     {
                         sqrt = GetSqrtCeiling(x, sqrt);
-                        return !cache.Contents.TakeWhile(y => y <= sqrt).Any(y => x % y == 0);
+                        return !cachedPrimes.TakeWhile(y => y <= sqrt).Any(y => x % y == 0);
                     });
 
                 foreach (var prime in generatedPrimes)
                 {
                     yield return prime;
-                    cache.Contents.Add(prime);
+                    cachedPrimes.Add(prime);
                 }
             }
         }

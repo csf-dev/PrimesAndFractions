@@ -27,38 +27,41 @@ using System;
 using System.Diagnostics;
 using System.Runtime.Caching;
 using NUnit.Framework;
+using System.Linq;
 
 namespace CSF.Tests
 {
-    [TestFixture,Parallelizable]
+    [TestFixture,NonParallelizable]
     public class PrimeNumberObjectCacheProviderIntegrationTests
     {
         [Test]
-        public void GetPrimeNumbers_can_get_100_million_primes_quicker_a_second_time_after_using_a_cache()
+        public void GetPrimeNumbers_can_get_10_thousand_primes_quicker_a_second_time_after_using_a_cache()
         {
-            const long hundredMillionthPrime = 2038074743;
+            const long tenThousandthPrime = 104729;
 
-            var cache = new MemoryCache(nameof(PrimeNumberObjectCacheProviderIntegrationTests));
+            var cache = new MemoryCache(nameof(GetPrimeNumbers_can_get_10_thousand_primes_quicker_a_second_time_after_using_a_cache));
             var cacheProvider = new PrimeNumberObjectCacheProvider(cache);
             IGetsPrimeNumbers primeGenerator = new PrimeNumberGenerator(cacheProvider);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var firstAttempt = primeGenerator.GetPrimeNumbers(hundredMillionthPrime);
+            var firstAttempt = primeGenerator.GetPrimeNumbers(tenThousandthPrime).ToList();
             var firstTime = stopwatch.ElapsedTicks;
 
             stopwatch.Restart();
 
-            var secondAttempt = primeGenerator.GetPrimeNumbers(hundredMillionthPrime);
+            var secondAttempt = primeGenerator.GetPrimeNumbers(tenThousandthPrime).ToList();
             var secondTime = stopwatch.ElapsedTicks;
 
             stopwatch.Stop();
 
-            Console.WriteLine($"First attempt to get 100 million primes took {firstTime} ticks");
-            Console.WriteLine($"First attempt to get 100 million primes took {secondTime} ticks");
+            Console.WriteLine($"First attempt to get  10,000 primes took {firstTime} ticks");
+            Console.WriteLine($"Second attempt to get 10,000 primes took {secondTime} ticks");
 
             Assert.That(secondTime, Is.LessThan(firstTime));
+            Assert.That(firstAttempt.Count, Is.EqualTo(10000), "Count of primes in first run");
+            Assert.That(secondAttempt.Count, Is.EqualTo(10000), "Count of primes in second run");
         }
 
         [Test]
@@ -66,27 +69,29 @@ namespace CSF.Tests
         {
             const long tenthPrime = 29;
 
-            var cache = new MemoryCache(nameof(PrimeNumberObjectCacheProviderIntegrationTests));
+            var cache = new MemoryCache(nameof(GetPrimeNumbers_can_get_10_primes_quicker_a_second_time_after_using_a_cache));
             var cacheProvider = new PrimeNumberObjectCacheProvider(cache);
             IGetsPrimeNumbers primeGenerator = new PrimeNumberGenerator(cacheProvider);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var firstAttempt = primeGenerator.GetPrimeNumbers(tenthPrime);
+            var firstAttempt = primeGenerator.GetPrimeNumbers(tenthPrime).ToList();
             var firstTime = stopwatch.ElapsedTicks;
 
             stopwatch.Restart();
 
-            var secondAttempt = primeGenerator.GetPrimeNumbers(tenthPrime);
+            var secondAttempt = primeGenerator.GetPrimeNumbers(tenthPrime).ToList();
             var secondTime = stopwatch.ElapsedTicks;
 
             stopwatch.Stop();
 
-            Console.WriteLine($"First attempt to get 10 primes took {firstTime} ticks");
-            Console.WriteLine($"First attempt to get 10 primes took {secondTime} ticks");
+            Console.WriteLine($"First attempt to get  10 primes took {firstTime} ticks");
+            Console.WriteLine($"Second attempt to get 10 primes took {secondTime} ticks");
 
             Assert.That(secondTime, Is.LessThan(firstTime));
+            Assert.That(firstAttempt.Count, Is.EqualTo(10), "Count of primes in first run");
+            Assert.That(secondAttempt.Count, Is.EqualTo(10), "Count of primes in second run");
         }
     }
 }

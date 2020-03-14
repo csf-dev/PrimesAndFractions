@@ -78,11 +78,11 @@ namespace CSF
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
             this.policy = policy ?? new CacheItemPolicy();
             this.key = key ?? DefaultKey;
-            syncRoot = new ReaderWriterLockSlim();
+            syncRoot = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         }
     }
 
-    internal class PrimeNumberObjectCache : ICachesPrimeNumbers
+    internal sealed class PrimeNumberObjectCache : ICachesPrimeNumbers
     {
         readonly ObjectCache cache;
         readonly CacheItemPolicy policy;
@@ -161,7 +161,11 @@ namespace CSF
         }
 
         List<long> GetCacheContents()
-            => (List<long>) cache.AddOrGetExisting(key, new List<long>(), policy);
+        {
+            var newItem = new List<long>();
+            var existing = (List<long>) cache.AddOrGetExisting(key, newItem, policy);
+            return existing ?? newItem;
+        }
 
         internal PrimeNumberObjectCache(ObjectCache cache,
                                         CacheItemPolicy policy,
