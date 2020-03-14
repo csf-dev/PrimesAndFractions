@@ -28,12 +28,12 @@ using System.Collections.Generic;
 
 namespace CSF
 {
-    class EphemeralPrimeNumberCacheProvider : IProvidesPrimeNumberCache
+    sealed class EphemeralPrimeNumberCacheProvider : IProvidesPrimeNumberCache
     {
         public ICachesPrimeNumbers GetCache() => new EphemeralPrimeNumberCache();
     }
 
-    class EphemeralPrimeNumberCache : ICachesPrimeNumbers
+    sealed class EphemeralPrimeNumberCache : ICachesPrimeNumbers
     {
         readonly List<long> cache = new List<long>();
 

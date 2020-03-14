@@ -558,9 +558,10 @@ namespace CSF.Tests
             Assert.That(num, Is.EqualTo(5));
         }
 
-        [Test, AutoMoqData]
-        public void A_fraction_may_implicitly_cast_from_sbyte(sbyte number)
+        [Test]
+        public void A_fraction_may_implicitly_cast_from_sbyte()
         {
+            sbyte number = -7;
             Fraction fraction = number;
             Assert.That(fraction.AbsoluteInteger, Is.EqualTo(Math.Abs(number)));
         }
