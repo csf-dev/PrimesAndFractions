@@ -6,12 +6,12 @@
     <PackageId>CSF.PrimesAndFractions</PackageId>
     <Authors>craigfowler</Authors>
     <Description>A C# library for dealing with prime numbers, prime factors and fractions</Description>
-    <ReleaseVersion>6.1.1</ReleaseVersion>
+    <ReleaseVersion>1.0.0</ReleaseVersion>
     <Version>$(ReleaseVersion)</Version>
     <PackageVersion>$(ReleaseVersion)</PackageVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2020 - CSF Software Limited</Copyright>
-    <PackageProjectUrl>https://github.com/csf-dev/CSF.PrimesAndFractions</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/csf-dev/PrimesAndFractions</PackageProjectUrl>
     <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\CSF-Software-OSS.snk</AssemblyOriginatorKeyFile>
@@ -19,20 +19,16 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\CSF.Reflection.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\CSF.PrimesAndFractions.xml</DocumentationFile>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType></DebugType>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\CSF.Reflection.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\CSF.PrimesAndFractions.xml</DocumentationFile>
   </PropertyGroup>
   
   <ItemGroup>
     <EmbeddedResource Remove="Resources\ExceptionMessages.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Fraction.old.cs" />
-    <Compile Remove="Old fraction class.cs" />
   </ItemGroup>
   <Import Project="..\Tools\EnableNet45BuildOnUnix.targets" />
 </Project>

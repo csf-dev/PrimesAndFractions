@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <ReleaseVersion>6.1.1</ReleaseVersion>
+    <ReleaseVersion>1.0.0</ReleaseVersion>
     <RootNamespace>CSF.Tests</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\CSF-Software-OSS.snk</AssemblyOriginatorKeyFile>
