@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+
 namespace CSF
 {
     /// <summary>
@@ -367,5 +368,24 @@ namespace CSF
         /// <exception cref="ArgumentNullException">If <paramref name="fractionString"/> is <c>null</c>.</exception>
         /// <exception cref="FormatException">If the <paramref name="fractionString"/> is not a correctly-formatted string that represents a fraction.</exception>
         public static Fraction Parse(string fractionString) => Parser.Parse(fractionString);
+
+        /// <summary>
+        /// <para>
+        /// Replaces the default fraction-simplification service used by all <see cref="Fraction"/> instances
+        /// throughout the application domain.
+        /// </para>
+        /// <para>
+        /// Please note that THIS METHOD IS NOT THREAD-SAFE.  If used at all, it is intended to be used once during
+        /// application start-up, to select an alternative simplifier service for all fractions.  It is not
+        /// intended to be used during the regular lifetime of the consuming application.
+        /// </para>
+        /// </summary>
+        /// <param name="simplifier">A simplifier service.</param>
+        /// <exception cref="ArgumentNullException">If the <paramref name="simplifier"/> is <c>null</c>.</exception>
+        public static void UseAlternativeSimplifier(ISimplifiesFraction simplifier)
+        {
+            Simplifier = simplifier ?? throw new ArgumentNullException(nameof(simplifier));
+            Formatter = new FractionFormatter(Simplifier);
+        }
     }
 }

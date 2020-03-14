@@ -34,5 +34,8 @@
     <Compile Remove="Fraction.old.cs" />
     <Compile Remove="Old fraction class.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.Caching" Version="4.7.0" Condition="'$(TargetFramework)' != 'netstandard1.0'" />
+  </ItemGroup>
   <Import Project="..\Tools\EnableNet45BuildOnUnix.targets" />
 </Project>
