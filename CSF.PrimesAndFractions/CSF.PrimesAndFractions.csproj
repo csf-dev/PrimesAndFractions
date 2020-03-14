@@ -6,7 +6,7 @@
     <PackageId>CSF.PrimesAndFractions</PackageId>
     <Authors>craigfowler</Authors>
     <Description>A C# library for dealing with prime numbers, prime factors and fractions</Description>
-    <ReleaseVersion>6.1.1</ReleaseVersion>
+    <ReleaseVersion>1.0.0</ReleaseVersion>
     <Version>$(ReleaseVersion)</Version>
     <PackageVersion>$(ReleaseVersion)</PackageVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
