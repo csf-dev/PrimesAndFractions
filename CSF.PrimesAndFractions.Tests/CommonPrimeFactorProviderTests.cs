@@ -31,9 +31,10 @@ namespace CSF.Tests
     [TestFixture, Parallelizable]
     public class CommonPrimeFactorProviderTests
     {
-        [Test, AutoMoqData]
-        public void GetPrimeFactors_can_return_correct_result_for_5775_and_23100(PrimeNumberGenerator primeGenerator)
+        [Test]
+        public void GetPrimeFactors_can_return_correct_result_for_5775_and_23100()
         {
+            var primeGenerator = new PrimeNumberGenerator();
             var factorProvider = new PrimeFactorProvider(primeGenerator);
             var sut = new CommonPrimeFactorProvider(factorProvider);
 

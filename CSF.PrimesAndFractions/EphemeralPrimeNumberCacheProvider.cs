@@ -1,5 +1,5 @@
 ﻿//
-// PrimeNumberGeneratorTests.cs
+// EphemeralPrimeNumberCacheProvider.cs
 //
 // Author:
 //       Craig Fowler <craig@csf-dev.com>
@@ -23,35 +23,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using System.Linq;
-using NUnit.Framework;
 
-namespace CSF.Tests
+using System.Collections.Generic;
+
+namespace CSF
 {
-    [TestFixture,Parallelizable]
-    public class PrimeNumberGeneratorTests
+    class EphemeralPrimeNumberCacheProvider : IProvidesPrimeNumberCache
     {
-        [Test]
-        public void GetPrimeNumbers_can_correctly_return_the_first_six_primes()
-        {
-            var sut = new PrimeNumberGenerator();
-            Assert.That(() => sut.GetPrimeNumbers(15), Is.EqualTo(new[] { 2, 3, 5, 7, 11, 13 }));
-        }
+        public ICachesPrimeNumbers GetCache() => new EphemeralPrimeNumberCache();
+    }
 
-        [Test]
-        public void GetPrimeNumbers_can_correctly_return_the_first_six_primes_if_executed_twice()
-        {
-            var sut = new PrimeNumberGenerator();
-            sut.GetPrimeNumbers(15);
-            Assert.That(() => sut.GetPrimeNumbers(15), Is.EqualTo(new[] { 2, 3, 5, 7, 11, 13 }));
-        }
+    class EphemeralPrimeNumberCache : ICachesPrimeNumbers
+    {
+        readonly List<long> cache = new List<long>();
 
-        [Test, Description("The hundred-thousandth prime number is 1299709.  Generating primes up to this ceiling should return precisely 100,000 numbers")]
-        public void GetPrimeNumbers_can_get_the_one_hundred_thousandth_prime()
-        {
-            var sut = new PrimeNumberGenerator();
-            Assert.That(() => sut.GetPrimeNumbers(1299709).ToList(), Has.Count.EqualTo(100000));
-        }
+        public ICollection<long> Contents => cache;
+
+        public void Dispose() { /* No-op. nothing to do, this impl does not perform any caching */ }
     }
 }

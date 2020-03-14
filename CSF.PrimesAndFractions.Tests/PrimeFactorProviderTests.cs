@@ -31,9 +31,10 @@ namespace CSF.Tests
     [TestFixture,Parallelizable]
     public class PrimeFactorProviderTests
     {
-        [Test, AutoMoqData]
-        public void GetPrimeFactors_can_return_correct_result_for_5775(PrimeNumberGenerator primeGenerator)
+        [Test]
+        public void GetPrimeFactors_can_return_correct_result_for_5775()
         {
+            var primeGenerator = new PrimeNumberGenerator();
             var sut = new PrimeFactorProvider(primeGenerator);
 
             Assert.That(() => sut.GetPrimeFactors(5775), Is.EqualTo(new[] { 3, 5, 5, 7, 11 }));

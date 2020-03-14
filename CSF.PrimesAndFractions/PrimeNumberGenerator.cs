@@ -43,6 +43,8 @@ namespace CSF
     /// </remarks>
     public class PrimeNumberGenerator : IGetsPrimeNumbers
     {
+        readonly IProvidesPrimeNumberCache cacheProvider;
+
         /// <summary>
         /// Generates and returns a sequence of all prime numbers starting with the first prime number
         /// (two) and ending with the highest prime number which is equal to or less than the
@@ -52,19 +54,21 @@ namespace CSF
         /// <param name="upperLimit">The highest numeric value for which to get prime numbers; this method will not get any prime numbers which are greater than this number.</param>
         public IEnumerable<long> GetPrimeNumbers(long upperLimit)
         {
-            var cachedPrimes = new List<long>();
-            long sqrt = 1;
-            var primes = GetCandidatesForPrimeNumbers(upperLimit)
-                .Where(x =>
-                {
-                    sqrt = GetSqrtCeiling(x, sqrt);
-                    return !cachedPrimes.TakeWhile(y => y <= sqrt).Any(y => x % y == 0);
-                });
-
-            foreach (var prime in primes)
+            using (var cache = cacheProvider.GetCache())
             {
-                yield return prime;
-                cachedPrimes.Add(prime);
+                long sqrt = 1;
+                var generatedPrimes = GetCandidatesForPrimeNumbers(upperLimit)
+                    .Where(x =>
+                    {
+                        sqrt = GetSqrtCeiling(x, sqrt);
+                        return !cache.Contents.TakeWhile(y => y <= sqrt).Any(y => x % y == 0);
+                    });
+
+                foreach (var prime in generatedPrimes)
+                {
+                    yield return prime;
+                    cache.Contents.Add(prime);
+                }
             }
         }
 
@@ -112,6 +116,15 @@ namespace CSF
                 yield return 6 * n + 1;
                 n++;
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PrimeNumberGenerator"/> class.
+        /// </summary>
+        /// <param name="cacheProvider">An optional object which provides caching for prime numbers which have already been generated.</param>
+        public PrimeNumberGenerator(IProvidesPrimeNumberCache cacheProvider = null)
+        {
+            this.cacheProvider = cacheProvider ?? new EphemeralPrimeNumberCacheProvider();
         }
     }
 }
