@@ -81,7 +81,7 @@ Fractions may also be tested for equality with one another; the operators `==` a
 ### Simplifying fractions
 Fractions may be **simplified** to their smallest form.  An optional parameter specifies whether or not prefer simplification to a **vulgar fraction** (if applicable) or not.  By default vulgar fractions are not preferred.
 
-```csharo
+```csharp
 // Simplify a fraction
 Fraction.Parse("50/100").Simplify()             // One-half
 
