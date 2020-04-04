@@ -27,10 +27,4 @@
   <ItemGroup>
     <ProjectReference Include="..\CSF.PrimesAndFractions\CSF.PrimesAndFractions.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="TestFraction.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TestFraction.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
-  </ItemGroup>
 </Project>
